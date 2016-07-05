@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:addedFile.h">
+   </FileRef>
+   <FileRef
+      location = "group:addedFile.m">
+   </FileRef>
+   <FileRef
       location = "group:AirMap.xcodeproj">
    </FileRef>
    <FileRef
