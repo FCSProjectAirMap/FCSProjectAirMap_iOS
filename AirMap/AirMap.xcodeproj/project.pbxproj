@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		E4041519E7E37666D21CD521 /* libPods-AirMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */; };
+		E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */; };
+		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
+		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
 		EC714C721D2AB8A000165A58 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C711D2AB8A000165A58 /* main.m */; };
 		EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C741D2AB8A000165A58 /* AppDelegate.m */; };
 		EC714C7B1D2AB8A000165A58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC714C791D2AB8A000165A58 /* Main.storyboard */; };
@@ -21,6 +24,12 @@
 		16028BDC9D099C26AC19ED29 /* Pods-AirMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.release.xcconfig"; sourceTree = "<group>"; };
 		4253540E246896CD5E2EF7E9 /* Pods-AirMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.debug.xcconfig"; sourceTree = "<group>"; };
 		6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirMap.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewCell.h; sourceTree = "<group>"; };
+		E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewCell.m; sourceTree = "<group>"; };
+		E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewController.h; sourceTree = "<group>"; };
+		E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewController.m; sourceTree = "<group>"; };
+		E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageDataCenter.h; sourceTree = "<group>"; };
+		E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageDataCenter.m; sourceTree = "<group>"; };
 		EC714C6D1D2AB8A000165A58 /* AirMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC714C711D2AB8A000165A58 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EC714C731D2AB8A000165A58 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -66,6 +75,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */ = {
+			isa = PBXGroup;
+			children = (
+				E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */,
+				E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */,
+				E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */,
+				E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */,
+				E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */,
+				E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */,
+			);
+			name = MultiPhotoSelect;
+			sourceTree = "<group>";
+		};
 		EC714C641D2AB8A000165A58 = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +109,7 @@
 		EC714C6F1D2AB8A000165A58 /* AirMap */ = {
 			isa = PBXGroup;
 			children = (
+				E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */,
 				EC750B931D2B9E0300A54374 /* Resource */,
 				EC714C8C1D2AC07700165A58 /* PrefixHeader.pch */,
 				EC714C731D2AB8A000165A58 /* AppDelegate.h */,
@@ -238,8 +261,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */,
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
+				E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */,
+				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

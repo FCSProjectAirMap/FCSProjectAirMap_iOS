@@ -7,6 +7,7 @@
 //
 
 #import "MapViewController.h"
+#import "MultiImageCollectionViewController.h"
 
 const CGFloat BUTTON_SIZE_WIDTH = 60.0f;
 const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
@@ -74,7 +75,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     
     // camera Button
     UIButton *cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [cameraButton setTitle:@"카메라" forState:UIControlStateNormal];
+    [cameraButton setTitle:@"앨범" forState:UIControlStateNormal];
     [cameraButton setBackgroundColor:[UIColor redColor]];
     [cameraButton addTarget:self
                      action:@selector(cameraButtonTouchUpInside:)
@@ -139,11 +140,47 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
 - (void)cameraButtonTouchUpInside:(UIButton *)sender {
     NSLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
+    MultiImageCollectionViewController *multiImageView = [[MultiImageCollectionViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:multiImageView];
+    [self checkAlbumAuthorization];
+
+    [self presentViewController:navigationController animated:YES completion:^{
+        
+    }];
 }
 
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
     NSLog(@"현재위치 찍기");
     self.plusView.hidden = !self.plusView.hidden;
+}
+
+// 앨범 접근 가능여부 확인
+- (void)checkAlbumAuthorization {
+    
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    
+    switch (status) {
+            // 승인 되어있을때_앨범 불러옴
+        case PHAuthorizationStatusAuthorized:
+            
+            break;
+            // 승인 거절되었을때_설정창으로 보냄
+        case PHAuthorizationStatusDenied:
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication]
+                     openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                });
+            }];
+            break;
+            // 결정되지 않았을때_설정창으로 보냄
+        case PHAuthorizationStatusNotDetermined:
+            
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - GMSMapViewDelegate
