@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E4041519E7E37666D21CD521 /* libPods-AirMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */; };
+		EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */; };
 		EC714C721D2AB8A000165A58 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C711D2AB8A000165A58 /* main.m */; };
 		EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C741D2AB8A000165A58 /* AppDelegate.m */; };
 		EC714C7B1D2AB8A000165A58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC714C791D2AB8A000165A58 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		4253540E246896CD5E2EF7E9 /* Pods-AirMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.debug.xcconfig"; sourceTree = "<group>"; };
 		6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirMap.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC50DD7B1D2C0B25009B6C91 /* MapAPIKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapAPIKey.h; sourceTree = "<group>"; };
+		EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Menu_icon.png; sourceTree = "<group>"; };
 		EC714C6D1D2AB8A000165A58 /* AirMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC714C711D2AB8A000165A58 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EC714C731D2AB8A000165A58 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		EC750B931D2B9E0300A54374 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC714C801D2AB8A000165A58 /* LaunchScreen.storyboard in Resources */,
+				EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */,
 				EC714C7D1D2AB8A000165A58 /* Assets.xcassets in Resources */,
 				EC714C7B1D2AB8A000165A58 /* Main.storyboard in Resources */,
 			);

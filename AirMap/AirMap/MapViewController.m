@@ -11,6 +11,9 @@
 const CGFloat BUTTON_SIZE_WIDTH = 60.0f;
 const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
 
+static const CGFloat TEXTFIELD_HEIGHT = 45.0f;
+static const CGFloat TEXTFIELD_INSET = 10.0f;
+
 @interface MapViewController ()
 <GMSMapViewDelegate, CLLocationManagerDelegate>
 
@@ -19,13 +22,16 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
 @property (nonatomic) CLLocationManager *locationManager;
 
 @property (nonatomic, weak) UIButton *plusButton;
-@property (nonatomic, weak) UIButton *cameraButton;
+@property (nonatomic, weak) UIButton *albumButton;
 @property (nonatomic, weak) UIButton *locationAddButton;
 @property (nonatomic, weak) UIView *plusView;
-@property (nonatomic, weak) UISearchBar *searchBar;
+@property (nonatomic, weak) UITextField *searchField;
+@property (nonatomic, weak) UIButton *menuButton;
+
+@property (nonatomic) BOOL isAnimating;
 
 // ##SJ Test
-@property (nonatomic) BOOL isAnimating;
+@property (nonatomic) GMSPlacePicker *placePicker;
 
 @end
 
@@ -93,17 +99,17 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     self.plusView = plusView;
     
     // camera Button
-    UIButton *cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [cameraButton setTitle:@"카메라" forState:UIControlStateNormal];
-    [cameraButton setBackgroundColor:[UIColor redColor]];
-    [cameraButton addTarget:self
-                     action:@selector(cameraButtonTouchUpInside:)
+    UIButton *albumButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    [albumButton setTitle:@"카메라" forState:UIControlStateNormal];
+    [albumButton setBackgroundColor:[UIColor redColor]];
+    [albumButton addTarget:self
+                     action:@selector(albumButtonTouchUpInside:)
            forControlEvents:UIControlEventTouchUpInside];
-    [self.plusView addSubview:cameraButton];
-    self.cameraButton = cameraButton;
+    [self.plusView addSubview:albumButton];
+    self.albumButton = albumButton;
     
     // Location Add Button
-    UIButton *locationAddButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, cameraButton.frame.size.height, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    UIButton *locationAddButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, albumButton.frame.size.height, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [locationAddButton setTitle:@"위치" forState:UIControlStateNormal];
     [locationAddButton setBackgroundColor:[UIColor redColor]];
     [locationAddButton addTarget:self
@@ -112,12 +118,26 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     [self.plusView addSubview:locationAddButton];
     self.locationAddButton = locationAddButton;
     
+    // 설정 버튼
+    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(TEXTFIELD_INSET, 40.0f, 60.0f, TEXTFIELD_HEIGHT)];
+    [menuButton addTarget:self
+                       action:@selector(menuButtonTouchUpInside:)
+             forControlEvents:UIControlEventTouchUpInside];
+    menuButton.backgroundColor = [UIColor whiteColor];
+    [menuButton setImage:[UIImage imageNamed:@"Menu_icon"] forState:UIControlStateNormal];
+    [self.mapView addSubview:menuButton];
+    self.menuButton = menuButton;
+    
     // 구글지도 검색 텍스트 필드
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(20.0f, 30.0f, self.mapView.frame.size.width-40.0f, 40.0f)];
-    searchBar.placeholder = @"지역 검색";
-    searchBar.alpha = 0.9f;
-    [self.mapView addSubview:searchBar];
-    self.searchBar = searchBar;
+    // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(70.0f, 40.f, self.mapView.frame.size.width-menuButton.bounds.size.width - (TEXTFIELD_INSET*2), TEXTFIELD_HEIGHT)];
+    searchField.placeholder = @"Google 지도 검색";
+    searchField.borderStyle = UITextBorderStyleNone;
+    searchField.backgroundColor = [UIColor whiteColor];
+    searchField.keyboardType = UIReturnKeyDone;
+    [self.mapView addSubview:searchField];
+    self.searchField = searchField;
+    
     
     // Tap Gesture
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
@@ -170,7 +190,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     self.plusView.hidden = !self.plusView.hidden;
 }
 
-- (void)cameraButtonTouchUpInside:(UIButton *)sender {
+- (void)albumButtonTouchUpInside:(UIButton *)sender {
     DLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
 }
@@ -178,6 +198,10 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재위치 찍기");
     self.plusView.hidden = !self.plusView.hidden;
+}
+
+- (void)menuButtonTouchUpInside:(UIButton *)sender {
+    DLog(@"메뉴 버튼 눌렀따!");
 }
 
 // 지도를 탭 했을 경우 UI들 숨기기 메서드
@@ -196,11 +220,16 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  // 애니메이션 진행 로직..
-                                 // search Bar
-                                 [self.searchBar setFrame:CGRectMake(self.searchBar.frame.origin.x,
-                                                                     self.searchBar.frame.origin.y - 130.0f,
-                                                                     self.searchBar.frame.size.width,
-                                                                     self.searchBar.frame.size.height)];
+                                 // menu Button
+                                 [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
+                                                                      self.menuButton.frame.origin.y - 130.0f,
+                                                                      self.menuButton.frame.size.width,
+                                                                      self.menuButton.frame.size.height)];
+                                 // search field
+                                 [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
+                                                                       self.searchField.frame.origin.y - 130.0f,
+                                                                       self.searchField.frame.size.width,
+                                                                       self.searchField.frame.size.height)];
                                  // plus Button
                                  [self.plusButton setAlpha:0.0f];
                                  // loaction Button
@@ -216,10 +245,16 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  // 애니메이션 진행 로직..
-                                 [self.searchBar setFrame:CGRectMake(self.searchBar.frame.origin.x,
-                                                                     self.searchBar.frame.origin.y + 130.0f,
-                                                                     self.searchBar.frame.size.width,
-                                                                     self.searchBar.frame.size.height)];
+                                 // menu Button
+                                 [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
+                                                                      self.menuButton.frame.origin.y + 130.0f,
+                                                                      self.menuButton.frame.size.width,
+                                                                      self.menuButton.frame.size.height)];
+                                 // search field
+                                 [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
+                                                                       self.searchField.frame.origin.y + 130.0f,
+                                                                       self.searchField.frame.size.width,
+                                                                       self.searchField.frame.size.height)];
                                  // plus Button
                                  [self.plusButton setAlpha:1.0f];
                                  // loaction Button
