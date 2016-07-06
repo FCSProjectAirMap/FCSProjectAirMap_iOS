@@ -26,9 +26,9 @@ const CGFloat spacing = 2;
     
     [self creatCollectionView];
     [self navigationControllerSetUp];
-    self.imageDataCenter = [[MultiImageDataCenter alloc] init];
 
 }
+
 
 
 #pragma mark - <UICollectionView>
@@ -59,7 +59,7 @@ const CGFloat spacing = 2;
 #pragma mark - <UICollectionViewDataSource>
 // 셀 개수 설정
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.imageDataCenter loadFetchResult].count;
+    return [MultiImageDataCenter loadFetchResult].count;
 }
 // 셀 내용 설정
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -72,7 +72,7 @@ const CGFloat spacing = 2;
     }
     
     // 이미지 asset 생성
-    PHAsset *imageAsset = [self.imageDataCenter loadFetchResult][indexPath.row];
+    PHAsset *imageAsset = [MultiImageDataCenter loadFetchResult][indexPath.row];
     
     // 이미지 매니저를 통한 이미지 가져오기(
     cell.tag = indexPath.row;

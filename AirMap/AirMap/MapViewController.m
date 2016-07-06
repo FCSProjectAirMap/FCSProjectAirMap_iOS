@@ -32,6 +32,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     self = [super init];
     if (self) {
         self.path = [GMSMutablePath path];
+        
     }
     return self;
 }
@@ -43,6 +44,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     [self createGoogleMapView];
     // view 만들어 주기.
     [self createView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -123,6 +125,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     [self.mapView.settings setMyLocationButton:YES];
     [self.mapView.settings setCompassButton:YES];
     self.view = self.mapView;
+    
 }
 
 #pragma mark - Action Method
@@ -140,13 +143,8 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
 - (void)cameraButtonTouchUpInside:(UIButton *)sender {
     NSLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
-    MultiImageCollectionViewController *multiImageView = [[MultiImageCollectionViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:multiImageView];
-    [self checkAlbumAuthorization];
-
-    [self presentViewController:navigationController animated:YES completion:^{
-        
-    }];
+    
+    [MultiImageDataCenter moveToMultiImageSelectFrom:self];
 }
 
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
@@ -154,34 +152,6 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     self.plusView.hidden = !self.plusView.hidden;
 }
 
-// 앨범 접근 가능여부 확인
-- (void)checkAlbumAuthorization {
-    
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-    
-    switch (status) {
-            // 승인 되어있을때_앨범 불러옴
-        case PHAuthorizationStatusAuthorized:
-            
-            break;
-            // 승인 거절되었을때_설정창으로 보냄
-        case PHAuthorizationStatusDenied:
-            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[UIApplication sharedApplication]
-                     openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-                });
-            }];
-            break;
-            // 결정되지 않았을때_설정창으로 보냄
-        case PHAuthorizationStatusNotDetermined:
-            
-            break;
-            
-        default:
-            break;
-    }
-}
 
 #pragma mark - GMSMapViewDelegate
 /****************************************************************************

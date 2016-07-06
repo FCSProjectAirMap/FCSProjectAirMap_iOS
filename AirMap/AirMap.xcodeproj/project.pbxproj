@@ -11,6 +11,7 @@
 		E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */; };
 		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
 		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
+		E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB4A1D2CD90100014449 /* ToastView.m */; };
 		EC714C721D2AB8A000165A58 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C711D2AB8A000165A58 /* main.m */; };
 		EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C741D2AB8A000165A58 /* AppDelegate.m */; };
 		EC714C7B1D2AB8A000165A58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC714C791D2AB8A000165A58 /* Main.storyboard */; };
@@ -30,6 +31,8 @@
 		E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewController.m; sourceTree = "<group>"; };
 		E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageDataCenter.h; sourceTree = "<group>"; };
 		E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageDataCenter.m; sourceTree = "<group>"; };
+		E9FAEB491D2CD90100014449 /* ToastView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastView.h; sourceTree = "<group>"; };
+		E9FAEB4A1D2CD90100014449 /* ToastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastView.m; sourceTree = "<group>"; };
 		EC714C6D1D2AB8A000165A58 /* AirMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC714C711D2AB8A000165A58 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EC714C731D2AB8A000165A58 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -84,6 +87,8 @@
 				E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */,
 				E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */,
 				E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */,
+				E9FAEB491D2CD90100014449 /* ToastView.h */,
+				E9FAEB4A1D2CD90100014449 /* ToastView.m */,
 			);
 			name = MultiPhotoSelect;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 				TargetAttributes = {
 					EC714C6C1D2AB8A000165A58 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 94NATYLW4X;
 					};
 				};
 			};
@@ -265,6 +271,7 @@
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */,
+				E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */,
 				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 			);
@@ -382,11 +389,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AirMap/PrefixHeader.pch";
 				INFOPLIST_FILE = AirMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FCSProjectAirMap.AirMap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FCSProjectAirMap.AirMaptest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -396,11 +405,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AirMap/PrefixHeader.pch";
 				INFOPLIST_FILE = AirMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FCSProjectAirMap.AirMap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FCSProjectAirMap.AirMaptest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

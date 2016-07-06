@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
+#import "MultiImageCollectionViewController.h"
+#import "ToastView.h"
 
 @interface MultiImageDataCenter : NSObject
 
-- (PHFetchResult *)loadFetchResult;
+//@property (nonatomic) PHAuthorizationStatus photoAuthoStatus;
+
++ (PHFetchResult *)loadFetchResult;
++ (void)moveToMultiImageSelectFrom:(UIViewController *)viewController;
 
 @end
