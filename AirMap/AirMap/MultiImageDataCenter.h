@@ -13,9 +13,13 @@
 
 @interface MultiImageDataCenter : NSObject
 
-//@property (nonatomic) PHAuthorizationStatus photoAuthoStatus;
+@property (strong, nonatomic) PHFetchResult *fetchResult;
 
-+ (PHFetchResult *)loadFetchResult;
-+ (void)moveToMultiImageSelectFrom:(UIViewController *)viewController;
++ (instancetype)sharedImageDataCenter;
+- (void)moveToMultiImageSelectFrom:(UIViewController *)viewController;
+
+- (void)addAsset;
+- (void)removeAsset;
+- (NSMutableArray *)callSelectedImages;
 
 @end
