@@ -49,11 +49,11 @@ const CGFloat boundary = 3.0;
     // 셀 선택시
     if (selected) {
         [self.contentView.layer addSublayer:self.overLayer];
-//        NSLog(@"select");
+//        NSLog(@"cell select");
     // 재선택시
     } else {
         [self.overLayer removeFromSuperlayer];/////
-//        NSLog(@"deslect");
+//        NSLog(@"cell deslect");
     }
 }
 
@@ -78,7 +78,7 @@ const CGFloat boundary = 3.0;
     CAShapeLayer *lineLayer = [CAShapeLayer layer];
     lineLayer.path = overlayPath.CGPath;
     lineLayer.fillRule = kCAFillRuleEvenOdd;
-    lineLayer.fillColor = [UIColor colorWithRed:255/255.0 green:240/255.0 blue:0/255.0 alpha:1].CGColor;
+    lineLayer.fillColor = [UIColor colorWithRed:244/255.0 green:199/255.0 blue:45/255.0 alpha:1].CGColor;
     
     self.overLayer = lineLayer;
     [self.overLayer addSublayer:fillLayer];

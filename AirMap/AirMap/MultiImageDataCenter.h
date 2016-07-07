@@ -9,17 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 #import "MultiImageCollectionViewController.h"
-#import "ToastView.h"
 
 @interface MultiImageDataCenter : NSObject
 
-@property (strong, nonatomic) PHFetchResult *fetchResult;
-
 + (instancetype)sharedImageDataCenter;
-- (void)moveToMultiImageSelectFrom:(UIViewController *)viewController;
 
-- (void)addAsset;
-- (void)removeAsset;
+- (void)addSelectedAsset:(PHAsset *)asset;
+- (void)removeSelectedAsset:(PHAsset *)asset;
+- (void)resetSelectedAsset;
+
+- (PHFetchResult *)callFetchResult;
 - (NSMutableArray *)callSelectedImages;
+
+- (void)extractMetadataFromImage;
 
 @end

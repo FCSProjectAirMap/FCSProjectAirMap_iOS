@@ -26,7 +26,8 @@ const CGFloat spacing = 2;
     
     [self creatCollectionView];
     [self navigationControllerSetUp];
-
+    
+    self.imageDataCenter = [MultiImageDataCenter sharedImageDataCenter];
 }
 
 
@@ -59,7 +60,7 @@ const CGFloat spacing = 2;
 #pragma mark - <UICollectionViewDataSource>
 // 셀 개수 설정
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [MultiImageDataCenter loadFetchResult].count;
+    return [self.imageDataCenter callFetchResult].count;
 }
 // 셀 내용 설정
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -72,7 +73,7 @@ const CGFloat spacing = 2;
     }
     
     // 이미지 asset 생성
-    PHAsset *imageAsset = [MultiImageDataCenter loadFetchResult][indexPath.row];
+    PHAsset *imageAsset = [self.imageDataCenter callFetchResult][indexPath.row];
     
     // 이미지 매니저를 통한 이미지 가져오기(
     cell.tag = indexPath.row;
@@ -92,18 +93,19 @@ const CGFloat spacing = 2;
 
 #pragma mark - <UICollectionViewDelegate>
 
-//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 //    NSLog(@"seleted");
-//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//    [cell setSelected:YES];
-//}
-//
-//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    PHAsset *selectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
+    [self.imageDataCenter addSelectedAsset:selectedAsset];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 //    NSLog(@"deseleted");
 //    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
 //    [cell setSelected:NO];
-//}
+    PHAsset *deSelectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
+    [self.imageDataCenter removeSelectedAsset:deSelectedAsset];
+}
 
 
 #pragma mark - <UICollectionViewDelegateFlowLayout>
@@ -132,9 +134,18 @@ const CGFloat spacing = 2;
     // 컨트롤러 바 제목 설정
     self.navigationItem.title = @"Camera Roll";
     // 컨트롤러 버튼 설정
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButton:)];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+    
+    
+}
+
+-(void)doneButton:(UIButton *)sender {
+    [self.imageDataCenter extractMetadataFromImage];
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 - (void)cancelAction:(UIButton *)sender {
@@ -142,7 +153,6 @@ const CGFloat spacing = 2;
         
     }];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

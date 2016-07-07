@@ -17,8 +17,7 @@
 @implementation ToastView
 
 const CGFloat margin = 5.0;
-const CGFloat duration = 3.5;
-static NSString * const messegeText = @"[설정] > [AirMap] > [사진] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다.";
+const CGFloat duration = 4.0;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -34,10 +33,11 @@ static NSString * const messegeText = @"[설정] > [AirMap] > [사진] 접근을
         if (!self.toastTextLabel) {
             UILabel *toastTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin, self.frame.size.width-2*margin, self.frame.size.height - 2 * margin)];
             toastTextLabel.alpha = 1.0f;
+            toastTextLabel.backgroundColor = [UIColor clearColor];
             toastTextLabel.textColor = [UIColor whiteColor];
             toastTextLabel.textAlignment = NSTextAlignmentCenter;
             toastTextLabel.numberOfLines = 0;
-            toastTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
+            toastTextLabel.font = [UIFont boldSystemFontOfSize:14.0];
             toastTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
             toastTextLabel.userInteractionEnabled = false;
             self.toastTextLabel = toastTextLabel;
@@ -50,25 +50,25 @@ static NSString * const messegeText = @"[설정] > [AirMap] > [사진] 접근을
 }
 
 // 화면에 토스트 메세지 띄우기
-+ (void)showToastInView:(UIView *)view {
++ (void)showToastInView:(UIView *)view withMessege:(NSString *)messege {
     
     CGRect parentFrame = view.bounds;
-    CGRect toastFrame = CGRectMake(0, parentFrame.size.height - 25 * margin, parentFrame.size.width, 50);
+    CGRect toastFrame = CGRectMake(margin, parentFrame.size.height - 25 * margin, parentFrame.size.width - 2 * margin, 50);
     
     ToastView *toast = [[ToastView alloc] initWithFrame:toastFrame];
     
-    toast.backgroundColor = [UIColor orangeColor];
+    toast.backgroundColor = [UIColor blackColor];
     toast.alpha = 0.0f;
-//    toast.layer.cornerRadius = 5.0;
-    toast.textLabel.text = messegeText;
+    toast.layer.cornerRadius = 20.0;
+    toast.textLabel.text = messege;
     
     [view addSubview:toast];
     
     // 나타나는 애니메이션 설정
     [UIView animateWithDuration:0.5
                      animations:^{
-                         toast.alpha = 0.9f;
-                         toast.textLabel.alpha = 0.9f;
+                         toast.alpha = 0.8f;
+                         toast.textLabel.alpha = 0.8f;
                      }
                      completion:^(BOOL finished) {
                          if (finished) {

@@ -10,6 +10,6 @@
 
 @interface ToastView : UIView
 
-+ (void)showToastInView:(UIView *)view;
++ (void)showToastInView:(UIView *)view withMessege:(NSString *)messege;
 
 @end

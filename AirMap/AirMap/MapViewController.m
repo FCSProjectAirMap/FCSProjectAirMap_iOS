@@ -144,7 +144,8 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     NSLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
     
-    [MultiImageDataCenter moveToMultiImageSelectFrom:self];
+    // 사진권한 확인(앨범/설정화면으로 이동)
+    [AuthorizationControll moveToMultiImageSelectFrom:self];
 }
 
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
