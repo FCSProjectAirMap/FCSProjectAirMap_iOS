@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "PlacesViewController.h"
+#import "TravelTableViewController.h"
+
 @import GoogleMaps;
 
 @interface MapViewController : UIViewController

@@ -15,7 +15,7 @@ static const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 static const CGFloat TEXTFIELD_INSET = 10.0f;
 
 @interface MapViewController ()
-<GMSMapViewDelegate, CLLocationManagerDelegate>
+<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
 
 @property (nonatomic) GMSMapView *mapView;
 @property (nonatomic) GMSMutablePath *path;
@@ -25,6 +25,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 @property (nonatomic, weak) UIButton *albumButton;
 @property (nonatomic, weak) UIButton *locationAddButton;
 @property (nonatomic, weak) UIView *plusView;
+
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
 
@@ -54,6 +55,22 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 
 - (void)viewDidAppear:(BOOL)animated {
     [MapViewController removeGMSBlockingGestureRecognizerFromMapView:self.mapView];
+}
+
+//////////////////////////////////// ##SJ Places Test
+- (void)placesInfoShow:(GMSPlace *)place {
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[place description]];
+    if (place.attributions) {
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
+        [text appendAttributedString:place.attributions];
+    }
+    DLog(@"place : %@", text);
+    
+    // 카메라 위치를 선택한 장소로 이동.
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:place.coordinate.latitude
+                                                            longitude:place.coordinate.longitude
+                                                                 zoom:16.0f];
+    [self.mapView setCamera:cameraPosition];
 }
 
 #pragma mark - General Method
@@ -100,7 +117,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     
     // camera Button
     UIButton *albumButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [albumButton setTitle:@"카메라" forState:UIControlStateNormal];
+    [albumButton setTitle:@"앨범" forState:UIControlStateNormal];
     [albumButton setBackgroundColor:[UIColor redColor]];
     [albumButton addTarget:self
                      action:@selector(albumButtonTouchUpInside:)
@@ -131,13 +148,16 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
     UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(70.0f, 40.f, self.mapView.frame.size.width-menuButton.bounds.size.width - (TEXTFIELD_INSET*2), TEXTFIELD_HEIGHT)];
+    [searchField addTarget:self
+                    action:@selector(searchFieldDidChange:)
+          forControlEvents:UIControlEventEditingDidBegin];
     searchField.placeholder = @"Google 지도 검색";
     searchField.borderStyle = UITextBorderStyleNone;
     searchField.backgroundColor = [UIColor whiteColor];
     searchField.keyboardType = UIReturnKeyDone;
     [self.mapView addSubview:searchField];
     self.searchField = searchField;
-    
+    self.searchField.delegate = self;
     
     // Tap Gesture
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
@@ -200,8 +220,17 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.plusView.hidden = !self.plusView.hidden;
 }
 
+// 메뉴버튼 이벤트
 - (void)menuButtonTouchUpInside:(UIButton *)sender {
     DLog(@"메뉴 버튼 눌렀따!");
+}
+
+// search Field Edit
+- (void)searchFieldDidChange:(UITextField *)textField {
+    DLog(@"searchField Edit");
+    PlacesViewController *placesViewController = [[PlacesViewController alloc] init];
+    placesViewController.delegate = self;
+    [self presentViewController:placesViewController animated:NO completion:nil];
 }
 
 // 지도를 탭 했을 경우 UI들 숨기기 메서드
@@ -232,6 +261,8 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
                                                                        self.searchField.frame.size.height)];
                                  // plus Button
                                  [self.plusButton setAlpha:0.0f];
+                                 // plus View
+                                 [self.plusView setAlpha:0.0f];
                                  // loaction Button
                                  [self.mapView.settings setMyLocationButton:NO];
                              } completion:^(BOOL finished) {
@@ -257,6 +288,8 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
                                                                        self.searchField.frame.size.height)];
                                  // plus Button
                                  [self.plusButton setAlpha:1.0f];
+                                 // plus View
+                                 [self.plusView setAlpha:1.0f];
                                  // loaction Button
                                  [self.mapView.settings setMyLocationButton:YES];
                              } completion:^(BOOL finished) {
