@@ -11,7 +11,6 @@
 
 @property (strong, nonatomic) PHFetchResult *fetchResult;
 @property (strong, nonatomic) NSMutableArray *selectedImages;
-@property (strong, nonatomic) NSMutableDictionary *metaData;
 @property (strong, nonatomic) NSMutableDictionary *selectedData;
 
 @end
@@ -35,7 +34,6 @@
         [self loadFetchResult];
         self.selectedImages = [[NSMutableArray alloc] initWithCapacity:1];
         self.selectedData = [[NSMutableDictionary alloc] initWithCapacity:1];
-        self.metaData = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
 }
@@ -65,6 +63,8 @@
 
 - (void)resetSelectedAsset {
     
+    [self.selectedImages removeAllObjects];
+
 }
 
 
@@ -78,21 +78,23 @@
 }
 
 # pragma mark - ExtracMetaData
+// metaData추출
 - (void)extractMetadataFromImage {
     
+    NSLog(@"%@", self.selectedImages);
     for (PHAsset *asset in self.selectedImages) {
         
         NSNumber *timeStamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
         
-        NSArray *location = @[latitude, longitude];
+//        NSArray *location = @[latitude, longitude];
+        NSDictionary *metaData = @{@"creationDate": asset.creationDate,
+                                   @"timeStamp":timeStamp,
+                                   @"latitude":latitude,
+                                   @"longitude":longitude};
         
-        [self.metaData setObject:asset.creationDate forKey:@"creatoinDate"];
-        [self.metaData setObject:timeStamp forKey:@"timeStamp"];
-        [self.metaData setObject:location forKey:@"location"];
-            
-            [self.selectedData setObject:self.metaData forKey:timeStamp];
+        [self.selectedData setObject:metaData forKey:timeStamp];
     }
     NSLog(@"%@", self.selectedData);
 }
