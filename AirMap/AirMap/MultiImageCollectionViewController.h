@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MultiImageDataCenter.h"
 #import "MultiImageCollectionViewCell.h"
+#import "BadgeView.h"
 
 @interface MultiImageCollectionViewController : UIViewController
 

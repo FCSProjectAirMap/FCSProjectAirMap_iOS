@@ -134,14 +134,29 @@ const CGFloat spacing = 2;
     // 컨트롤러 바 제목 설정
     self.navigationItem.title = @"Camera Roll";
     // 컨트롤러 버튼 설정
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButton:)];
+    
+    BadgeView *badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    
+//    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithArray:[CustomBarItemView.array]];
+    
+    // done button 연습(나중에 지울것)
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(doneAction:)];
+    
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"나가기" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    
+    UIBarButtonItem *badgeButton = [[UIBarButtonItem alloc] initWithCustomView:badgeView.createBadgeView];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"선택" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
     
+    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:doneButton, badgeButton, nil];
 }
 
--(void)doneButton:(UIButton *)sender {
+
+
+// 네비게이션 버튼 액션
+-(void)doneAction:(UIButton *)sender {
     [self.imageDataCenter extractMetadataFromImage];
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
         
@@ -149,8 +164,9 @@ const CGFloat spacing = 2;
 }
 
 - (void)cancelAction:(UIButton *)sender {
+//    [self.imageDataCenter resetSelectedAsset];
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        
+
     }];
 }
 

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E4041519E7E37666D21CD521 /* libPods-AirMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */; };
 		E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */; };
+		E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */; };
+		E9063C351D2E796200F28F69 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C341D2E796200F28F69 /* BadgeView.m */; };
 		E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */; };
 		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
 		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
@@ -28,6 +30,10 @@
 		6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirMap.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9063C211D2D7A8100F28F69 /* AuthorizationControll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizationControll.h; sourceTree = "<group>"; };
 		E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizationControll.m; sourceTree = "<group>"; };
+		E9063C301D2E45DB00F28F69 /* ImageRequestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRequestObject.h; sourceTree = "<group>"; };
+		E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageRequestObject.m; sourceTree = "<group>"; };
+		E9063C331D2E796200F28F69 /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
+		E9063C341D2E796200F28F69 /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
 		E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewCell.h; sourceTree = "<group>"; };
 		E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewCell.m; sourceTree = "<group>"; };
 		E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewController.h; sourceTree = "<group>"; };
@@ -92,8 +98,12 @@
 				E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */,
 				E9063C211D2D7A8100F28F69 /* AuthorizationControll.h */,
 				E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */,
+				E9063C301D2E45DB00F28F69 /* ImageRequestObject.h */,
+				E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */,
 				E9FAEB491D2CD90100014449 /* ToastView.h */,
 				E9FAEB4A1D2CD90100014449 /* ToastView.m */,
+				E9063C331D2E796200F28F69 /* BadgeView.h */,
+				E9063C341D2E796200F28F69 /* BadgeView.m */,
 			);
 			name = MultiPhotoSelect;
 			sourceTree = "<group>";
@@ -273,12 +283,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */,
+				E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */,
 				E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */,
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */,
 				E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */,
 				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
+				E9063C351D2E796200F28F69 /* BadgeView.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
