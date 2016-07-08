@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "TravelTableViewCell.h"
+#import "TravelAddUIViewController.h"
+#import "SCLAlertView.h"
 
 @interface TravelTableViewController : UITableViewController
 

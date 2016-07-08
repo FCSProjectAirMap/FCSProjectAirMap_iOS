@@ -10,4 +10,7 @@
 
 @interface TravelTableViewCell : UITableViewCell
 
+@property (nonatomic, weak) UILabel *titleLabel;
+@property (nonatomic, weak) UILabel *periodLabel;
+
 @end

@@ -15,7 +15,6 @@ static const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 static const CGFloat TEXTFIELD_INSET = 10.0f;
 
 @interface MapViewController ()
-<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
 
 @property (nonatomic) GMSMapView *mapView;
 @property (nonatomic) GMSMutablePath *path;
@@ -24,15 +23,13 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 @property (nonatomic, weak) UIButton *plusButton;
 @property (nonatomic, weak) UIButton *albumButton;
 @property (nonatomic, weak) UIButton *locationAddButton;
+@property (nonatomic, weak) UIButton *travelButton;
 @property (nonatomic, weak) UIView *plusView;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
 
 @property (nonatomic) BOOL isAnimating;
-
-// ##SJ Test
-@property (nonatomic) GMSPlacePicker *placePicker;
 
 @end
 
@@ -102,7 +99,8 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     // plus Button
     UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0f, self.mapView.frame.size.height*0.9, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [plusButton setTitle:@"더하기" forState:UIControlStateNormal];
-    [plusButton setBackgroundColor:[UIColor blackColor]];
+    [plusButton setBackgroundColor:[UIColor yellowColor]];
+    [plusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [plusButton addTarget:self
                    action:@selector(plusButtonTouchUpInside:)
          forControlEvents:UIControlEventTouchUpInside];
@@ -110,15 +108,27 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.plusButton = plusButton;
     
     // plus View
-    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, plusButton.frame.origin.y - BUTTON_SIZE_HEIGHT*2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT*2)];
+    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, plusButton.frame.origin.y - BUTTON_SIZE_HEIGHT*3, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT*3)];
     plusView.hidden = YES;
     [self.mapView addSubview:plusView];
     self.plusView = plusView;
     
-    // camera Button
-    UIButton *albumButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    // Travel Add Button
+    UIButton *travelButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    [travelButton setTitle:@"여행" forState:UIControlStateNormal];
+    [travelButton setBackgroundColor:[UIColor yellowColor]];
+    [travelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [travelButton addTarget:self
+                     action:@selector(travelButtonTouchUpInside:)
+           forControlEvents:UIControlEventTouchUpInside];
+    [self.plusView addSubview:travelButton];
+    self.travelButton = travelButton;
+    
+    // album Button
+    UIButton *albumButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, travelButton.frame.size.height, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [albumButton setTitle:@"앨범" forState:UIControlStateNormal];
-    [albumButton setBackgroundColor:[UIColor redColor]];
+    [albumButton setBackgroundColor:[UIColor yellowColor]];
+    [albumButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [albumButton addTarget:self
                      action:@selector(albumButtonTouchUpInside:)
            forControlEvents:UIControlEventTouchUpInside];
@@ -126,9 +136,10 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.albumButton = albumButton;
     
     // Location Add Button
-    UIButton *locationAddButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, albumButton.frame.size.height, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    UIButton *locationAddButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, albumButton.frame.size.height + BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [locationAddButton setTitle:@"위치" forState:UIControlStateNormal];
-    [locationAddButton setBackgroundColor:[UIColor redColor]];
+    [locationAddButton setBackgroundColor:[UIColor yellowColor]];
+    [locationAddButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [locationAddButton addTarget:self
                     action:@selector(locationAddButtonTouchUpInside:)
           forControlEvents:UIControlEventTouchUpInside];
@@ -147,7 +158,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
-    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(70.0f, 40.f, self.mapView.frame.size.width-menuButton.bounds.size.width - (TEXTFIELD_INSET*2), TEXTFIELD_HEIGHT)];
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(70.0f, 40.f, self.mapView.frame.size.width-menuButton.frame.size.width - (TEXTFIELD_INSET*2), TEXTFIELD_HEIGHT)];
     [searchField addTarget:self
                     action:@selector(searchFieldDidChange:)
           forControlEvents:UIControlEventEditingDidBegin];
@@ -210,11 +221,21 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.plusView.hidden = !self.plusView.hidden;
 }
 
+- (void)travelButtonTouchUpInside:(UIButton *)sender {
+    DLog(@"여행 경로 추가");
+    TravelTableViewController *travelTabelViewController = [[TravelTableViewController alloc] init];
+    // Nivigation
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
+    [self presentViewController:navi animated:YES completion:nil];
+    self.plusView.hidden = !self.plusView.hidden;
+}
+
 - (void)albumButtonTouchUpInside:(UIButton *)sender {
     DLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
 }
 
+// 현재위치 찍어주는 이벤트
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재위치 찍기");
     self.plusView.hidden = !self.plusView.hidden;
@@ -223,6 +244,13 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 // 메뉴버튼 이벤트
 - (void)menuButtonTouchUpInside:(UIButton *)sender {
     DLog(@"메뉴 버튼 눌렀따!");
+//    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
+//    [self addChildViewController:menuSlideView];
+//    [menuSlideView.view setFrame:CGRectMake(-1000, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    [self.view addSubview:menuSlideView.view];
+//    [UIView animateWithDuration:0.4 animations:^{
+//        [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+//    }];
 }
 
 // search Field Edit
