@@ -10,19 +10,23 @@
 
 @interface BadgeView ()
 
-@property (strong, nonatomic) UIView *badgeView;
+@property (weak, nonatomic) UIView *badgeView;
+@property (weak, nonatomic) UILabel *badgeLabel;
+@property (nonatomic) NSInteger badgeValue;
 
 @end
 
-
 @implementation BadgeView
-
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     
     if (self) {
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(UpdateNotification:)
+                                                     name:@"UpdateNotification"
+                                                   object:nil];
+        self.badgeValue = 1;
     }
     return self;
 }
@@ -33,8 +37,8 @@
     if (!self.badgeLabel) {
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        
-        label.alpha = 1.0f;
+
+        label.alpha = 0.0f;
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor blackColor];
         label.textAlignment = NSTextAlignmentCenter;
@@ -48,31 +52,75 @@
     return self.badgeLabel;
 }
 
+// badgeView 생성
 - (UIView *)createBadgeView {
     
-    if (!self.badgeView) {
-        
-    BadgeView *badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(20, 0, 20, 20)];
+    BadgeView *badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     
-    UIColor *color = [[UIColor alloc] initWithRed:255/255 green:255/255 blue:00/255 alpha:1.0];
-    badgeView.backgroundColor = color;
-    
-    self.badgeValue = 3;
-        
-    badgeView.textLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
+    badgeView.backgroundColor = [[UIColor alloc] initWithRed:(CGFloat)244/255 green:(CGFloat)199/255 blue:(CGFloat)45/255 alpha:0.0f];
     badgeView.layer.cornerRadius = 10.0;
     badgeView.userInteractionEnabled = NO;
-    badgeView.layer.borderWidth = 1;
-    badgeView.layer.borderColor = [UIColor colorWithRed:255/255 green:255/255 blue:255/255 alpha:1.0].CGColor;
-       
+    badgeView.textLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
     self.badgeView = badgeView;
-    }
-    
+   
     return self.badgeView;
 }
 
+// noti받고 값변화
+- (void)updateBadgeValueWithAnimationInView {
+    // 0일때 badge 숨김
+    if (self.badgeValue != 0) {
+    
+    [UIView animateWithDuration:0
+                     animations:^{
+                         
+                         self.badgeView.backgroundColor =
+                         [[UIColor alloc] initWithRed:(CGFloat)244/255 green:(CGFloat)199/255 blue:(CGFloat)45/255 alpha:1.00];
+                         self.alpha = 1.0f;
+                         self.textLabel.alpha = 1.0f;
+                         
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
 
+                         }
+                     }];
+    
+    [self.badgeView performSelector:@selector(changeBadgeValue) withObject:nil afterDelay:0.1];
+        
+    } else {
+        [self removeBadgeView];
+    }
+}
 
+- (void)changeBadgeValue {
+    
+    [UIView animateWithDuration:0
+                     animations:^{
+
+                         self.badgeLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
+                     }
+                     completion:^(BOOL finished) {
+
+                     }];
+}
+
+// 선택된 사진이 0장일때
+- (void)removeBadgeView {
+    self.badgeView.alpha = 0.0f;
+    self.badgeValue = 0;
+}
+
+// notification 등록_선택된 사진개수 실시간 변화 감지
+- (void)UpdateNotification:(NSNotification *)notification {
+    self.badgeValue = [notification.object integerValue];
+    [self updateBadgeValueWithAnimationInView];
+}
+
+// badgeValue 업데이트
+- (void)updateBadgeValue:(NSInteger)value {
+    self.badgeValue = value;
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

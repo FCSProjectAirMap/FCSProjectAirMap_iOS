@@ -10,10 +10,6 @@
 
 @interface BadgeView : UIView
 
-@property (nonatomic) NSInteger badgeValue;
-@property (weak, nonatomic) UILabel *badgeLabel;
-
 - (UIView *)createBadgeView;
-
 
 @end
