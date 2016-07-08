@@ -11,6 +11,7 @@
 		EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */; };
 		EC50DD811D2CF16E009B6C91 /* Back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50DD801D2CF16E009B6C91 /* Back_icon.png */; };
 		EC50DD841D2D1299009B6C91 /* PlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC50DD831D2D1299009B6C91 /* PlacesViewController.m */; };
+		EC54E0D11D2FF1A900B13C85 /* MenuSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */; };
 		EC714C721D2AB8A000165A58 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C711D2AB8A000165A58 /* main.m */; };
 		EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C741D2AB8A000165A58 /* AppDelegate.m */; };
 		EC714C7B1D2AB8A000165A58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC714C791D2AB8A000165A58 /* Main.storyboard */; };
@@ -42,6 +43,8 @@
 		EC50DD801D2CF16E009B6C91 /* Back_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back_icon.png; sourceTree = "<group>"; };
 		EC50DD821D2D1299009B6C91 /* PlacesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacesViewController.h; sourceTree = "<group>"; };
 		EC50DD831D2D1299009B6C91 /* PlacesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacesViewController.m; sourceTree = "<group>"; };
+		EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuSlideViewController.h; sourceTree = "<group>"; };
+		EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuSlideViewController.m; sourceTree = "<group>"; };
 		EC714C6D1D2AB8A000165A58 /* AirMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC714C711D2AB8A000165A58 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EC714C731D2AB8A000165A58 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 		EC714C6F1D2AB8A000165A58 /* AirMap */ = {
 			isa = PBXGroup;
 			children = (
+				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
+				EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */,
 				ECD5C1301D2FA90500A551D8 /* Map */,
 				ECBD285C1D2F38F900BCCED8 /* AlertView */,
 				EC750B931D2B9E0300A54374 /* Resource */,
@@ -342,6 +347,7 @@
 				ECA084FE1D2E6E7F00141B29 /* TravelAddUIViewController.m in Sources */,
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				ECBD28761D2F499800BCCED8 /* SCLTextView.m in Sources */,
+				EC54E0D11D2FF1A900B13C85 /* MenuSlideViewController.m in Sources */,
 				ECBD28751D2F499800BCCED8 /* SCLSwitchView.m in Sources */,
 				ECBD28731D2F499800BCCED8 /* SCLAlertViewStyleKit.m in Sources */,
 				ECBD28721D2F499800BCCED8 /* SCLAlertViewResponder.m in Sources */,
