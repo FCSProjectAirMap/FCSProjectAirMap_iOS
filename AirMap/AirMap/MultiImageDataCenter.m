@@ -55,10 +55,16 @@
         [self.selectedImages addObject:asset];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateNotification"
+                                                        object:[NSString stringWithFormat:@"%ld", self.selectedImages.count]];
+    
 }
 // 재선택된 사진 빼기
 - (void)removeSelectedAsset:(PHAsset *)asset {
     [self.selectedImages removeObject:asset];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateNotification"
+                                                        object:[NSString stringWithFormat:@"%ld", self.selectedImages.count]];
 }
 
 - (void)resetSelectedAsset {
@@ -66,7 +72,6 @@
     [self.selectedImages removeAllObjects];
 
 }
-
 
 - (PHFetchResult *)callFetchResult {
     return self.fetchResult;
@@ -81,7 +86,6 @@
 // metaData추출
 - (void)extractMetadataFromImage {
     
-    NSLog(@"%@", self.selectedImages);
     for (PHAsset *asset in self.selectedImages) {
         
         NSNumber *timeStamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
