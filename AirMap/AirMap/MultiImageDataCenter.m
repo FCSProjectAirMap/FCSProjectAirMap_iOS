@@ -10,7 +10,7 @@
 @interface MultiImageDataCenter()
 
 @property (strong, nonatomic) PHFetchResult *fetchResult;
-@property (strong, nonatomic) NSMutableArray *selectedImages;
+@property (strong, nonatomic) NSMutableArray *selectedAssets;
 @property (strong, nonatomic) NSMutableDictionary *selectedData;
 
 @end
@@ -32,13 +32,13 @@
     self = [super init];
     if (self) {
         [self loadFetchResult];
-        self.selectedImages = [[NSMutableArray alloc] initWithCapacity:1];
+        self.selectedAssets = [[NSMutableArray alloc] initWithCapacity:1];
         self.selectedData = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
 }
 
-#pragma mark - ImageSelect
+#pragma mark - ImageAssets
 // 이미지 가져오기
 - (void)loadFetchResult {
     // 이미지 날짜역순으로 정렬
@@ -51,42 +51,66 @@
 
 // 선택된 사진 더하기
 - (void)addSelectedAsset:(PHAsset *)asset {
-    if (![self.selectedImages containsObject:asset]) {
-        [self.selectedImages addObject:asset];
+    if (![self.selectedAssets containsObject:asset]) {
+        [self.selectedAssets addObject:asset];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateNotification"
-                                                        object:[NSString stringWithFormat:@"%ld", self.selectedImages.count]];
+                                                        object:[NSString stringWithFormat:@"%ld", self.selectedAssets.count]];
     
 }
 // 재선택된 사진 빼기
 - (void)removeSelectedAsset:(PHAsset *)asset {
-    [self.selectedImages removeObject:asset];
+    [self.selectedAssets removeObject:asset];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateNotification"
-                                                        object:[NSString stringWithFormat:@"%ld", self.selectedImages.count]];
+                                                        object:[NSString stringWithFormat:@"%ld", self.selectedAssets.count]];
 }
 
 - (void)resetSelectedAsset {
-    
-    [self.selectedImages removeAllObjects];
-
+    [self.selectedAssets removeAllObjects];
 }
 
 - (PHFetchResult *)callFetchResult {
     return self.fetchResult;
 }
 
+- (NSMutableArray *)callSelectedAssets {
+    return self.selectedAssets;
+}
+
+#pragma mark - AssetToUIImage
+// PHAseet -> UIImage
 - (NSMutableArray *)callSelectedImages {
+    NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedAssets.count];
     
-    return self.selectedImages;
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.resizeMode = PHImageRequestOptionsResizeModeExact;
+    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    options.synchronous =YES;
+
+    __block UIImage *image;
+    
+    for (PHAsset *asset in self.selectedAssets) {
+        [[PHCachingImageManager defaultManager] requestImageForAsset:asset
+                                                          targetSize:PHImageManagerMaximumSize
+                                                         contentMode:PHImageContentModeDefault
+                                                             options:options
+                                                       resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+            image = result;
+            
+            [selectedImages addObject:image];
+        }];
+    }
+    
+    return selectedImages;
 }
 
 # pragma mark - ExtracMetaData
 // metaData추출
 - (void)extractMetadataFromImage {
     
-    for (PHAsset *asset in self.selectedImages) {
+    for (PHAsset *asset in self.selectedAssets) {
         
         NSNumber *timeStamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
@@ -101,6 +125,10 @@
         [self.selectedData setObject:metaData forKey:timeStamp];
     }
     NSLog(@"%@", self.selectedData);
+}
+
+- (NSMutableDictionary *)callSelectedData {
+    return self.selectedData;
 }
 
 @end

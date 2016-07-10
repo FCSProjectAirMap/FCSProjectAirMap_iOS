@@ -19,7 +19,9 @@
 - (void)resetSelectedAsset;
 
 - (PHFetchResult *)callFetchResult;
+- (NSMutableArray *)callSelectedAssets;
 - (NSMutableArray *)callSelectedImages;
+- (NSMutableDictionary *)callSelectedData;
 
 - (void)extractMetadataFromImage;
 
