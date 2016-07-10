@@ -872,7 +872,7 @@ SCLTimerDisplay *buttonTimer;
         case Edit:
 //            viewColor = UIColorFromHEX(0xA429FF);
             // ##SJ 무조건 노란색으로
-            viewColor = UIColorFromHEX(0xf4c72d);
+            viewColor = UIColorFromHEX(0xfae100);
             iconImage = SCLAlertViewStyleKit.imageOfEdit;
             break;
             

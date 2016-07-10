@@ -8,11 +8,11 @@
 
 #import "MapViewController.h"
 
-const CGFloat BUTTON_SIZE_WIDTH = 60.0f;
-const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
-
-static const CGFloat TEXTFIELD_HEIGHT = 45.0f;
-static const CGFloat TEXTFIELD_INSET = 10.0f;
+const CGFloat BUTTON_SIZE_WIDTH = 34.0f;
+const CGFloat BUTTON_SIZE_HEIGHT = 34.0f;
+const CGFloat X_MARGIN = 10.0f;
+const CGFloat Y_MARGIN = 10.0f;
+const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 
 @interface MapViewController ()
 
@@ -24,6 +24,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 @property (nonatomic, weak) UIButton *albumButton;
 @property (nonatomic, weak) UIButton *locationAddButton;
 @property (nonatomic, weak) UIButton *travelButton;
+@property (nonatomic, weak) UIButton *locationButton;
 @property (nonatomic, weak) UIView *plusView;
 
 @property (nonatomic, weak) UITextField *searchField;
@@ -97,9 +98,12 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 - (void)createView {
     
     // plus Button
-    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0f, self.mapView.frame.size.height*0.9, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [plusButton setTitle:@"더하기" forState:UIControlStateNormal];
-    [plusButton setBackgroundColor:[UIColor yellowColor]];
+    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, self.mapView.frame.size.height*0.9, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    [plusButton setTitle:@"+" forState:UIControlStateNormal];
+    [plusButton setBackgroundColor:[UIColor colorWithRed:250/225.0f
+                                                   green:225.0/225.0f
+                                                    blue:0.0/225.0f
+                                                   alpha:1.0f]];
     [plusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [plusButton addTarget:self
                    action:@selector(plusButtonTouchUpInside:)
@@ -108,7 +112,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.plusButton = plusButton;
     
     // plus View
-    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, plusButton.frame.origin.y - BUTTON_SIZE_HEIGHT*3, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT*3)];
+    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(X_MARGIN, plusButton.frame.origin.y - BUTTON_SIZE_HEIGHT*3, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT*3)];
     plusView.hidden = YES;
     [self.mapView addSubview:plusView];
     self.plusView = plusView;
@@ -116,7 +120,10 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     // Travel Add Button
     UIButton *travelButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [travelButton setTitle:@"여행" forState:UIControlStateNormal];
-    [travelButton setBackgroundColor:[UIColor yellowColor]];
+    [travelButton setBackgroundColor:[UIColor colorWithRed:250/225.0f
+                                                     green:225.0/225.0f
+                                                      blue:0.0/225.0f
+                                                     alpha:1.0f]];
     [travelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [travelButton addTarget:self
                      action:@selector(travelButtonTouchUpInside:)
@@ -127,7 +134,10 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     // album Button
     UIButton *albumButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, travelButton.frame.size.height, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [albumButton setTitle:@"앨범" forState:UIControlStateNormal];
-    [albumButton setBackgroundColor:[UIColor yellowColor]];
+    [albumButton setBackgroundColor:[UIColor colorWithRed:250/225.0f
+                                                    green:225.0/225.0f
+                                                     blue:0.0/225.0f
+                                                    alpha:1.0f]];
     [albumButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [albumButton addTarget:self
                      action:@selector(albumButtonTouchUpInside:)
@@ -138,7 +148,10 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     // Location Add Button
     UIButton *locationAddButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, albumButton.frame.size.height + BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [locationAddButton setTitle:@"위치" forState:UIControlStateNormal];
-    [locationAddButton setBackgroundColor:[UIColor yellowColor]];
+    [locationAddButton setBackgroundColor:[UIColor colorWithRed:250/225.0f
+                                                          green:225.0/225.0f
+                                                           blue:0.0/225.0f
+                                                          alpha:1.0f]];
     [locationAddButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [locationAddButton addTarget:self
                     action:@selector(locationAddButtonTouchUpInside:)
@@ -147,7 +160,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.locationAddButton = locationAddButton;
     
     // 설정 버튼
-    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(TEXTFIELD_INSET, 40.0f, 60.0f, TEXTFIELD_HEIGHT)];
+    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, Y_MARGIN*4, BUTTON_SIZE_WIDTH, TEXTFIELD_HEIGHT)];
     [menuButton addTarget:self
                        action:@selector(menuButtonTouchUpInside:)
              forControlEvents:UIControlEventTouchUpInside];
@@ -156,9 +169,19 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     [self.mapView addSubview:menuButton];
     self.menuButton = menuButton;
     
+    // location Button
+    UIButton *locationButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, menuButton.frame.origin.y + menuButton.frame.size.height + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    UIImage *locationImage = [UIImage imageNamed:@"location_icon"];
+    [locationButton setImage:locationImage forState:UIControlStateNormal];
+    [locationButton addTarget:self
+                       action:@selector(locationButtonTouchUpInside:)
+             forControlEvents:UIControlEventTouchUpInside];
+    [self.mapView addSubview:locationButton];
+    self.locationButton = locationButton;
+    
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
-    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(70.0f, 40.f, self.mapView.frame.size.width-menuButton.frame.size.width - (TEXTFIELD_INSET*2), TEXTFIELD_HEIGHT)];
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(X_MARGIN + menuButton.frame.size.width, menuButton.frame.origin.y, self.mapView.frame.size.width-menuButton.frame.size.width - (X_MARGIN*2), TEXTFIELD_HEIGHT)];
     [searchField addTarget:self
                     action:@selector(searchFieldDidChange:)
           forControlEvents:UIControlEventEditingDidBegin];
@@ -204,9 +227,8 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     self.mapView = [GMSMapView mapWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) camera:camera];
     [self.mapView setDelegate:self];
     [self.mapView setMyLocationEnabled:YES];
-    [self.mapView.settings setMyLocationButton:YES];
-    [self.mapView.settings setCompassButton:YES];
     self.view = self.mapView;
+    
 }
 
 #pragma mark - Action Method
@@ -237,8 +259,17 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 
 // 현재위치 찍어주는 이벤트
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
-    DLog(@"현재위치 찍기");
+    DLog(@"현재위치 마커 찍기");
     self.plusView.hidden = !self.plusView.hidden;
+}
+
+// 현재위치로 화면 이동 이벤트
+- (void)locationButtonTouchUpInside:(UIButton *)sender {
+    DLog(@"현재 위치로 이동!");
+    // 현재위치 업데이트
+    [self.locationManager requestLocation];
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:16.0f];
+    [self.mapView setCamera:cameraPosition];
 }
 
 // 메뉴버튼 이벤트
@@ -292,7 +323,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
                                  // plus View
                                  [self.plusView setAlpha:0.0f];
                                  // loaction Button
-                                 [self.mapView.settings setMyLocationButton:NO];
+                                 [self.locationButton setAlpha:0.0f];
                              } completion:^(BOOL finished) {
                                  // 애니메이션 완료 로직..
                                  DLog(@"Done 1");
@@ -319,7 +350,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
                                  // plus View
                                  [self.plusView setAlpha:1.0f];
                                  // loaction Button
-                                 [self.mapView.settings setMyLocationButton:YES];
+                                 [self.locationButton setAlpha:1.0f];
                              } completion:^(BOOL finished) {
                                  // 애니메이션 완료 로직..
                                  DLog(@"Done 2");

@@ -8,8 +8,13 @@
 
 #import "PlacesViewController.h"
 
-static const CGFloat TEXTFIELD_HEIGHT = 45.0f;
-static const CGFloat TEXTFIELD_INSET = 10.0f;
+
+// MapViewContorller에 동일하게 사용하는 이름이 있어서 사용하면 링크 에러뜸...
+//const CGFloat BUTTON_SIZE_WIDTH = 34.0f;
+//const CGFloat BUTTON_SIZE_HEIGHT = 34.0f;
+//const CGFloat X_MARGIN = 10.0f;
+//const CGFloat Y_MARGIN = 10.0f;
+//const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 
 @interface PlacesViewController ()
 <UITextFieldDelegate, GMSAutocompleteTableDataSourceDelegate>
@@ -34,7 +39,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 
 - (void)createView {
     // 설정 버튼
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(TEXTFIELD_INSET, 40.0f, 60.0f, TEXTFIELD_HEIGHT)];
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0f, 10.0f*4, 34.0f, 45.0f)];
     [backButton addTarget:self
                    action:@selector(backButtonTouchUpInside:)
          forControlEvents:UIControlEventTouchUpInside];
@@ -45,7 +50,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
     
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
-    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(70.0f, 40.f, self.view.frame.size.width-backButton.bounds.size.width - (TEXTFIELD_INSET*2), TEXTFIELD_HEIGHT)];
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(10.0f + backButton.frame.size.width, backButton.frame.origin.y, self.view.frame.size.width - backButton.frame.size.width - (10.0f*2), 45.0f)];
     [searchField addTarget:self
                     action:@selector(searchFieldDidChange:)
           forControlEvents:UIControlEventEditingChanged];
@@ -99,7 +104,7 @@ static const CGFloat TEXTFIELD_INSET = 10.0f;
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [self addChildViewController:self.resultTableViewController];
-    self.resultTableViewController.view.frame = CGRectMake(TEXTFIELD_INSET, self.backButton.bounds.size.height + self.backButton.bounds.origin.y + 50.0f, self.view.bounds.size.width - (TEXTFIELD_INSET * 2), self.view.bounds.size.height - 44.0f);
+    self.resultTableViewController.view.frame = CGRectMake(10.0f, self.backButton.bounds.size.height + self.backButton.bounds.origin.y + 50.0f, self.view.bounds.size.width - (10.f * 2), self.view.bounds.size.height - 44.0f);
     self.resultTableViewController.view.alpha = 0.0f;
     [self.view addSubview:self.resultTableViewController.view];
     [self.resultTableViewController.tableView reloadData];

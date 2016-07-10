@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TravelTableViewCell.h"
 #import "TravelAddUIViewController.h"
 #import "SCLAlertView.h"
+#import "MGSwipeTableCell.h"
+#import "MGSwipeButton.h"
 
 @interface TravelTableViewController : UITableViewController
+<MGSwipeTableCellDelegate>
 
 @end

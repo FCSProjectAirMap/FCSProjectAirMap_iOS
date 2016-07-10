@@ -10,6 +10,8 @@
 
 @interface TravelTableViewController ()
 
+// ##SJ Test
+@property (nonatomic) NSMutableArray *dataArray;
 @end
 
 @implementation TravelTableViewController
@@ -18,17 +20,30 @@
     [super viewDidLoad];
     
     self.title = @"여행 경로";
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                            target:self
-                                                                                            action:@selector(travelTableViewCloseTouchUpInside:)]];
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                             target:self
-                                                                                             action:@selector(travelTableViewAddTouchUpInside:)]];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f
+                                                                                                                       green:215.0/225.0f
+                                                                                                                        blue:215.0/225.0f
+                                                                                                                       alpha:1.0f]}];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f
+                                                                             green:30.0/255.0f
+                                                                              blue:30.0/255.0f
+                                                                             alpha:1.0f]];
+    
+    UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                      target:self
+                                                                                      action:@selector(travelTableViewCloseTouchUpInside:)];
+    [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+    
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                        target:self
+                                                                                        action:@selector(travelTableViewAddTouchUpInside:)];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f
+                                                                        green:215.0/225.0f
+                                                                         blue:215.0/225.0f
+                                                                        alpha:1.0f];
+    
+    self.dataArray = [[NSMutableArray alloc] initWithCapacity:1];
 }
 
 #pragma mark - Action Method
@@ -44,14 +59,14 @@
     
     alert.completeButtonFormatBlock = ^NSDictionary* (void) {
         NSMutableDictionary *buttonConfig = [[NSMutableDictionary alloc] init];
-        buttonConfig[@"backgroundColor"] = [UIColor colorWithRed:244.0/255.0f green:199.0/255.0f blue:45.0/255.0f alpha:1.0f];
+        buttonConfig[@"backgroundColor"] = [UIColor colorWithRed:250.0/255.0f green:225.0/255.0f blue:0.0/255.0f alpha:1.0f];
         buttonConfig[@"textColor"] = [UIColor blackColor];
         return buttonConfig;
     };
     
     alert.buttonFormatBlock = ^NSDictionary* (void) {
         NSMutableDictionary *buttonConfig = [[NSMutableDictionary alloc] init];
-        buttonConfig[@"backgroundColor"] = [UIColor colorWithRed:244.0/255.0f green:199.0/255.0f blue:45.0/255.0f alpha:1.0f];
+        buttonConfig[@"backgroundColor"] = [UIColor colorWithRed:250.0/255.0f green:225.0/255.0f blue:0.0/255.0f alpha:1.0f];
         buttonConfig[@"textColor"] = [UIColor blackColor];
         return buttonConfig;
     };
@@ -75,30 +90,106 @@
          return YES;
      } actionBlock:^{
          DLog(@"%@", travelNameTextField.text);
+         // response DataCenter insert?
+         [self.dataArray addObject:travelNameTextField.text];
+         
+         // tableview insert
+         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.dataArray count] - 1 inSection:0]];
+         [self.tableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationAutomatic];
+         
+         // tableview reloadData
+         [self.tableView reloadData];
      }];
     
     [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+#pragma mark - TableViewDeleage, TableViewDataSource
+// 한 row의 cell 높이
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // 기본이 44.0
+    return 60;
 }
 
+// 한 Section당 row의 개수
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.dataArray count];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    
+    NSString *reuseIdentifier = @"Cell";
+    MGSwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+        cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+        cell.delegate = self;
     }
+    cell.textLabel.text = [self.dataArray objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    // Configure the cell...
-
+    cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
+    cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
+    cell.rightButtons = [self createSwipeRightButtons:1];
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // 셀 선택 해제
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - MGSwipeTableCellDelegate
+// Swipe했을 때 실행되는 Delegate
+-(BOOL) swipeTableCell:(MGSwipeTableCell*) cell tappedButtonAtIndex:(NSInteger) index direction:(MGSwipeDirection)direction fromExpansion:(BOOL) fromExpansion {
+    
+    // Delete
+    if (direction == MGSwipeDirectionRightToLeft && index == 0) {
+        // path 가져오기
+        NSIndexPath *path = [self.tableView indexPathForCell:cell];
+        // data delete
+        [self.dataArray removeObjectAtIndex:path.row];
+        
+        for (NSString *strMsg in self.dataArray) {
+            DLog(@"남아 있는 trabel title : %@", strMsg);
+        }
+        
+        [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark - General Method
+// Cell 오른쪽에 나오는 버튼들 생성 메서드
+- (NSArray *)createSwipeRightButtons:(NSInteger) number {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
+    NSArray *titles = @[@"Delete"];
+    NSArray *colors = @[[UIColor redColor]];
+    for (NSInteger i = 0; i < number; ++i) {
+        MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
+            NSLog(@"Convenience callback received (right).");
+            BOOL autoHide = (i != 0);
+            return autoHide;
+        }];
+        [result addObject:button];
+    }
+    return result;
+}
+
+// Cell 왼쪽에 나오는 버튼들 생성 메서드
+- (NSArray *)createSwipeLeftButton:(NSInteger) number {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
+    NSArray *colors = @[[UIColor colorWithRed:0.59 green:0.29 blue:0.08 alpha:1.0]];
+    NSArray *icons = @[[UIImage imageNamed:@""]];
+    for (NSInteger i = 0; i < number; ++i) {
+        MGSwipeButton * button = [MGSwipeButton buttonWithTitle:@"" icon:icons[i] backgroundColor:colors[i] padding:15 callback:^BOOL(MGSwipeTableCell * sender){
+            NSLog(@"Convenience callback received (left).");
+            return YES;
+        }];
+        [result addObject:button];
+    }
+    return result;
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -131,16 +222,6 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 */
 

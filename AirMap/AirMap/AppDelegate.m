@@ -19,7 +19,10 @@
     
     // google map API key
     [GMSServices provideAPIKey:kAPIKey];
-    
+    MapViewController *mapViewController = [[MapViewController alloc] init];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = mapViewController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
