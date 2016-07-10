@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MultiImageDataCenter.h"
 #import "MultiImageCollectionViewCell.h"
+#import "MultiImageDataCenter.h"
+#import "ImageRequestObject.h"
 #import "BadgeView.h"
 
 @interface MultiImageCollectionViewController : UIViewController

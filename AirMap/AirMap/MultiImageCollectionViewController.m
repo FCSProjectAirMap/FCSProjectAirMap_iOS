@@ -140,24 +140,32 @@ const CGFloat spacing = 2;
 // 컨트롤러 버튼 설정
 - (void)updateNavigationBarButtonItem {
     
-    // 왼쪽 나가기 버튼
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"나가기" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
-    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
-    
     // 오른쪽 선택 버튼
     self.badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
 
     UIBarButtonItem *badgeButton = [[UIBarButtonItem alloc] initWithCustomView:[self.badgeView createBadgeView]];
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"선택" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
+    // 왼쪽 나가기 버튼
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"나가기" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
     self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:doneButton, badgeButton, nil];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+    self.navigationItem.rightBarButtonItem.tintColor
+    = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
+    self.navigationItem.leftBarButtonItem.tintColor
+    = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
+
 }
 
 // 네비게이션 버튼 액션
 -(void)doneAction:(UIButton *)sender {
-
+    // 선택된 사진 메타데이터 추출
     [self.imageDataCenter extractMetadataFromImage];
+    NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
+    
+    // 이미지, 메타데이터 업로드
+    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
+    [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
+
     [self.imageDataCenter resetSelectedAsset];
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
     }];
