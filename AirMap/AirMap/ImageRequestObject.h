@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MultiImageDataCenter.h"
+#import "AFNetworking.h"
 
 @interface ImageRequestObject : UIView
+
++ (instancetype)sharedInstance;
+- (void)uploadImages:(NSMutableArray *)selectedImages inTravelTitle:(NSString *)travelTitle;
+- (void)uploadMetaDatas:(NSMutableDictionary *)selectedDatas inTravelTitle:(NSString *)travelTitle;
 
 @end
