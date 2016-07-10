@@ -40,7 +40,7 @@
 
         label.alpha = 0.0f;
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor blackColor];
+        label.textColor = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 1;
         label.font = [UIFont boldSystemFontOfSize:14.0];
@@ -57,7 +57,6 @@
     
     BadgeView *badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     
-    badgeView.backgroundColor = [[UIColor alloc] initWithRed:(CGFloat)244/255 green:(CGFloat)199/255 blue:(CGFloat)45/255 alpha:0.0f];
     badgeView.layer.cornerRadius = 10.0;
     badgeView.userInteractionEnabled = NO;
     badgeView.textLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
@@ -75,7 +74,7 @@
                      animations:^{
                          
                          self.badgeView.backgroundColor =
-                         [[UIColor alloc] initWithRed:(CGFloat)244/255 green:(CGFloat)199/255 blue:(CGFloat)45/255 alpha:1.00];
+                         [[UIColor alloc] initWithRed:(CGFloat)250/255 green:(CGFloat)225/255 blue:(CGFloat)0/255 alpha:1.00];
                          self.alpha = 1.0f;
                          self.textLabel.alpha = 1.0f;
                          
