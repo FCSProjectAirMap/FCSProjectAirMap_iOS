@@ -78,7 +78,7 @@ const CGFloat boundary = 3.0;
     CAShapeLayer *lineLayer = [CAShapeLayer layer];
     lineLayer.path = overlayPath.CGPath;
     lineLayer.fillRule = kCAFillRuleEvenOdd;
-    lineLayer.fillColor = [UIColor colorWithRed:244/255.0 green:199/255.0 blue:45/255.0 alpha:1].CGColor;
+    lineLayer.fillColor = [UIColor colorWithRed:250/255.0 green:225/255.0 blue:0/255.0 alpha:1].CGColor;
     
     self.overLayer = lineLayer;
     [self.overLayer addSublayer:fillLayer];
