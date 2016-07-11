@@ -165,7 +165,7 @@
                                 // get userInformation
                                 [self fetchUserInfo];
                                 //Action After Login
-//                                [self dismissViewControllerAnimated:YES completion:nil];
+                                [self dismissViewControllerAnimated:YES completion:nil];
                                 
                             }
 
