@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		E4041519E7E37666D21CD521 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */; };
+		E4D39BD01D337AF500DE48D9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */; };
+		E4D39BD11D337AF500DE48D9 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */; };
+		E4D39BDB1D337B6E00DE48D9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD41D337B6E00DE48D9 /* ViewController.m */; };
+		E4D39BDC1D337B6E00DE48D9 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD61D337B6E00DE48D9 /* SignUpViewController.m */; };
+		E4D39BDD1D337B6E00DE48D9 /* ServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD81D337B6E00DE48D9 /* ServerConnection.m */; };
+		E4D39BDE1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BDA1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m */; };
+		E4D39BE11D337C3500DE48D9 /* backbutton10.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D39BDF1D337C3500DE48D9 /* backbutton10.png */; };
+		E4D39BE21D337C3500DE48D9 /* Ryan10.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D39BE01D337C3500DE48D9 /* Ryan10.png */; };
 		E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */; };
 		E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */; };
 		E9063C351D2E796200F28F69 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C341D2E796200F28F69 /* BadgeView.m */; };
@@ -44,6 +53,19 @@
 /* Begin PBXFileReference section */
 		16028BDC9D099C26AC19ED29 /* Pods-AirMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.release.xcconfig"; sourceTree = "<group>"; };
 		4253540E246896CD5E2EF7E9 /* Pods-AirMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.debug.xcconfig"; sourceTree = "<group>"; };
+		E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = AirMap/etc/facebook/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = AirMap/etc/facebook/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = AirMap/etc/facebook/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		E4D39BD31D337B6E00DE48D9 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E4D39BD41D337B6E00DE48D9 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E4D39BD51D337B6E00DE48D9 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		E4D39BD61D337B6E00DE48D9 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		E4D39BD71D337B6E00DE48D9 /* ServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerConnection.h; sourceTree = "<group>"; };
+		E4D39BD81D337B6E00DE48D9 /* ServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerConnection.m; sourceTree = "<group>"; };
+		E4D39BD91D337B6E00DE48D9 /* NSString+NSString___emailValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSString___emailValidation.h"; sourceTree = "<group>"; };
+		E4D39BDA1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSString___emailValidation.m"; sourceTree = "<group>"; };
+		E4D39BDF1D337C3500DE48D9 /* backbutton10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbutton10.png; sourceTree = "<group>"; };
+		E4D39BE01D337C3500DE48D9 /* Ryan10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ryan10.png; sourceTree = "<group>"; };
 		E9063C211D2D7A8100F28F69 /* AuthorizationControll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizationControll.h; sourceTree = "<group>"; };
 		E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizationControll.m; sourceTree = "<group>"; };
 		E9063C301D2E45DB00F28F69 /* ImageRequestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRequestObject.h; sourceTree = "<group>"; };
@@ -110,6 +132,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */,
+				E4D39BD01D337AF500DE48D9 /* FBSDKLoginKit.framework in Frameworks */,
+				E4D39BD11D337AF500DE48D9 /* FBSDKShareKit.framework in Frameworks */,
 				EC714C8B1D2ABD1C00165A58 /* CoreLocation.framework in Frameworks */,
 				E4041519E7E37666D21CD521 /* (null) in Frameworks */,
 			);
@@ -130,9 +155,27 @@
 		A4E58478D95AEC7D234D7B7E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */,
+				E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */,
+				E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */,
 				EC714C8A1D2ABD1C00165A58 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4D39BD21D337B6200DE48D9 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E4D39BD31D337B6E00DE48D9 /* ViewController.h */,
+				E4D39BD41D337B6E00DE48D9 /* ViewController.m */,
+				E4D39BD51D337B6E00DE48D9 /* SignUpViewController.h */,
+				E4D39BD61D337B6E00DE48D9 /* SignUpViewController.m */,
+				E4D39BD71D337B6E00DE48D9 /* ServerConnection.h */,
+				E4D39BD81D337B6E00DE48D9 /* ServerConnection.m */,
+				E4D39BD91D337B6E00DE48D9 /* NSString+NSString___emailValidation.h */,
+				E4D39BDA1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */ = {
@@ -177,6 +220,7 @@
 		EC714C6F1D2AB8A000165A58 /* AirMap */ = {
 			isa = PBXGroup;
 			children = (
+				E4D39BD21D337B6200DE48D9 /* Login */,
 				ECFC52F41D32883000EF311B /* MGSwipeTableCell */,
 				ECFC52F91D32883000EF311B /* SCLAlertView */,
 				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
@@ -207,6 +251,8 @@
 		EC750B931D2B9E0300A54374 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E4D39BDF1D337C3500DE48D9 /* backbutton10.png */,
+				E4D39BE01D337C3500DE48D9 /* Ryan10.png */,
 				ECFC52F21D32824A00EF311B /* location_icon.png */,
 				ECA085011D2E8C8A00141B29 /* Ryan.png */,
 				EC50DD801D2CF16E009B6C91 /* Back_icon.png */,
@@ -326,8 +372,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4D39BE21D337C3500DE48D9 /* Ryan10.png in Resources */,
 				EC714C801D2AB8A000165A58 /* LaunchScreen.storyboard in Resources */,
 				EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */,
+				E4D39BE11D337C3500DE48D9 /* backbutton10.png in Resources */,
 				EC714C7D1D2AB8A000165A58 /* Assets.xcassets in Resources */,
 				ECFC52F31D32824A00EF311B /* location_icon.png in Resources */,
 				ECA085021D2E8C8A00141B29 /* Ryan.png in Resources */,
@@ -393,10 +441,12 @@
 				ECFC530D1D32883000EF311B /* SCLAlertView.m in Sources */,
 				ECFC53101D32883000EF311B /* SCLButton.m in Sources */,
 				ECFC530E1D32883000EF311B /* SCLAlertViewResponder.m in Sources */,
+				E4D39BDE1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m in Sources */,
 				EC50DD841D2D1299009B6C91 /* PlacesViewController.m in Sources */,
 				E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */,
 				E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */,
 				E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */,
+				E4D39BDD1D337B6E00DE48D9 /* ServerConnection.m in Sources */,
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				ECFC53131D32883000EF311B /* SCLTimerDisplay.m in Sources */,
 				ECFC53111D32883000EF311B /* SCLSwitchView.m in Sources */,
@@ -414,6 +464,8 @@
 				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
 				ECFC53121D32883000EF311B /* SCLTextView.m in Sources */,
 				ECFC53141D32883000EF311B /* UIImage+ImageEffects.m in Sources */,
+				E4D39BDC1D337B6E00DE48D9 /* SignUpViewController.m in Sources */,
+				E4D39BDB1D337B6E00DE48D9 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +575,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AirMap/etc/facebook",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AirMap/PrefixHeader.pch";
 				INFOPLIST_FILE = AirMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -540,6 +596,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AirMap/etc/facebook",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AirMap/PrefixHeader.pch";
 				INFOPLIST_FILE = AirMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
