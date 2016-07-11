@@ -91,6 +91,10 @@
     [self.passWordField setSecureTextEntry:YES];
     
     
+    self.emailField.delegate = self;
+    self.passWordField.delegate = self;
+
+    
 //    signup, Login, LoginwithFacebook Button
     
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -125,6 +129,7 @@
 //    [facebookButton setTitle:@"facebook" forState:UIControlStateNormal];
 //    [facebookButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:facebookButton];
+    
 
 }
 
@@ -298,6 +303,30 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
+    
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.5 animations:^{
+       
+        CGRect newFrame = self.view.frame;
+        newFrame.origin.y -=100;
+        self.view.frame = newFrame;
+        
+    }];
+
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        CGRect newFrame = self.view.frame;
+        newFrame.origin.y +=100;
+        self.view.frame = newFrame;
+        
+    }];
 }
 
 
