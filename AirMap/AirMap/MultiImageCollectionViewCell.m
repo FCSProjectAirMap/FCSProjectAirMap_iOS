@@ -23,7 +23,7 @@ const CGFloat boundary = 3.0;
 - (instancetype)initWithFrame:(CGRect)frame {
     
     if (self = [super initWithFrame:frame]) {
-
+    
     self.imageViewInCell = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         
     self.imageViewInCell.contentMode = UIViewContentModeScaleAspectFill;
@@ -44,19 +44,19 @@ const CGFloat boundary = 3.0;
     self.imageViewInCell.image = nil;
 }
 
+// 셀 선택시 음영 및 테두리 설정
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
-    // 셀 선택시
-    if (selected) {
-        [self.contentView.layer addSublayer:self.overLayer];
-//        NSLog(@"cell select");
-    // 재선택시
-    } else {
-        [self.overLayer removeFromSuperlayer];/////
-//        NSLog(@"cell deslect");
-    }
+        // 셀 선택시
+        if (selected) {
+            [self.contentView.layer addSublayer:self.overLayer];
+//                    NSLog(@"cell select");
+        // 재선택시
+        } else {
+            [self.overLayer removeFromSuperlayer];
+//                    NSLog(@"cell deslect");
+        }
 }
-
 
 - (CAShapeLayer *)overlayFill {
     
