@@ -27,10 +27,9 @@ const CGFloat spacing = 2;
     
     [self creatCollectionView];
     [self navigationControllerSetUp];
-    
+
     self.imageDataCenter = [MultiImageDataCenter sharedImageDataCenter];
 }
-
 
 
 #pragma mark - <UICollectionView>
@@ -94,16 +93,35 @@ const CGFloat spacing = 2;
 
 #pragma mark - <UICollectionViewDelegate>
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"seleted");
-    PHAsset *selectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
-    [self.imageDataCenter addSelectedAsset:selectedAsset];
+// 10장 이상 선택시 셀 선택 제한
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.badgeView badgeNumber] < 10) {
+        return YES;
+    } else {
+        // 경고
+        [self showAlertWindow:YES];
+        return NO;
+    }
 }
 
+// 사진이 선택되었을때 저장
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    
+    if ([self.badgeView badgeNumber] < 10) {
+        PHAsset *selectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
+        [self.imageDataCenter addSelectedAsset:selectedAsset];
+        [cell setSelected:YES];
+    } else {
+        [cell setSelected:NO];
+    }
+//    NSLog(@"%ld",[self.imageDataCenter callSelectedAssets].count);
+}
+
+// 재선택된 사진 빼기
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 //    NSLog(@"deseleted");
-//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//    [cell setSelected:NO];
     PHAsset *deSelectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
     [self.imageDataCenter removeSelectedAsset:deSelectedAsset];
 }
@@ -142,7 +160,7 @@ const CGFloat spacing = 2;
     
     // 오른쪽 선택 버튼
     self.badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-
+    
     UIBarButtonItem *badgeButton = [[UIBarButtonItem alloc] initWithCustomView:[self.badgeView createBadgeView]];
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"선택" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
@@ -166,17 +184,32 @@ const CGFloat spacing = 2;
     [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
     [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
 
-    [self.imageDataCenter resetSelectedAsset];
+    [self.imageDataCenter resetSelectedFiles];
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
     }];
 }
 
 - (void)cancelAction:(UIButton *)sender {
-    [self.imageDataCenter resetSelectedAsset];
+    [self.imageDataCenter resetSelectedFiles];
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
     }];
 }
 
+#pragma mark - Limit to 10 images
+// 선택된 사진이 10장 이상일때 alert띄우기
+- (void)showAlertWindow:(BOOL)isShowAlert {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"사진 선택은 10장까지 가능합니다." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:^{
+    
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

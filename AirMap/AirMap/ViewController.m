@@ -91,6 +91,10 @@
     [self.passWordField setSecureTextEntry:YES];
     
     
+    self.emailField.delegate = self;
+    self.passWordField.delegate = self;
+
+    
 //    signup, Login, LoginwithFacebook Button
     
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -125,6 +129,7 @@
 //    [facebookButton setTitle:@"facebook" forState:UIControlStateNormal];
 //    [facebookButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:facebookButton];
+    
 
 }
 
@@ -160,7 +165,7 @@
                                 // get userInformation
                                 [self fetchUserInfo];
                                 //Action After Login
-//                                [self dismissViewControllerAnimated:YES completion:nil];
+                                [self dismissViewControllerAnimated:YES completion:nil];
                                 
                             }
 
@@ -227,24 +232,24 @@
             {
                 NSLog(@"user id : %@",[result objectForKey:@"id"]);
             }
-//            ServerConnection *serverConnection = [[ServerConnection alloc]init];
-//            [serverConnection sendUserInfoFromFacebook:[result objectForKey:@"email"] :[result objectForKey:@"name"]];
+            ServerConnection *serverConnection = [[ServerConnection alloc]init];
+            [serverConnection sendUserInfoFromFacebook:[result objectForKey:@"email"] :[result objectForKey:@"name"]];
             
             
             
             
-            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"http://52.78.72.132/login/"
-                                               parameters:@{ @"fields":@"id, name, email" }
-                                               HTTPMethod:@"POST"]
-             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                 if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCode] isEqual:@200]) {
-                     NSLog(@"permission error");
-                 }else{
-                     NSLog(@"LoginSuccess - facebook");
-                     NSLog(@"JSON: %@",connection);
-                     [self dismissViewControllerAnimated:YES completion:nil];
-                 }
-             }];
+//            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"http://52.78.72.132/login/"
+//                                               parameters:@{ @"fields":@"id, name, email" }
+//                                               HTTPMethod:@"POST"]
+//             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+//                 if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCode] isEqual:@200]) {
+//                     NSLog(@"permission error");
+//                 }else{
+//                     NSLog(@"LoginSuccess - facebook");
+//                     NSLog(@"JSON: %@",connection);
+//                     [self dismissViewControllerAnimated:YES completion:nil];
+//                 }];
+            
         }
     }];
     [connection start];
@@ -295,11 +300,33 @@
 
 
 
-//TextField Delegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [textField resignFirstResponder];
-    return YES;
+    [self.view endEditing:YES];
+    
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.5 animations:^{
+       
+        CGRect newFrame = self.view.frame;
+        newFrame.origin.y -=100;
+        self.view.frame = newFrame;
+        
+    }];
+
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        CGRect newFrame = self.view.frame;
+        newFrame.origin.y +=100;
+        self.view.frame = newFrame;
+        
+    }];
 }
 
 

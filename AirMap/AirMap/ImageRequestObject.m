@@ -31,7 +31,7 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
 // 이미지 업로드 리퀘스트
 - (void)uploadImages:(NSMutableArray *)selectedImages inTravelTitle:(NSString *)travelTitle {
     
-    NSLog(@"Start upload images %@", selectedImages);
+    NSLog(@"Start upload images");
     
     // 업로드 parameter
     NSDictionary *parameters = @{@"user_id":@"아이디", @"travel_title":@"여행 이름"};
@@ -44,9 +44,11 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
                                                                                   
                                                                                   for (UIImage *image in [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages]) {
                                                                                       
+                                                                                      NSString *fileName = [NSString stringWithFormat:@"%@.jpeg",[ [MultiImageDataCenter sharedImageDataCenter] callSelectedData][@"timestamp"]];
+                                                                                      
                                                                                       [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.1)
                                                                                                                   name:@"image_data"
-                                                                                                              fileName:@"image.jpeg"
+                                                                                                              fileName:fileName
                                                                                                               mimeType:@"image/jpeg"];
                                                                                       
                                                                                   }
@@ -74,7 +76,7 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     [uploadTask resume];
 }
 
-// 메타데이터 전송
+// 메타데이터 업로드 리퀘스트
 - (void)uploadMetaDatas:(NSMutableDictionary *)selectedDatas inTravelTitle:(NSString *)travelTitle  {
     
     NSLog(@"Start upload metadatas");
@@ -83,7 +85,7 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     
     NSDictionary *metadataDic = @{@"user_id":@"유저 아이디",
                                   @"travel_title":@"여행 이름",
-                                  @"imgae_list":metadataArray};
+                                  @"image_metadatas":metadataArray};
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:metadataDic];
     NSLog(@"dic:%@",metadataDic);

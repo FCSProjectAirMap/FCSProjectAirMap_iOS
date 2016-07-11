@@ -75,31 +75,31 @@
     
 }
 
-//-(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userPassword {
-//    
-//    
-//    NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/signup/"];
-//    
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    NSDictionary *params = @{@"email":email,
-//                             @"password": userPassword};
-//    [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//
-//        
-//        NSLog(@"facebook Info send Success");
-//        NSLog(@"JSON: %@",responseObject);
-//        
-//        
-//        
-//    } failure:^(NSURLSessionTask *operation, NSError *error) {
-//        
-//        NSLog(@"facebook Info send Failure");
-//        NSLog(@"Error : %@", error);
-//    }];
-//
-//    
-//}
-//
+-(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userName {
+    
+    
+    NSURL *URL = [NSURL URLWithString:@"LoginServer"];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *params = @{@"email":email,
+                             @"userName": userName};
+    [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+
+        
+        NSLog(@"facebook Info send Success");
+        NSLog(@"JSON: %@",responseObject);
+        
+        
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        
+        NSLog(@"facebook Info send Failure");
+        NSLog(@"Error : %@", error);
+    }];
+
+    
+}
+
 
 
 - (void)registerWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
