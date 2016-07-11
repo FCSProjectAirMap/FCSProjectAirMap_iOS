@@ -8,12 +8,6 @@
 
 #import "MapViewController.h"
 
-const CGFloat BUTTON_SIZE_WIDTH = 48.0f;
-const CGFloat BUTTON_SIZE_HEIGHT = 48.0f;
-const CGFloat X_MARGIN = 10.0f;
-const CGFloat Y_MARGIN = 10.0f;
-const CGFloat TEXTFIELD_HEIGHT = 45.0f;
-
 @interface MapViewController ()
 
 @property (nonatomic) GMSMapView *mapView;
@@ -41,7 +35,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     // 구글 지도 만들어 주기.
     [self createGoogleMapView];
     // view 만들어 주기.
-    [self createView];
+    [self setupUI];
     
     self.path = [GMSMutablePath path];
     self.isAnimating = YES;
@@ -95,7 +89,13 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 }
 
 // UI 생성 메서드.
-- (void)createView {
+- (void)setupUI {
+    
+    const CGFloat BUTTON_SIZE_WIDTH = 48.0f;
+    const CGFloat BUTTON_SIZE_HEIGHT = 48.0f;
+    const CGFloat X_MARGIN = 10.0f;
+    const CGFloat Y_MARGIN = 10.0f;
+    const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     
     // plus Button
     UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
@@ -160,7 +160,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     self.locationAddButton = locationAddButton;
     
     // 설정 버튼
-    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, Y_MARGIN*4, BUTTON_SIZE_WIDTH, TEXTFIELD_HEIGHT)];
+    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, TEXTFIELD_HEIGHT)];
     [menuButton addTarget:self
                        action:@selector(menuButtonTouchUpInside:)
              forControlEvents:UIControlEventTouchUpInside];
