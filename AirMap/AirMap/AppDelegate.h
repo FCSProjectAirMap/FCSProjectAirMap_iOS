@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MapAPIKey.h"
+#import "MapViewController.h"
 @import GoogleMaps;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

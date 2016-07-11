@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import <FBSDKCorekit/FBSDKCorekit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "MapViewController.h"
 
 @interface AppDelegate ()
 
@@ -18,9 +22,50 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // google map API key
-    [GMSServices provideAPIKey:@"AIzaSyCkqjLSFLbiVQ_-8ub3PaUKCzU2HpvxxZ4"];
+    [GMSServices provideAPIKey:kAPIKey];
     
+    // Facebook Login API
+    [[FBSDKApplicationDelegate sharedInstance] application:application
+                             didFinishLaunchingWithOptions:launchOptions];
+    
+    MapViewController *mapViewController = [[MapViewController alloc] init];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = mapViewController;
+    
+    if ([FBSDKAccessToken currentAccessToken]) {
+        [self showLoginView];
+    } else {
+        // No, display the login page.
+        [self showLoginView];
+    }
+
+    
+    [self.window makeKeyAndVisible];
     return YES;
+}
+
+
+
+- (void)showLoginView
+{
+    
+    ViewController *loginViewController = [[ViewController alloc]init];
+    [self.window makeKeyAndVisible];
+    [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
+}
+
+
+
+
+//add method for facebook login
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
