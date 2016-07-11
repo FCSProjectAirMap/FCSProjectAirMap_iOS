@@ -67,17 +67,17 @@
 
 // noti받고 값변화
 - (void)updateBadgeValueWithAnimationInView {
-    // 0일때 badge 숨김
-    if (self.badgeValue != 0) {
+  
+    if (self.badgeValue > 0) {
     
+        if (self.badgeValue < 11) {
+            
     [UIView animateWithDuration:0
                      animations:^{
-                         
                          self.badgeView.backgroundColor =
                          [[UIColor alloc] initWithRed:(CGFloat)250/255 green:(CGFloat)225/255 blue:(CGFloat)0/255 alpha:1.00];
                          self.alpha = 1.0f;
                          self.textLabel.alpha = 1.0f;
-                         
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
@@ -86,8 +86,12 @@
                      }];
     
     [self.badgeView performSelector:@selector(changeBadgeValue) withObject:nil afterDelay:0.1];
+      
+        } else {
+            
+        }
         
-    } else {
+    } else {  // 0일때 badge 숨김
         [self removeBadgeView];
     }
 }
@@ -98,10 +102,16 @@
                      animations:^{
 
                          self.badgeLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
+
                      }
                      completion:^(BOOL finished) {
-
+                         if (finished) {
+                         }
                      }];
+}
+
+- (NSInteger)badgeNumber {
+    return self.badgeValue;
 }
 
 // 선택된 사진이 0장일때
