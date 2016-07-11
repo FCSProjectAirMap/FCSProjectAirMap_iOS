@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "AuthorizationControll.h"
+
 @import GoogleMaps;
 
 @interface MapViewController : UIViewController

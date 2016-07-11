@@ -7,6 +7,7 @@
 //
 
 #import "MapViewController.h"
+#import "MultiImageCollectionViewController.h"
 
 const CGFloat BUTTON_SIZE_WIDTH = 60.0f;
 const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
@@ -31,6 +32,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     self = [super init];
     if (self) {
         self.path = [GMSMutablePath path];
+        
     }
     return self;
 }
@@ -42,6 +44,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     [self createGoogleMapView];
     // view 만들어 주기.
     [self createView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,7 +77,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     
     // camera Button
     UIButton *cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [cameraButton setTitle:@"카메라" forState:UIControlStateNormal];
+    [cameraButton setTitle:@"앨범" forState:UIControlStateNormal];
     [cameraButton setBackgroundColor:[UIColor redColor]];
     [cameraButton addTarget:self
                      action:@selector(cameraButtonTouchUpInside:)
@@ -122,6 +125,7 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
     [self.mapView.settings setMyLocationButton:YES];
     [self.mapView.settings setCompassButton:YES];
     self.view = self.mapView;
+    
 }
 
 #pragma mark - Action Method
@@ -139,12 +143,16 @@ const CGFloat BUTTON_SIZE_HEIGHT = 60.0f;
 - (void)cameraButtonTouchUpInside:(UIButton *)sender {
     NSLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
+    
+    // 사진권한 확인(앨범/설정화면으로 이동)
+    [AuthorizationControll moveToMultiImageSelectFrom:self];
 }
 
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
     NSLog(@"현재위치 찍기");
     self.plusView.hidden = !self.plusView.hidden;
 }
+
 
 #pragma mark - GMSMapViewDelegate
 /****************************************************************************
