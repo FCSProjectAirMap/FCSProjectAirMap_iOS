@@ -116,13 +116,14 @@
 - (void)extractMetadataFromImage {
     
     for (PHAsset *asset in self.selectedAssets) {
-        
+        // 전송할 메타데이터 추출
         NSNumber *timeStamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
+        NSArray *creationDates = [[NSString stringWithFormat:@"%@",asset.creationDate] componentsSeparatedByString:@" +"];
         
 //        NSArray *location = @[latitude, longitude];
-        NSDictionary *metaData = @{@"creationDate": asset.creationDate,
+        NSDictionary *metaData = @{@"creationDate": creationDates.firstObject,
                                    @"timeStamp":timeStamp,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
