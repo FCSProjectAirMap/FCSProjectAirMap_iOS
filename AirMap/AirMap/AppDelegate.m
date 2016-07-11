@@ -18,8 +18,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // google map API key
-    [GMSServices provideAPIKey:@"AIzaSyCkqjLSFLbiVQ_-8ub3PaUKCzU2HpvxxZ4"];
-    
+    [GMSServices provideAPIKey:kAPIKey];
+    MapViewController *mapViewController = [[MapViewController alloc] init];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = mapViewController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
