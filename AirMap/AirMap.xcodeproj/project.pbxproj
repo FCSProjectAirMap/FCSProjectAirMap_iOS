@@ -196,7 +196,7 @@
 				E9063C331D2E796200F28F69 /* BadgeView.h */,
 				E9063C341D2E796200F28F69 /* BadgeView.m */,
 			);
-			name = MultiPhotoSelect;
+			name = MultiImageSelect;
 			sourceTree = "<group>";
 		};
 		EC714C641D2AB8A000165A58 = {
@@ -226,7 +226,7 @@
 				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
 				EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */,
 				ECD5C1301D2FA90500A551D8 /* Map */,
-				E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */,
+				E9FAEB3C1D2BD4D900014449 /* MultiImageSelect */,
 				EC750B931D2B9E0300A54374 /* Resource */,
 				EC714C8C1D2AC07700165A58 /* PrefixHeader.pch */,
 				EC50DD7B1D2C0B25009B6C91 /* MapAPIKey.h */,
@@ -345,7 +345,7 @@
 				TargetAttributes = {
 					EC714C6C1D2AB8A000165A58 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 3D2GFZ7CZT;
+						DevelopmentTeam = E973CQ3L5R;
 					};
 				};
 			};
@@ -582,7 +582,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AirMap/PrefixHeader.pch";
 				INFOPLIST_FILE = AirMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FCSProject.TravelMaker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -603,7 +603,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AirMap/PrefixHeader.pch";
 				INFOPLIST_FILE = AirMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FCSProject.TravelMaker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

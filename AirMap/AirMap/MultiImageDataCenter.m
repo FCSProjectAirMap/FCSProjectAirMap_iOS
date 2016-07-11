@@ -11,6 +11,7 @@
 
 @property (strong, nonatomic) PHFetchResult *fetchResult;
 @property (strong, nonatomic) NSMutableArray *selectedAssets;
+@property (strong, nonatomic) NSMutableArray *selectedImages;
 @property (strong, nonatomic) NSMutableDictionary *selectedData;
 
 @end
@@ -67,8 +68,10 @@
                                                         object:[NSString stringWithFormat:@"%ld", self.selectedAssets.count]];
 }
 
-- (void)resetSelectedAsset {
+- (void)resetSelectedFiles {
     [self.selectedAssets removeAllObjects];
+    [self.selectedImages removeAllObjects];
+    [self.selectedData removeAllObjects];
 }
 
 - (PHFetchResult *)callFetchResult {
@@ -103,7 +106,9 @@
         }];
     }
     
-    return selectedImages;
+    self.selectedImages = selectedImages;
+    
+    return self.selectedImages;
 }
 
 # pragma mark - ExtracMetaData

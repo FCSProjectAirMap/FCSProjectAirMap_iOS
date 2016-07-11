@@ -24,25 +24,36 @@ static NSString * const photoAuthoMessege = @"[설정] > [AirMap] > [사진] 접
     
     switch (status) {
             // 승인 되어있을때_앨범 불러옴
-        case PHAuthorizationStatusAuthorized:
+        case PHAuthorizationStatusAuthorized: {
             [viewController presentViewController:navigationController animated:YES completion:^{
                 
             }];
             break;
+        }
             // 승인 거절되었을때_설정창으로 보내는 토스트창 띄움
-        case PHAuthorizationStatusDenied:
+        case PHAuthorizationStatusDenied: {
             [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:photoAuthoMessege];
             break;
-            // 결정되지 않았을때(처음 실행)_앨범 화면으로 이동
-        case PHAuthorizationStatusNotDetermined:
-            [viewController presentViewController:navigationController animated:YES completion:^{
-                
-            }];
+        }
+            // 결정되지 않았을때(처음 실행)_사진 허용 알럿창으로 승인 요청
+        case PHAuthorizationStatusNotDetermined: {
+                [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                    if (status == PHAuthorizationStatusAuthorized) {
+                        [viewController presentViewController:navigationController animated:YES completion:^{
+                            
+                        }];
+                    } else {
+
+                    }
+                }];
             break;
-            
-        default:
-            
+        }
+            // PHAuthorizationStatusRestricted 경우
+        default: {
+            NSLog(@"restricted");
             break;
+        }
+
     }
 }
 

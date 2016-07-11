@@ -11,5 +11,6 @@
 @interface BadgeView : UIView
 
 - (UIView *)createBadgeView;
+- (NSInteger)badgeNumber;
 
 @end
