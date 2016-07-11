@@ -14,6 +14,6 @@
                  withUserPassword:(NSString *)userPassword
                        completion:(void (^)(BOOL success))completionBlock;
 - (void)registerWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword;
--(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userPassword;
+-(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userName;
 
 @end

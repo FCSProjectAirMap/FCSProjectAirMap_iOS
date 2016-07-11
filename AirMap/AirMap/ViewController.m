@@ -227,24 +227,24 @@
             {
                 NSLog(@"user id : %@",[result objectForKey:@"id"]);
             }
-//            ServerConnection *serverConnection = [[ServerConnection alloc]init];
-//            [serverConnection sendUserInfoFromFacebook:[result objectForKey:@"email"] :[result objectForKey:@"name"]];
+            ServerConnection *serverConnection = [[ServerConnection alloc]init];
+            [serverConnection sendUserInfoFromFacebook:[result objectForKey:@"email"] :[result objectForKey:@"name"]];
             
             
             
             
-            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"http://52.78.72.132/login/"
-                                               parameters:@{ @"fields":@"id, name, email" }
-                                               HTTPMethod:@"POST"]
-             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                 if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCode] isEqual:@200]) {
-                     NSLog(@"permission error");
-                 }else{
-                     NSLog(@"LoginSuccess - facebook");
-                     NSLog(@"JSON: %@",connection);
-                     [self dismissViewControllerAnimated:YES completion:nil];
-                 }
-             }];
+//            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"http://52.78.72.132/login/"
+//                                               parameters:@{ @"fields":@"id, name, email" }
+//                                               HTTPMethod:@"POST"]
+//             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+//                 if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCode] isEqual:@200]) {
+//                     NSLog(@"permission error");
+//                 }else{
+//                     NSLog(@"LoginSuccess - facebook");
+//                     NSLog(@"JSON: %@",connection);
+//                     [self dismissViewControllerAnimated:YES completion:nil];
+//                 }];
+            
         }
     }];
     [connection start];
@@ -295,11 +295,9 @@
 
 
 
-//TextField Delegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [textField resignFirstResponder];
-    return YES;
+    [self.view endEditing:YES];
 }
 
 
