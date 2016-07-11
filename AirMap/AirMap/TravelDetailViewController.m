@@ -1,14 +1,14 @@
 //
-//  TravelAddUIViewController.m
+//  TravelDetailViewController.m
 //  AirMap
 //
-//  Created by juhyun seo on 2016. 7. 7..
+//  Created by juhyun seo on 2016. 7. 10..
 //  Copyright © 2016년 FCSProjectAirMap. All rights reserved.
 //
 
-#import "TravelAddUIViewController.h"
+#import "TravelDetailViewController.h"
 
-@interface TravelAddUIViewController()
+@interface TravelDetailViewController ()
 
 @property (nonatomic, weak) UIView *topView;
 @property (nonatomic, weak) UIView *bottomView;
@@ -19,21 +19,35 @@
 
 @end
 
-@implementation TravelAddUIViewController
+@implementation TravelDetailViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.dataDetailArray = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
-    NSLog(@"Travel Add viewDidLoad");
-    self.title = @"여행 상세 정보";
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(travelAddUIViewCloseTouchUpInside:)]];
+    [super viewDidLoad];
     
+    NSLog(@"Travel Detial viewDidLoad");
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self createView];
-    
+    self.title = self.travelName;
     self.detailTableView.delegate = self;
     self.detailTableView.dataSource = self;
 }
 
+#pragma mark - General Method
 - (void)createView {
+    
+    // ##SJ Test
+    for (NSString *strMsg in self.dataDetailArray) {
+        DLog(@"리스트 : %@", strMsg);
+    }
     
     // top View
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 64.0f, self.view.frame.size.width, 50.0f)];
@@ -84,23 +98,65 @@
     }
 }
 
-#pragma mark - Action Method
-- (void)travelAddUIViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
-    [self dismissViewControllerAnimated:YES completion:nil];
+// Cell 오른쪽에 나오는 버튼들 생성 메서드
+- (NSArray *)createSwipeRightButtons:(NSInteger) number {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
+    NSArray *titles = @[@"삭제",@"수정"];
+    NSArray *colors = @[[UIColor redColor], [UIColor lightGrayColor]];
+    for (NSInteger i = 0; i < number; ++i) {
+        MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
+            NSLog(@"Convenience callback received (right).");
+            BOOL autoHide = (i != 0);
+            return autoHide;
+        }];
+        [result addObject:button];
+    }
+    return result;
 }
+
+#pragma mark - Action Method
+//- (void)travelDetailCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//}
 
 #pragma mark - TableViewDelegate, TableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return self.dataDetailArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    NSString *reuseIdentifier = @"Cell";
+    MGSwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+        cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+        cell.delegate = self;
     }
     
+    cell.textLabel.text = [self.dataDetailArray objectAtIndex:indexPath.row];
+    cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
+    cell.rightButtons = [self createSwipeRightButtons:2];
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - MGSwipeTableCellDelegate
+- (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion {
+//    NSLog(@"Delegate: button tapped, %@ position, index %d, from Expansion: %@",
+//          direction == MGSwipeDirectionLeftToRight ? @"left" : @"right", (int)index, fromExpansion ? @"YES" : @"NO");
+    // Modify
+    if (direction == MGSwipeDirectionRightToLeft && index == 1) {
+        DLog(@"Modify");
+    }
+    // Delete
+    if (direction == MGSwipeDirectionRightToLeft && index == 0) {
+        DLog(@"Delete");
+        NSIndexPath *path = [self.detailTableView indexPathForCell:cell];
+        [self.dataDetailArray removeObjectAtIndex:path.row];
+        [self.detailTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    return YES;
+}
 @end

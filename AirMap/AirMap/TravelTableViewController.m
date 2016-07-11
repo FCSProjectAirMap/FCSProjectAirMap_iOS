@@ -20,14 +20,8 @@
     [super viewDidLoad];
     
     self.title = @"여행 경로";
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f
-                                                                                                                       green:215.0/225.0f
-                                                                                                                        blue:215.0/225.0f
-                                                                                                                       alpha:1.0f]}];
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f
-                                                                             green:30.0/255.0f
-                                                                              blue:30.0/255.0f
-                                                                             alpha:1.0f]];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
     
     UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                       target:self
@@ -38,10 +32,7 @@
                                                                                         target:self
                                                                                         action:@selector(travelTableViewAddTouchUpInside:)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f
-                                                                        green:215.0/225.0f
-                                                                         blue:215.0/225.0f
-                                                                        alpha:1.0f];
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
     
     self.dataArray = [[NSMutableArray alloc] initWithCapacity:1];
 }
@@ -132,7 +123,12 @@
     return cell;
 }
 
+// Cell 선택 되었을 때
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] init];
+    travelDetailViewController.travelName = [self.dataArray objectAtIndex:indexPath.row];
+    [travelDetailViewController.dataDetailArray addObjectsFromArray:@[@"도오쿄~", @"가나자와~", @"외키나와", @"아마쿠사~", @"고베", @"구마모토", @"나가노"]];
+    [self.navigationController pushViewController:travelDetailViewController animated:YES];
     // 셀 선택 해제
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -163,7 +159,7 @@
 // Cell 오른쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeRightButtons:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
-    NSArray *titles = @[@"Delete"];
+    NSArray *titles = @[@"삭제"];
     NSArray *colors = @[[UIColor redColor]];
     for (NSInteger i = 0; i < number; ++i) {
         MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {

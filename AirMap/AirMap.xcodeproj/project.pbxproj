@@ -19,7 +19,6 @@
 		EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC714C881D2ABC5F00165A58 /* MapViewController.m */; };
 		EC714C8B1D2ABD1C00165A58 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC714C8A1D2ABD1C00165A58 /* CoreLocation.framework */; };
 		ECA084F81D2E268100141B29 /* TravelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA084F71D2E268100141B29 /* TravelTableViewController.m */; };
-		ECA084FE1D2E6E7F00141B29 /* TravelAddUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA084FD1D2E6E7F00141B29 /* TravelAddUIViewController.m */; };
 		ECA085021D2E8C8A00141B29 /* Ryan.png in Resources */ = {isa = PBXBuildFile; fileRef = ECA085011D2E8C8A00141B29 /* Ryan.png */; };
 		ECFC52F31D32824A00EF311B /* location_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFC52F21D32824A00EF311B /* location_icon.png */; };
 		ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F61D32883000EF311B /* MGSwipeButton.m */; };
@@ -32,6 +31,7 @@
 		ECFC53121D32883000EF311B /* SCLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53061D32883000EF311B /* SCLTextView.m */; };
 		ECFC53131D32883000EF311B /* SCLTimerDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53081D32883000EF311B /* SCLTimerDisplay.m */; };
 		ECFC53141D32883000EF311B /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC530A1D32883000EF311B /* UIImage+ImageEffects.m */; };
+		ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53161D328C0700EF311B /* TravelDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,8 +58,6 @@
 		EC714C8C1D2AC07700165A58 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		ECA084F61D2E268100141B29 /* TravelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTableViewController.h; sourceTree = "<group>"; };
 		ECA084F71D2E268100141B29 /* TravelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelTableViewController.m; sourceTree = "<group>"; };
-		ECA084FC1D2E6E7F00141B29 /* TravelAddUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelAddUIViewController.h; sourceTree = "<group>"; };
-		ECA084FD1D2E6E7F00141B29 /* TravelAddUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelAddUIViewController.m; sourceTree = "<group>"; };
 		ECA085011D2E8C8A00141B29 /* Ryan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ryan.png; sourceTree = "<group>"; };
 		ECFC52F21D32824A00EF311B /* location_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_icon.png; sourceTree = "<group>"; };
 		ECFC52F51D32883000EF311B /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
@@ -83,6 +81,8 @@
 		ECFC53081D32883000EF311B /* SCLTimerDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLTimerDisplay.m; sourceTree = "<group>"; };
 		ECFC53091D32883000EF311B /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		ECFC530A1D32883000EF311B /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		ECFC53151D328C0700EF311B /* TravelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailViewController.h; sourceTree = "<group>"; };
+		ECFC53161D328C0700EF311B /* TravelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,8 +183,8 @@
 				EC50DD831D2D1299009B6C91 /* PlacesViewController.m */,
 				ECA084F61D2E268100141B29 /* TravelTableViewController.h */,
 				ECA084F71D2E268100141B29 /* TravelTableViewController.m */,
-				ECA084FC1D2E6E7F00141B29 /* TravelAddUIViewController.h */,
-				ECA084FD1D2E6E7F00141B29 /* TravelAddUIViewController.m */,
+				ECFC53151D328C0700EF311B /* TravelDetailViewController.h */,
+				ECFC53161D328C0700EF311B /* TravelDetailViewController.m */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -358,12 +358,12 @@
 				ECFC53111D32883000EF311B /* SCLSwitchView.m in Sources */,
 				ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */,
 				ECA084F81D2E268100141B29 /* TravelTableViewController.m in Sources */,
-				ECA084FE1D2E6E7F00141B29 /* TravelAddUIViewController.m in Sources */,
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				EC54E0D11D2FF1A900B13C85 /* MenuSlideViewController.m in Sources */,
 				ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 				ECFC530F1D32883000EF311B /* SCLAlertViewStyleKit.m in Sources */,
+				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
 				ECFC53121D32883000EF311B /* SCLTextView.m in Sources */,
 				ECFC53141D32883000EF311B /* UIImage+ImageEffects.m in Sources */,
 			);
