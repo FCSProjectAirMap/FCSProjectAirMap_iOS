@@ -93,6 +93,12 @@
     
     self.emailField.delegate = self;
     self.passWordField.delegate = self;
+    
+    self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.passWordField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.passWordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    
 
     
 //    signup, Login, LoginwithFacebook Button
@@ -214,6 +220,11 @@
 //    
 //}
 //
+
+
+
+
+
 //fetch email, name from Facebook userConnection
 -(void)fetchUserInfo{
     FBSDKGraphRequest *requestMe = [[FBSDKGraphRequest alloc]initWithGraphPath:@"me" parameters:@{@"fields":@"id, name, email"}] ;
@@ -328,6 +339,7 @@
         
     }];
 }
+
 
 
 - (void)didReceiveMemoryWarning {

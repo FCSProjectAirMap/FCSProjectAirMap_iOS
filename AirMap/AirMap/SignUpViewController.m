@@ -71,6 +71,14 @@
     [self.passWordField setSecureTextEntry:YES];
     [self.rePasswordField setSecureTextEntry:YES];
     
+    self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.passWordField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.passWordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.rePasswordField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.rePasswordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    
+    
     
     //make backbutton and registerbutton
     UIButton *registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -183,6 +191,7 @@
 {
     [self.view endEditing:YES];
 }
+
 
 /*
  #pragma mark - Navigation
