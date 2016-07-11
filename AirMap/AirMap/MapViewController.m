@@ -7,6 +7,7 @@
 //
 
 #import "MapViewController.h"
+#import "MultiImageCollectionViewController.h"
 
 const CGFloat BUTTON_SIZE_WIDTH = 34.0f;
 const CGFloat BUTTON_SIZE_HEIGHT = 34.0f;
@@ -116,7 +117,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     plusView.hidden = YES;
     [self.mapView addSubview:plusView];
     self.plusView = plusView;
-    
+
     // Travel Add Button
     UIButton *travelButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [travelButton setTitle:@"여행" forState:UIControlStateNormal];
@@ -255,6 +256,9 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 - (void)albumButtonTouchUpInside:(UIButton *)sender {
     DLog(@"앨범 불러오기.");
     self.plusView.hidden = !self.plusView.hidden;
+    
+    // 사진권한 확인(앨범/설정화면으로 이동)
+    [AuthorizationControll moveToMultiImageSelectFrom:self];
 }
 
 // 현재위치 찍어주는 이벤트
@@ -267,7 +271,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 - (void)locationButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재 위치로 이동!");
     // 현재위치 업데이트
-    [self.locationManager requestLocation];
+    [self.locationManager startUpdatingLocation];
     GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:16.0f];
     [self.mapView setCamera:cameraPosition];
 }

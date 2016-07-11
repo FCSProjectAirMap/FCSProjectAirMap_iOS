@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E4041519E7E37666D21CD521 /* libPods-AirMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */; };
+		E4041519E7E37666D21CD521 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */; };
+		E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */; };
+		E9063C351D2E796200F28F69 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C341D2E796200F28F69 /* BadgeView.m */; };
+		E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */; };
+		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
+		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
+		E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB4A1D2CD90100014449 /* ToastView.m */; };
 		EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */; };
 		EC50DD811D2CF16E009B6C91 /* Back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EC50DD801D2CF16E009B6C91 /* Back_icon.png */; };
 		EC50DD841D2D1299009B6C91 /* PlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC50DD831D2D1299009B6C91 /* PlacesViewController.m */; };
@@ -37,7 +44,20 @@
 /* Begin PBXFileReference section */
 		16028BDC9D099C26AC19ED29 /* Pods-AirMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.release.xcconfig"; sourceTree = "<group>"; };
 		4253540E246896CD5E2EF7E9 /* Pods-AirMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.debug.xcconfig"; sourceTree = "<group>"; };
-		6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirMap.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9063C211D2D7A8100F28F69 /* AuthorizationControll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizationControll.h; sourceTree = "<group>"; };
+		E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizationControll.m; sourceTree = "<group>"; };
+		E9063C301D2E45DB00F28F69 /* ImageRequestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRequestObject.h; sourceTree = "<group>"; };
+		E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageRequestObject.m; sourceTree = "<group>"; };
+		E9063C331D2E796200F28F69 /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
+		E9063C341D2E796200F28F69 /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
+		E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewCell.h; sourceTree = "<group>"; };
+		E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewCell.m; sourceTree = "<group>"; };
+		E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewController.h; sourceTree = "<group>"; };
+		E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewController.m; sourceTree = "<group>"; };
+		E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageDataCenter.h; sourceTree = "<group>"; };
+		E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageDataCenter.m; sourceTree = "<group>"; };
+		E9FAEB491D2CD90100014449 /* ToastView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastView.h; sourceTree = "<group>"; };
+		E9FAEB4A1D2CD90100014449 /* ToastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastView.m; sourceTree = "<group>"; };
 		EC50DD7B1D2C0B25009B6C91 /* MapAPIKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapAPIKey.h; sourceTree = "<group>"; };
 		EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Menu_icon.png; sourceTree = "<group>"; };
 		EC50DD801D2CF16E009B6C91 /* Back_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back_icon.png; sourceTree = "<group>"; };
@@ -91,7 +111,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC714C8B1D2ABD1C00165A58 /* CoreLocation.framework in Frameworks */,
-				E4041519E7E37666D21CD521 /* libPods-AirMap.a in Frameworks */,
+				E4041519E7E37666D21CD521 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,9 +131,29 @@
 			isa = PBXGroup;
 			children = (
 				EC714C8A1D2ABD1C00165A58 /* CoreLocation.framework */,
-				6D3C9C1E3E512507F3C7D295 /* libPods-AirMap.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */ = {
+			isa = PBXGroup;
+			children = (
+				E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */,
+				E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */,
+				E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */,
+				E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */,
+				E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */,
+				E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */,
+				E9063C211D2D7A8100F28F69 /* AuthorizationControll.h */,
+				E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */,
+				E9063C301D2E45DB00F28F69 /* ImageRequestObject.h */,
+				E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */,
+				E9FAEB491D2CD90100014449 /* ToastView.h */,
+				E9FAEB4A1D2CD90100014449 /* ToastView.m */,
+				E9063C331D2E796200F28F69 /* BadgeView.h */,
+				E9063C341D2E796200F28F69 /* BadgeView.m */,
+			);
+			name = MultiPhotoSelect;
 			sourceTree = "<group>";
 		};
 		EC714C641D2AB8A000165A58 = {
@@ -142,6 +182,7 @@
 				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
 				EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */,
 				ECD5C1301D2FA90500A551D8 /* Map */,
+				E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */,
 				EC750B931D2B9E0300A54374 /* Resource */,
 				EC714C8C1D2AC07700165A58 /* PrefixHeader.pch */,
 				EC50DD7B1D2C0B25009B6C91 /* MapAPIKey.h */,
@@ -353,6 +394,9 @@
 				ECFC53101D32883000EF311B /* SCLButton.m in Sources */,
 				ECFC530E1D32883000EF311B /* SCLAlertViewResponder.m in Sources */,
 				EC50DD841D2D1299009B6C91 /* PlacesViewController.m in Sources */,
+				E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */,
+				E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */,
+				E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */,
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				ECFC53131D32883000EF311B /* SCLTimerDisplay.m in Sources */,
 				ECFC53111D32883000EF311B /* SCLSwitchView.m in Sources */,
@@ -361,6 +405,10 @@
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				EC54E0D11D2FF1A900B13C85 /* MenuSlideViewController.m in Sources */,
 				ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */,
+				E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */,
+				E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */,
+				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
+				E9063C351D2E796200F28F69 /* BadgeView.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 				ECFC530F1D32883000EF311B /* SCLAlertViewStyleKit.m in Sources */,
 				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
