@@ -69,9 +69,7 @@
 - (void)updateBadgeValueWithAnimationInView {
   
     if (self.badgeValue > 0) {
-    
-        if (self.badgeValue < 11) {
-            
+        
     [UIView animateWithDuration:0
                      animations:^{
                          self.badgeView.backgroundColor =
@@ -86,10 +84,6 @@
                      }];
     
     [self.badgeView performSelector:@selector(changeBadgeValue) withObject:nil afterDelay:0.1];
-      
-        } else {
-            
-        }
         
     } else {  // 0일때 badge 숨김
         [self removeBadgeView];
