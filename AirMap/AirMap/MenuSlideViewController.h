@@ -10,4 +10,6 @@
 
 @interface MenuSlideViewController : UIViewController
 
+@property (nonatomic, strong) NSString *userID;
+
 @end

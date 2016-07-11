@@ -7,7 +7,6 @@
 //
 
 #import "MapViewController.h"
-#import "MultiImageCollectionViewController.h"
 
 const CGFloat BUTTON_SIZE_WIDTH = 48.0f;
 const CGFloat BUTTON_SIZE_HEIGHT = 48.0f;
@@ -228,7 +227,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude
                                                             longitude:self.locationManager.location.coordinate.longitude
                                                                  zoom:5];
-    self.mapView = [GMSMapView mapWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) camera:camera];
+    self.mapView = [GMSMapView mapWithFrame:self.view.frame camera:camera];
     [self.mapView setDelegate:self];
     [self.mapView setMyLocationEnabled:YES];
     self.view = self.mapView;
@@ -282,13 +281,13 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 // 메뉴버튼 이벤트
 - (void)menuButtonTouchUpInside:(UIButton *)sender {
     DLog(@"메뉴 버튼 눌렀따!");
-//    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
-//    [self addChildViewController:menuSlideView];
-//    [menuSlideView.view setFrame:CGRectMake(-1000, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    [self.view addSubview:menuSlideView.view];
-//    [UIView animateWithDuration:0.4 animations:^{
-//        [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-//    }];
+    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
+    [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    [self addChildViewController:menuSlideView];
+    [self.view addSubview:menuSlideView.view];
+    [UIView animateWithDuration:0.4 animations:^{
+        [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    }];
 }
 
 // search Field Edit

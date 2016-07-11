@@ -223,8 +223,6 @@
 				E4D39BD21D337B6200DE48D9 /* Login */,
 				ECFC52F41D32883000EF311B /* MGSwipeTableCell */,
 				ECFC52F91D32883000EF311B /* SCLAlertView */,
-				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
-				EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */,
 				ECD5C1301D2FA90500A551D8 /* Map */,
 				E9FAEB3C1D2BD4D900014449 /* MultiPhotoSelect */,
 				EC750B931D2B9E0300A54374 /* Resource */,
@@ -264,6 +262,8 @@
 		ECD5C1301D2FA90500A551D8 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
+				EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */,
 				EC714C871D2ABC5F00165A58 /* MapViewController.h */,
 				EC714C881D2ABC5F00165A58 /* MapViewController.m */,
 				EC50DD821D2D1299009B6C91 /* PlacesViewController.h */,
