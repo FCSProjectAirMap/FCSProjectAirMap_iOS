@@ -36,56 +36,65 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     // 업로드 parameter
     NSDictionary *parameters = @{@"user_id":@"아이디", @"travel_title":@"여행 이름"};
     
-    // Multipart request 생성
-    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST"
-                                                                                              URLString:imageRequestURL
-                                                                                             parameters:parameters
-                                                                              constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                                                                                  
-                                                                                  for (UIImage *image in [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages]) {
-                                                                                      
-                                                                                      NSString *fileName = [NSString stringWithFormat:@"%@.jpeg",[ [MultiImageDataCenter sharedImageDataCenter] callSelectedData][@"timestamp"]];
-                                                                                      
-                                                                                      [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.1)
-                                                                                                                  name:@"image_data"
-                                                                                                              fileName:fileName
-                                                                                                              mimeType:@"image/jpeg"];
-                                                                                      
-                                                                                  }
-                                                                              }
-                                                                                                  error:nil];
-    // upload task 생성 및 실시
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    // global queue 생성
+    dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    NSURLSessionUploadTask *uploadTask;
-    uploadTask = [manager uploadTaskWithStreamedRequest:request
-                                               progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSInteger count = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages].count;
+    for (NSInteger i = 0; i < count; i++) {
+        UIImage *image = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages][i];
         
-    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Error: %@",error);
-        } else {
-            NSLog(@"Uploaed response: %@, responseObject: %@", response, responseObject);
-            if ([responseObject[@"code"] isEqualToNumber:@201]) {
-                NSLog(@"Image MultiPart Success");
-                
-            }
-        }
-    }];
-    
-    [uploadTask resume];
+        NSString *fileName = [NSString stringWithFormat:@"%@.jpeg",[ [MultiImageDataCenter sharedImageDataCenter] callSelectedData][i][@"timestamp"]];
+        
+        dispatch_async(uploadQueue, ^{
+            NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST"
+                                                                                                      URLString:imageRequestURL
+                                                                                                     parameters:parameters
+                                                                                      constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                                                                                          
+                                                                                          [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.1)
+                                                                                                                      name:@"image_data"
+                                                                                                                  fileName:fileName
+                                                                                                                  mimeType:@"image/jpeg"];
+                                                                                          
+                                                                                          
+                                                                                      }
+                                                                                                          error:nil];
+            // upload task 생성 및 실시
+            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+            
+            NSURLSessionUploadTask *uploadTask;
+            uploadTask = [manager uploadTaskWithStreamedRequest:request
+                                                       progress:^(NSProgress * _Nonnull uploadProgress) {
+                                                           
+                                                       } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                                                           if (error) {
+                                                               NSLog(@"Error: %@",error);
+                                                           } else {
+                                                               NSLog(@"Uploaed response: %@, responseObject: %@", response, responseObject);
+                                                               if ([responseObject[@"code"] isEqualToNumber:@201]) {
+                                                                   NSLog(@"Image MultiPart Success");
+                                                                   
+                                                               }
+                                                           }
+                                                       }];
+            
+            [uploadTask resume];
+            
+        });
+    }
+    ;
 }
 
 // 메타데이터 업로드 리퀘스트
-- (void)uploadMetaDatas:(NSMutableDictionary *)selectedDatas inTravelTitle:(NSString *)travelTitle  {
+- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas inTravelTitle:(NSString *)travelTitle  {
     
     NSLog(@"Start upload metadatas");
     
-    NSArray *metadataArray = [[NSArray alloc] initWithObjects:[[MultiImageDataCenter sharedImageDataCenter] callSelectedData], nil];
+    //    NSArray *metadataArray = [[NSArray alloc] initWithObjects:[[MultiImageDataCenter sharedImageDataCenter] callSelectedData], nil];
     
     NSDictionary *metadataDic = @{@"user_id":@"유저 아이디",
                                   @"travel_title":@"여행 이름",
-                                  @"image_metadatas":metadataArray};
+                                  @"image_metadatas":selectedDatas};
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:metadataDic];
     NSLog(@"dic:%@",metadataDic);
@@ -97,31 +106,31 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request
                                                                fromData:data
                                                                progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Error: %@",error);
-        } else {
-            NSLog(@"Uploaed response: %@, responseObject: %@", response, responseObject);
-            
-            if ([responseObject[@"code"] isEqualToNumber:@201]) {
-                NSLog(@"Metadata MultiPart Success");
-                
-            }
-    }
-    }];
+                                                                   
+                                                               } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                                                                   if (error) {
+                                                                       NSLog(@"Error: %@",error);
+                                                                   } else {
+                                                                       NSLog(@"Uploaed response: %@, responseObject: %@", response, responseObject);
+                                                                       
+                                                                       if ([responseObject[@"code"] isEqualToNumber:@201]) {
+                                                                           NSLog(@"Metadata MultiPart Success");
+                                                                           
+                                                                       }
+                                                                   }
+                                                               }];
     
     [uploadTask resume];
 }
 
-                
-                                          
-    /*
-     // Only override drawRect: if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     - (void)drawRect:(CGRect)rect {
-     // Drawing code
-     }
-     */
-    
-    @end
+
+
+/*
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
+
+@end
