@@ -330,11 +330,11 @@
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
-{
+{   //CGFloat upsize = self.view.frame.size.hegith/3;
     [UIView animateWithDuration:0.5 animations:^{
        
         CGRect newFrame = self.view.frame;
-        newFrame.origin.y -=100;
+        newFrame.origin.y -=   self.view.frame.size.height/3;
         self.view.frame = newFrame;
         
     }];
@@ -346,7 +346,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         
         CGRect newFrame = self.view.frame;
-        newFrame.origin.y +=100;
+        newFrame.origin.y += self.view.frame.size.height/3;
         self.view.frame = newFrame;
         
     }];
