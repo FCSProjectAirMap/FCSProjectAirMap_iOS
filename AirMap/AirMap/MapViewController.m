@@ -274,8 +274,16 @@
     DLog(@"현재 위치로 이동!");
     // 현재위치 업데이트
     [self.locationManager startUpdatingLocation];
+    if (!self.locationManager.location || !CLLocationCoordinate2DIsValid(self.locationManager.location.coordinate)) {
+        return;
+    }
+    
+    [CATransaction begin];
+    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
+    // change the camera, set the zoom, whatever.  Just make sure to call the animate* method.
     GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:16.0f];
-    [self.mapView setCamera:cameraPosition];
+    [self.mapView animateToCameraPosition:cameraPosition];
+    [CATransaction commit];
 }
 
 // 메뉴버튼 이벤트
