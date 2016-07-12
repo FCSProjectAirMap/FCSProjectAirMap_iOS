@@ -23,7 +23,7 @@ const CGFloat VIEW_HEIGHT = 250.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupUI];
 }
 
