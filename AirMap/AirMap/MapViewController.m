@@ -7,10 +7,9 @@
 //
 
 #import "MapViewController.h"
-#import "MultiImageCollectionViewController.h"
 
-const CGFloat BUTTON_SIZE_WIDTH = 34.0f;
-const CGFloat BUTTON_SIZE_HEIGHT = 34.0f;
+const CGFloat BUTTON_SIZE_WIDTH = 48.0f;
+const CGFloat BUTTON_SIZE_HEIGHT = 48.0f;
 const CGFloat X_MARGIN = 10.0f;
 const CGFloat Y_MARGIN = 10.0f;
 const CGFloat TEXTFIELD_HEIGHT = 45.0f;
@@ -99,7 +98,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 - (void)createView {
     
     // plus Button
-    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, self.mapView.frame.size.height*0.9, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [plusButton setTitle:@"+" forState:UIControlStateNormal];
     [plusButton setBackgroundColor:[UIColor colorWithRed:250/225.0f
                                                    green:225.0/225.0f
@@ -113,7 +112,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     self.plusButton = plusButton;
     
     // plus View
-    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(X_MARGIN, plusButton.frame.origin.y - BUTTON_SIZE_HEIGHT*3, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT*3)];
+    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(plusButton.frame.origin.x, plusButton.frame.origin.y - BUTTON_SIZE_HEIGHT*3, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT*3)];
     plusView.hidden = YES;
     [self.mapView addSubview:plusView];
     self.plusView = plusView;
@@ -171,9 +170,12 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     self.menuButton = menuButton;
     
     // location Button
-    UIButton *locationButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, menuButton.frame.origin.y + menuButton.frame.size.height + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    UIImage *locationImage = [UIImage imageNamed:@"location_icon"];
-    [locationButton setImage:locationImage forState:UIControlStateNormal];
+    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    locationButton.frame = CGRectMake(X_MARGIN, menuButton.frame.origin.y + menuButton.frame.size.height + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [locationButton setImage:[UIImage imageNamed:@"gps_icon"] forState:UIControlStateNormal];
+//    [locationButton setTitle:@"L" forState:UIControlStateNormal];
+//    [locationButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [locationButton setBackgroundColor:[UIColor yellowColor]];
     [locationButton addTarget:self
                        action:@selector(locationButtonTouchUpInside:)
              forControlEvents:UIControlEventTouchUpInside];
@@ -225,7 +227,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude
                                                             longitude:self.locationManager.location.coordinate.longitude
                                                                  zoom:5];
-    self.mapView = [GMSMapView mapWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) camera:camera];
+    self.mapView = [GMSMapView mapWithFrame:self.view.frame camera:camera];
     [self.mapView setDelegate:self];
     [self.mapView setMyLocationEnabled:YES];
     self.view = self.mapView;
@@ -279,13 +281,13 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 // 메뉴버튼 이벤트
 - (void)menuButtonTouchUpInside:(UIButton *)sender {
     DLog(@"메뉴 버튼 눌렀따!");
-//    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
-//    [self addChildViewController:menuSlideView];
-//    [menuSlideView.view setFrame:CGRectMake(-1000, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    [self.view addSubview:menuSlideView.view];
-//    [UIView animateWithDuration:0.4 animations:^{
-//        [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-//    }];
+    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
+    [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    [self addChildViewController:menuSlideView];
+    [self.view addSubview:menuSlideView.view];
+    [UIView animateWithDuration:0.4 animations:^{
+        [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    }];
 }
 
 // search Field Edit

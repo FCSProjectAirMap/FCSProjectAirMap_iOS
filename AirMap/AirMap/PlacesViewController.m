@@ -39,7 +39,7 @@
 
 - (void)createView {
     // 설정 버튼
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0f, 10.0f*4, 34.0f, 45.0f)];
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0f, 10.0f*4, 48.0f, 45.0f)];
     [backButton addTarget:self
                    action:@selector(backButtonTouchUpInside:)
          forControlEvents:UIControlEventTouchUpInside];

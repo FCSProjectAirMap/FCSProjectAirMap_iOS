@@ -10,7 +10,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import "PlacesViewController.h"
 #import "TravelTableViewController.h"
-//#import "MenuSlideViewController.h"
+#import "MultiImageCollectionViewController.h"
+#import "MenuSlideViewController.h"
 #import "AuthorizationControll.h"
 
 @import GoogleMaps;
