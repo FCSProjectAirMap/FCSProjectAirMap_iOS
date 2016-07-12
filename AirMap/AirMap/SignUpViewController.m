@@ -11,11 +11,13 @@
 #import "MapViewController.h"
 #import "NSString+NSString___emailValidation.h"
 
-@interface SignUpViewController ()
+@interface SignUpViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic)  UITextField *emailField;
 @property (weak, nonatomic)  UITextField *passWordField;
 @property (weak, nonatomic)  UITextField *rePasswordField;
 
+
+@property (weak,nonatomic)  UIButton *registerButton;
 @end
 
 @implementation SignUpViewController
@@ -78,6 +80,9 @@
     self.rePasswordField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.rePasswordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
+    self.emailField.delegate =self;
+    self.passWordField.delegate = self;
+    self.rePasswordField.delegate = self;
     
     
     //make backbutton and registerbutton
@@ -86,7 +91,9 @@
     [registerButton setTitle:@"Register" forState:UIControlStateNormal];
     [registerButton setFrame:CGRectMake(VIEW_MARGIN+buttonSize.width*2-10, offsetY, buttonSize.width, buttonSize.height)];
     [registerButton addTarget:self action:@selector(clickRegisterButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.registerButton = registerButton;
     [self.view addSubview:registerButton];
+    
     
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -191,6 +198,29 @@
 {
     [self.view endEditing:YES];
 }
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(textField == self.emailField)
+    {
+        [textField endEditing:YES];
+        [self.passWordField becomeFirstResponder];
+    }else if(textField == self.passWordField)
+    {
+        [textField endEditing:YES];
+        [self.rePasswordField becomeFirstResponder];
+    }
+    else{
+        [textField endEditing:YES];
+        [self clickRegisterButton:self.registerButton];
+    }
+    
+    
+    return YES;
+}
+
 
 
 /*
