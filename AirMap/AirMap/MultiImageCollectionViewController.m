@@ -181,10 +181,11 @@ const CGFloat spacing = 2;
     NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
     
     // 이미지, 메타데이터 업로드
-    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
     [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
+    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
 
     [self.imageDataCenter resetSelectedFiles];
+    
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
     }];
 }
