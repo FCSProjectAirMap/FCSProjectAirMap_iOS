@@ -12,7 +12,7 @@
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 
-@interface TravelTableViewController : UITableViewController
-<MGSwipeTableCellDelegate>
+@interface TravelTableViewController : UIViewController
+<UITableViewDelegate, UITableViewDataSource,MGSwipeTableCellDelegate>
 
 @end
