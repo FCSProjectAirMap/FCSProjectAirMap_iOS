@@ -120,10 +120,10 @@
         NSNumber *timeStamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
-        NSArray *creationDates = [[NSString stringWithFormat:@"%@",asset.creationDate] componentsSeparatedByString:@" +"];
+        NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
         
 //        NSArray *location = @[latitude, longitude];
-        NSDictionary *metaData = @{@"creationDate": creationDates.firstObject,
+        NSDictionary *metaData = @{@"creationDate": creationDate,
                                    @"timeStamp":timeStamp,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
