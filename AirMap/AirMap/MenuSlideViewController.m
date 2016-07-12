@@ -29,8 +29,9 @@
     self = [super init];
     if (self) {
         self.menuSectionTitle = @[@"설정", @"정보/문의", @"기타"];
-        self.menuDetailDictionary = @{@"설정":@[@"아이디?", @"비번???", @"뭐지??"],
-                                      @"정보/문의":@[@"이벤트 알림 설정", @"서비스 문의", @"친구에게 추천하기", @"현재 버전 1.0"],@"기타":@[@"서비스 약관", @"개인정보 취급방침", @"오픈소스 라이센스"]};
+        self.menuDetailDictionary = @{self.menuSectionTitle[0]:@[@"아이디?", @"비번???", @"뭐지??"],
+                                      self.menuSectionTitle[1]:@[@"이벤트 알림 설정", @"서비스 문의", @"친구에게 추천하기", @"현재 버전 1.0"],
+                                      self.menuSectionTitle[2]:@[@"서비스 약관", @"개인정보 취급방침", @"오픈소스 라이센스"]};
     }
     return self;
 }
