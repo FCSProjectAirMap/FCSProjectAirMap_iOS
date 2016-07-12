@@ -37,6 +37,9 @@
 
 @property (weak, nonatomic)  UIButton *facebookLoginButton;
 
+@property (weak, nonatomic) UIButton *loginButton;
+@property (weak,nonatomic) UIButton *signupButton;
+
 @end
 
 @implementation ViewController
@@ -62,11 +65,13 @@
     [backgroundView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:backgroundView];
     
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    
    
 //    emaillabel//passwordlabel
-    const CGFloat VIEW_MARGIN = 20;
+    const CGFloat VIEW_MARGIN = 20*screenWidth/375;
     CGSize textFieldSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6, 40);
-    CGSize buttonSize = CGSizeMake(80, 30);
+    CGSize buttonSize = CGSizeMake(80*screenWidth/375, 30*screenWidth/375);
     
     CGFloat offsetY = (self.view.frame.size.height/2)+120;
     
@@ -100,43 +105,50 @@
     self.passWordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
 
+//  Make buttonView contains buttons (signup,Login,LoginWithFacebook)
+    UIView *buttonView = [[UIView alloc]initWithFrame:CGRectMake(0, offsetY, self.view.frame.size.width, self.view.frame.size.height-offsetY)];
+    [buttonView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:buttonView];
     
+    
+    const CGFloat BUTTONVIEW_MARGIN = 35*screenWidth/375;
 //    signup, Login, LoginwithFacebook Button
     
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     loginButton.backgroundColor =[UIColor darkGrayColor];
     [loginButton setTitle:@"Login" forState:UIControlStateNormal];
-    [loginButton setFrame:CGRectMake(VIEW_MARGIN*3,offsetY,buttonSize.width,buttonSize.height)];
+    [loginButton setFrame:CGRectMake(BUTTONVIEW_MARGIN,0,buttonSize.width,buttonSize.height)];
     [loginButton addTarget:self action:@selector(clickLoginButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:loginButton];
+//    CGSize maximumbuttonSize = CGSizeMake(loginButton.frame.size.width,buttonSize.height);
+//    CGSize expectSize = [loginButton sizeThatFits:maximumbuttonSize];
+    loginButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    loginButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
+    self.loginButton = loginButton;
+    [buttonView addSubview:loginButton];
     
     
     UIButton *signupButton = [UIButton buttonWithType:UIButtonTypeCustom];
     signupButton.backgroundColor = [UIColor greenColor];
     [signupButton setTitle:@"SignUp" forState:UIControlStateNormal];
-    [signupButton setFrame:CGRectMake(VIEW_MARGIN*4 + buttonSize.width, offsetY, buttonSize.width, buttonSize.height)];
+    [signupButton setFrame:CGRectMake(BUTTONVIEW_MARGIN*2 + buttonSize.width,0, buttonSize.width, buttonSize.height)];
     [signupButton addTarget:self action:@selector(clickSignUpButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:signupButton];
+    signupButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    signupButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
+    self.signupButton = signupButton;
+    [buttonView addSubview:signupButton];
     
     
     UIButton *facebookLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     facebookLoginButton.backgroundColor = [UIColor blueColor];
     [facebookLoginButton setTitle:@"FaceBook" forState:UIControlStateNormal];
-    [facebookLoginButton setFrame:CGRectMake(VIEW_MARGIN*5+buttonSize.width*2, offsetY, buttonSize.width, buttonSize.height)];
+    [facebookLoginButton setFrame:CGRectMake(BUTTONVIEW_MARGIN*3+buttonSize.width*2,0, buttonSize.width, buttonSize.height)];
     [facebookLoginButton addTarget:self action:@selector(facebookLoginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:facebookLoginButton];
+    [buttonView addSubview:facebookLoginButton];
+    
+    facebookLoginButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    facebookLoginButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.facebookLoginButton = facebookLoginButton;
     
-//
-//    UIButton *facebookButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    facebookButton.backgroundColor = [UIColor darkGrayColor];
-//    facebookButton.frame = CGRectMake(0, 0, 180, 40);
-//    facebookButton.center = self.view.center;
-//    [facebookButton setTitle:@"facebook" forState:UIControlStateNormal];
-//    [facebookButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:facebookButton];
-    
-
 }
 
 -(void)clickSignUpButton:(UIButton*)sender{
@@ -338,6 +350,21 @@
         self.view.frame = newFrame;
         
     }];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+   if(textField == self.emailField)
+   {
+       [textField endEditing:YES];
+       [self.passWordField becomeFirstResponder];
+   }else{
+       [textField endEditing:YES];
+       [self clickLoginButton:self.loginButton];
+   }
+    
+    
+    return YES;
 }
 
 
