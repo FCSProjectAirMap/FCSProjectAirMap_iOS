@@ -35,14 +35,14 @@
     
     NSLog(@"Travel Detial viewDidLoad");
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self createView];
+    [self setupUI];
     self.title = self.travelName;
     self.detailTableView.delegate = self;
     self.detailTableView.dataSource = self;
 }
 
 #pragma mark - General Method
-- (void)createView {
+- (void)setupUI {
     
     // ##SJ Test
     for (NSString *strMsg in self.dataDetailArray) {
