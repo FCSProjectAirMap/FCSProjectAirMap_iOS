@@ -14,6 +14,6 @@
 
 + (instancetype)sharedInstance;
 - (void)uploadImages:(NSMutableArray *)selectedImages inTravelTitle:(NSString *)travelTitle;
-- (void)uploadMetaDatas:(NSMutableDictionary *)selectedDatas inTravelTitle:(NSString *)travelTitle;
+- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas inTravelTitle:(NSString *)travelTitle;
 
 @end

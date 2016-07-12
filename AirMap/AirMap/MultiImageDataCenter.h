@@ -21,7 +21,7 @@
 - (PHFetchResult *)callFetchResult;
 - (NSMutableArray *)callSelectedAssets;
 - (NSMutableArray *)callSelectedImages;
-- (NSMutableDictionary *)callSelectedData;
+- (NSMutableArray *)callSelectedData;
 
 - (void)extractMetadataFromImage;
 
