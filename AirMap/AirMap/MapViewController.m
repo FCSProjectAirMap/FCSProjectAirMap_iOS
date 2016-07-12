@@ -347,6 +347,9 @@
                                  // plus Button
                                  [self.plusButton setAlpha:1.0f];
                                  // plus View
+                                 if (![self.plusView isHidden]) {
+                                     self.plusView.hidden = !self.plusView.hidden;
+                                 }
                                  [self.plusView setAlpha:1.0f];
                                  // loaction Button
                                  [self.locationButton setAlpha:1.0f];
