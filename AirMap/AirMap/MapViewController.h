@@ -19,4 +19,6 @@
 @interface MapViewController : UIViewController
 <GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
 
+@property (nonatomic, strong) NSString *overlayTravelTitle;
+
 @end

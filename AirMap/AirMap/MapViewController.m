@@ -22,7 +22,8 @@ static const CGFloat overlayrHeight = 30.0f;
 @property (nonatomic, weak) UIButton *travelButton;
 @property (nonatomic, weak) UIButton *locationButton;
 @property (nonatomic, weak) UIView *plusView;
-@property (nonatomic) UIView *overlayView;
+@property (nonatomic, weak) UIView *overlayView;
+@property (nonatomic, weak) UILabel *overlayTravelTitleLabel;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
@@ -107,6 +108,14 @@ static const CGFloat overlayrHeight = 30.0f;
     overlayView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f];
     [self.mapView addSubview:overlayView];
     self.overlayView = overlayView;
+    
+    // overlayTravelTitle Label
+    UILabel *overlayTravelTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.overlayView.frame.size.width, self.overlayView.frame.size.height)];
+    overlayTravelTitleLabel.text = self.overlayTravelTitle;
+    overlayTravelTitleLabel.textColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
+    overlayTravelTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.overlayView addSubview:overlayTravelTitleLabel];
+    self.overlayTravelTitleLabel = overlayTravelTitleLabel;
     
     // location Button
     UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
