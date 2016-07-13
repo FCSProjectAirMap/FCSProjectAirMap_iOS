@@ -52,6 +52,7 @@ static const CGFloat overlayrHeight = 30.0f;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [MapViewController removeGMSBlockingGestureRecognizerFromMapView:self.mapView];
 }
 
@@ -111,7 +112,7 @@ static const CGFloat overlayrHeight = 30.0f;
     
     // overlayTravelTitle Label
     UILabel *overlayTravelTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.overlayView.frame.size.width, self.overlayView.frame.size.height)];
-    overlayTravelTitleLabel.text = self.overlayTravelTitle;
+    overlayTravelTitleLabel.text = @"";
     overlayTravelTitleLabel.textColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
     overlayTravelTitleLabel.textAlignment = NSTextAlignmentCenter;
     [self.overlayView addSubview:overlayTravelTitleLabel];
@@ -254,6 +255,7 @@ static const CGFloat overlayrHeight = 30.0f;
 - (void)travelButtonTouchUpInside:(UIButton *)sender {
     DLog(@"여행 경로 추가");
     TravelTableViewController *travelTabelViewController = [[TravelTableViewController alloc] init];
+    travelTabelViewController.delegate = self;
     // Nivigation
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
     [self presentViewController:navi animated:YES completion:nil];
@@ -396,5 +398,10 @@ static const CGFloat overlayrHeight = 30.0f;
  *                          GMSMapView Delegate                             *
  *                                                                          *
  ****************************************************************************/
+
+#pragma mark - TravelTableViewController Delegate
+- (void)selectTravelTitle:(NSString *)title {
+    self.overlayTravelTitleLabel.text = title;
+}
 
 @end

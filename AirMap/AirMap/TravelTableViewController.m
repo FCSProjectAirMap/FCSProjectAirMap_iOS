@@ -60,8 +60,8 @@
 // Cell 오른쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeRightButtons:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
-    NSArray *titles = @[@"삭제"];
-    NSArray *colors = @[[UIColor redColor]];
+    NSArray *titles = @[@"삭 제", @"수 정"];
+    NSArray *colors = @[[UIColor redColor], [UIColor lightGrayColor]];
     for (NSInteger i = 0; i < number; ++i) {
         MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
             NSLog(@"Convenience callback received (right).");
@@ -86,6 +86,11 @@
         [result addObject:button];
     }
     return result;
+}
+
+// delegate Method
+- (void)selectTravelTitle:(NSString *) title {
+    [self.delegate selectTravelTitle:title];
 }
 
 #pragma mark - Action Method
@@ -178,22 +183,25 @@
     cell.textLabel.font = [UIFont fontWithName:@"Georgia-Bold" size:25.0f];
     cell.detailTextLabel.text = [self.formatDate objectAtIndex:indexPath.row];
     cell.textLabel.text = [self.dataArray objectAtIndex:indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
     cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
-    cell.rightButtons = [self createSwipeRightButtons:1];
+    cell.rightButtons = [self createSwipeRightButtons:2];
     return cell;
 }
 
 // Cell 선택 되었을 때
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] init];
-    travelDetailViewController.travelName = [self.dataArray objectAtIndex:indexPath.row];
-    [travelDetailViewController.dataDetailArray addObjectsFromArray:@[@"도오쿄~", @"가나자와~", @"외키나와", @"아마쿠사~", @"고베", @"구마모토", @"나가노"]];
-    [self.navigationController pushViewController:travelDetailViewController animated:YES];
+    // 선택된 셀
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    // mapview로 타이틀 정보를 넘겨 줌.
+    [self selectTravelTitle:cell.textLabel.text];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
     // 셀 선택 해제
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - MGSwipeTableCellDelegate
@@ -202,6 +210,7 @@
     
     // Delete
     if (direction == MGSwipeDirectionRightToLeft && index == 0) {
+        DLog(@"Delete Touch");
         // path 가져오기
         NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         // data delete
@@ -213,6 +222,16 @@
         
         [self.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         return NO;
+    } // modify
+    else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
+        DLog(@"modify Touch");
+        // path 가져오기
+        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
+        
+        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] init];
+        travelDetailViewController.travelName = [self.dataArray objectAtIndex:path.row];
+        [travelDetailViewController.dataDetailArray addObjectsFromArray:@[@"도오쿄~", @"가나자와~", @"외키나와", @"아마쿠사~", @"고베", @"구마모토", @"나가노"]];
+        [self.navigationController pushViewController:travelDetailViewController animated:YES];
     }
     
     return YES;

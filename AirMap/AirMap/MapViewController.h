@@ -17,8 +17,6 @@
 @import GoogleMaps;
 
 @interface MapViewController : UIViewController
-<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
-
-@property (nonatomic, strong) NSString *overlayTravelTitle;
+<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate, TravelTableViewControllerDelegate>
 
 @end
