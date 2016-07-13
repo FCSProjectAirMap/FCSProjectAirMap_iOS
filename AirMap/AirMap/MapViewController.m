@@ -8,6 +8,8 @@
 
 #import "MapViewController.h"
 
+static const CGFloat overlayrHeight = 30.0f;
+
 @interface MapViewController ()
 
 @property (nonatomic) GMSMapView *mapView;
@@ -20,6 +22,7 @@
 @property (nonatomic, weak) UIButton *travelButton;
 @property (nonatomic, weak) UIButton *locationButton;
 @property (nonatomic, weak) UIView *plusView;
+@property (nonatomic) UIView *overlayView;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
@@ -35,6 +38,7 @@
     [super viewDidLoad];
     // 구글 지도 만들어 주기.
     [self createGoogleMapView];
+    
     // view 만들어 주기.
     [self setupUI];
     
@@ -98,9 +102,15 @@
     const CGFloat Y_MARGIN = 10.0f;
     const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     
+    // overlay View
+    UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.mapView.frame.size.height - overlayrHeight, self.mapView.frame.size.width, overlayrHeight)];
+    overlayView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f];
+    [self.mapView addSubview:overlayView];
+    self.overlayView = overlayView;
+    
     // location Button
     UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    locationButton.frame = CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    locationButton.frame = CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT - overlayrHeight, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
     [locationButton setBackgroundImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
     [locationButton setContentMode:UIViewContentModeScaleAspectFit];
     [locationButton addTarget:self
@@ -214,10 +224,10 @@
                                                             longitude:self.locationManager.location.coordinate.longitude
                                                                  zoom:5];
     self.mapView = [GMSMapView mapWithFrame:self.view.frame camera:camera];
-    [self.mapView setDelegate:self];
-    [self.mapView setMyLocationEnabled:YES];
+    self.mapView.delegate = self;
+    self.mapView.myLocationEnabled = YES;
+    self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, overlayrHeight, 0.0f);
     self.view = self.mapView;
-    
 }
 
 #pragma mark - Action Method
