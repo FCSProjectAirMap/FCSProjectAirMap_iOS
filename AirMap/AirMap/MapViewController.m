@@ -283,6 +283,7 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     DLog(@"메뉴 버튼 눌렀따!");
     MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
     [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    self.isSlideMenuOpen = YES;
     [self addChildViewController:menuSlideView];
     [self.view addSubview:menuSlideView.view];
     [UIView animateWithDuration:0.4 animations:^{
@@ -300,8 +301,8 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
 
 // 지도를 탭 했을 경우 UI들 숨기기 메서드
 -(void)appearanceSearchBar:(UITapGestureRecognizer *)recognizer {
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded)
+    if(self.isSlideMenuOpen ==NO){
+        if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         // endEditing
         [self.view endEditing:YES];
@@ -362,6 +363,9 @@ const CGFloat TEXTFIELD_HEIGHT = 45.0f;
                                  DLog(@"Done 2");
                              }];
         }
+    }else{
+        
+    }
     }
 }
 
