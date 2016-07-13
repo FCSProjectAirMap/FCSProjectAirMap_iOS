@@ -96,6 +96,7 @@
 #pragma mark - Action Method
 - (void)tapSomeWhereElse:(UITapGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded){
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GrafiaLoginSussessNotification" object:self userInfo:nil];
         
         [UIView animateWithDuration:0.4 animations:^{
             [self.view setFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];

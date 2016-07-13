@@ -39,6 +39,14 @@
     
     self.path = [GMSMutablePath path];
     self.isAnimating = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSession:) name:@"GrafiaLoginSussessNotification" object:nil];
+}
+
+
+- (void) getSession:(NSNotification *) notif
+{
+    self.isSlideMenuOpen = NO;
 }
 
 - (void)didReceiveMemoryWarning {
