@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		149271153E68F16848807B18 /* libPods-AirMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1830F141CEEF713626E661 /* libPods-AirMap.a */; };
 		E4041519E7E37666D21CD521 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */; };
 		E4D39BD01D337AF500DE48D9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		16028BDC9D099C26AC19ED29 /* Pods-AirMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.release.xcconfig"; sourceTree = "<group>"; };
+		2F1830F141CEEF713626E661 /* libPods-AirMap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirMap.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4253540E246896CD5E2EF7E9 /* Pods-AirMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.debug.xcconfig"; sourceTree = "<group>"; };
 		E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = AirMap/etc/facebook/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = AirMap/etc/facebook/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				E4D39BD11D337AF500DE48D9 /* FBSDKShareKit.framework in Frameworks */,
 				EC714C8B1D2ABD1C00165A58 /* CoreLocation.framework in Frameworks */,
 				E4041519E7E37666D21CD521 /* (null) in Frameworks */,
+				149271153E68F16848807B18 /* libPods-AirMap.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +172,7 @@
 				E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */,
 				E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */,
 				EC714C8A1D2ABD1C00165A58 /* CoreLocation.framework */,
+				2F1830F141CEEF713626E661 /* libPods-AirMap.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
