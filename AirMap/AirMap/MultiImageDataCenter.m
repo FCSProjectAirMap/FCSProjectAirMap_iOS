@@ -106,8 +106,7 @@ const CGFloat imageShortLength = 640;
                                                              options:options
                                                        resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
                                                            image = result;
-                                                           NSLog(@"%ld", image.imageOrientation);
-                                                           NSLog(@"%f x %f", image.size.width, image.size.height);
+
                                                            [selectedImages addObject:image];
                                                        }];
     }
