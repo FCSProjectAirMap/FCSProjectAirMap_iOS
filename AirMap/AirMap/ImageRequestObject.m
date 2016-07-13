@@ -53,7 +53,7 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
                                                                                                      parameters:parameters
                                                                                       constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                                                                                           
-                                                                                          [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.1)
+                                                                                          [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
                                                                                                                       name:@"image_data"
                                                                                                                   fileName:fileName
                                                                                                                   mimeType:@"image/jpeg"];

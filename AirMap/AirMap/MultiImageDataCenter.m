@@ -18,6 +18,8 @@
 
 @implementation MultiImageDataCenter
 
+const CGFloat imageShortLength = 640;
+
 + (instancetype)sharedImageDataCenter {
     
     static MultiImageDataCenter *sharedImageDataCenter = nil;
@@ -46,8 +48,9 @@
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];
     
+    
     self.fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage
-                                                           options:fetchOptions];
+                                                 options:fetchOptions];
 }
 
 // 선택된 사진 더하기
@@ -63,7 +66,7 @@
 // 재선택된 사진 빼기
 - (void)removeSelectedAsset:(PHAsset *)asset {
     [self.selectedAssets removeObject:asset];
-
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateNotification"
                                                         object:[NSString stringWithFormat:@"%ld", self.selectedAssets.count]];
 }
@@ -85,29 +88,45 @@
 #pragma mark - AssetToUIImage
 // PHAseet -> UIImage
 - (void)changeAssetToImage {
-   
+    
     NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedAssets.count];
     
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.resizeMode = PHImageRequestOptionsResizeModeExact;
     options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
     options.synchronous =YES;
-
+    
     __block UIImage *image;
     
     for (PHAsset *asset in self.selectedAssets) {
+        
         [[PHCachingImageManager defaultManager] requestImageForAsset:asset
-                                                          targetSize:PHImageManagerMaximumSize
+                                                          targetSize:[self resizeAsset:asset]
                                                          contentMode:PHImageContentModeDefault
                                                              options:options
                                                        resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            image = result;
-            
-            [selectedImages addObject:image];
-        }];
+                                                           image = result;
+                                                           NSLog(@"%ld", image.imageOrientation);
+                                                           NSLog(@"%f x %f", image.size.width, image.size.height);
+                                                           [selectedImages addObject:image];
+                                                       }];
     }
     
     self.selectedImages = selectedImages;
+}
+
+// 이미지 사이즈 변경(짧은 길이를 imageShortLength으로 맞춤, aspect fit)
+- (CGSize)resizeAsset:(PHAsset *)asset {
+    
+    CGFloat ratio = (CGFloat) asset.pixelWidth / asset.pixelHeight;
+    
+    if (ratio > 1 ) {
+        return CGSizeMake(imageShortLength * ratio, imageShortLength);
+    } else if (ratio < 1) {
+        return CGSizeMake(imageShortLength, imageShortLength / ratio);
+    } else {
+        return CGSizeMake(imageShortLength, imageShortLength);
+    }
 }
 
 - (NSMutableArray *)callSelectedImages {
@@ -125,7 +144,7 @@
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
         NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
         
-//        NSArray *location = @[latitude, longitude];
+        //        NSArray *location = @[latitude, longitude];
         NSDictionary *metaData = @{@"creationDate": creationDate,
                                    @"timestamp":timestamp,
                                    @"latitude":latitude,
