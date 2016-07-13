@@ -34,12 +34,14 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     NSLog(@"Start upload images");
     
     // 업로드 parameter
-    NSDictionary *parameters = @{@"user_id":@"아이디", @"travel_title":@"여행 이름"};
+    NSDictionary *parameters = @{@"user_token":@"토큰값", @"travel_title":@"여행 이름"};
     
     // global queue 생성
     dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    NSInteger count = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages].count;
+    NSInteger count
+    
+    = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages].count;
     for (NSInteger i = 0; i < count; i++) {
         UIImage *image = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages][i];
         
@@ -55,8 +57,6 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
                                                                                                                       name:@"image_data"
                                                                                                                   fileName:fileName
                                                                                                                   mimeType:@"image/jpeg"];
-                                                                                          
-                                                                                          
                                                                                       }
                                                                                                           error:nil];
             // upload task 생성 및 실시
@@ -92,7 +92,7 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     
     //    NSArray *metadataArray = [[NSArray alloc] initWithObjects:[[MultiImageDataCenter sharedImageDataCenter] callSelectedData], nil];
     
-    NSDictionary *metadataDic = @{@"user_id":@"유저 아이디",
+    NSDictionary *metadataDic = @{@"user_token":@"유저 아이디",
                                   @"travel_title":@"여행 이름",
                                   @"image_metadatas":selectedDatas};
     
