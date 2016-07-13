@@ -92,7 +92,7 @@
     } else {
         // TableView
         // ##SJ 왜 타이틀 뷰 바로 밑에 안붙는지???
-        UITableView *detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, topView.frame.size.height + 64.0f, self.view.frame.size.width, self.view.frame.size.height - topView.frame.size.height) style:UITableViewStylePlain];
+        UITableView *detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, topView.frame.size.height + 64.0f, self.view.frame.size.width, self.view.frame.size.height - topView.frame.size.height) style:UITableViewStyleGrouped];
         [self.view addSubview:detailTableView];
         self.detailTableView = detailTableView;
     }
@@ -120,6 +120,13 @@
 //}
 
 #pragma mark - TableViewDelegate, TableViewDataSource
+// section header height
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return CGFLOAT_MIN;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60.0f;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataDetailArray.count;
 }
