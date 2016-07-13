@@ -98,8 +98,19 @@
     const CGFloat Y_MARGIN = 10.0f;
     const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     
+    // location Button
+    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    locationButton.frame = CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [locationButton setBackgroundImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
+    [locationButton setContentMode:UIViewContentModeScaleAspectFit];
+    [locationButton addTarget:self
+                       action:@selector(locationButtonTouchUpInside:)
+             forControlEvents:UIControlEventTouchUpInside];
+    [self.mapView addSubview:locationButton];
+    self.locationButton = locationButton;
+    
     // plus Button
-    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.locationButton.frame.origin.x, self.locationButton.frame.origin.y - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [plusButton setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
     [plusButton setContentMode:UIViewContentModeScaleAspectFit];
     [plusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -156,17 +167,6 @@
     [menuButton setImage:[UIImage imageNamed:@"Menu_icon"] forState:UIControlStateNormal];
     [self.mapView addSubview:menuButton];
     self.menuButton = menuButton;
-    
-    // location Button
-    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    locationButton.frame = CGRectMake(X_MARGIN, menuButton.frame.origin.y + menuButton.frame.size.height + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    [locationButton setBackgroundImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
-    [locationButton setContentMode:UIViewContentModeScaleAspectFit];
-    [locationButton addTarget:self
-                       action:@selector(locationButtonTouchUpInside:)
-             forControlEvents:UIControlEventTouchUpInside];
-    [self.mapView addSubview:locationButton];
-    self.locationButton = locationButton;
     
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
