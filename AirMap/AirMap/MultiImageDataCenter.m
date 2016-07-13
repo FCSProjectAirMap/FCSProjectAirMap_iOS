@@ -12,7 +12,7 @@
 @property (strong, nonatomic) PHFetchResult *fetchResult;
 @property (strong, nonatomic) NSMutableArray *selectedAssets;
 @property (strong, nonatomic) NSMutableArray *selectedImages;
-@property (strong, nonatomic) NSMutableDictionary *selectedData;
+@property (strong, nonatomic) NSMutableArray *selectedDatas;
 
 @end
 
@@ -33,8 +33,8 @@
     self = [super init];
     if (self) {
         [self loadFetchResult];
-        self.selectedAssets = [[NSMutableArray alloc] initWithCapacity:1];
-        self.selectedData = [[NSMutableDictionary alloc] initWithCapacity:1];
+        self.selectedAssets = [[NSMutableArray alloc] init];
+        self.selectedDatas = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -71,7 +71,7 @@
 - (void)resetSelectedFiles {
     [self.selectedAssets removeAllObjects];
     [self.selectedImages removeAllObjects];
-    [self.selectedData removeAllObjects];
+    [self.selectedDatas removeAllObjects];
 }
 
 - (PHFetchResult *)callFetchResult {
@@ -84,7 +84,8 @@
 
 #pragma mark - AssetToUIImage
 // PHAseet -> UIImage
-- (NSMutableArray *)callSelectedImages {
+- (void)changeAssetToImage {
+   
     NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedAssets.count];
     
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
@@ -107,7 +108,9 @@
     }
     
     self.selectedImages = selectedImages;
-    
+}
+
+- (NSMutableArray *)callSelectedImages {
     return self.selectedImages;
 }
 
@@ -116,24 +119,26 @@
 - (void)extractMetadataFromImage {
     
     for (PHAsset *asset in self.selectedAssets) {
-        
-        NSNumber *timeStamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
+        // 전송할 메타데이터 추출
+        NSNumber *timestamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
+        NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
         
 //        NSArray *location = @[latitude, longitude];
-        NSDictionary *metaData = @{@"creationDate": asset.creationDate,
-                                   @"timeStamp":timeStamp,
+        NSDictionary *metaData = @{@"creationDate": creationDate,
+                                   @"timestamp":timestamp,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
         
-        [self.selectedData setObject:metaData forKey:timeStamp];
+        [self.selectedDatas addObject:metaData];
     }
-    NSLog(@"%@", self.selectedData);
+    [self changeAssetToImage];
+    NSLog(@"%@", self.selectedDatas);
 }
 
-- (NSMutableDictionary *)callSelectedData {
-    return self.selectedData;
+- (NSMutableArray *)callSelectedData {
+    return self.selectedDatas;
 }
 
 @end

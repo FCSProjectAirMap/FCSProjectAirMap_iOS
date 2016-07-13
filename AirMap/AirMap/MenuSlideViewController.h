@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface MenuSlideViewController : UIViewController
+<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSString *userID;
 

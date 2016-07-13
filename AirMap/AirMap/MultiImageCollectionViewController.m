@@ -181,10 +181,11 @@ const CGFloat spacing = 2;
     NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
     
     // 이미지, 메타데이터 업로드
-    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
     [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
+    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
 
     [self.imageDataCenter resetSelectedFiles];
+    
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
     }];
 }
@@ -199,7 +200,14 @@ const CGFloat spacing = 2;
 // 선택된 사진이 10장 이상일때 alert띄우기
 - (void)showAlertWindow:(BOOL)isShowAlert {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"사진 선택은 10장까지 가능합니다." preferredStyle:UIAlertControllerStyleAlert];
+    NSString *titleString = @"사진은 최대 10장까지 선택 가능합니다.";
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:titleString];
+    [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont systemFontOfSize:13]}
+                   range:NSMakeRange(0, titleString.length )];
+    
+    [alert setValue:title forKey:@"attributedTitle"];
     
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
