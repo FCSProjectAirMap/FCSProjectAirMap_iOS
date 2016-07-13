@@ -25,6 +25,7 @@
 @property (nonatomic, weak) UIButton *menuButton;
 
 @property (nonatomic) BOOL isAnimating;
+@property (nonatomic) BOOL isStatusBarHidden;
 
 @end
 
@@ -323,6 +324,9 @@
                                  [self.plusView setAlpha:0.0f];
                                  // loaction Button
                                  [self.locationButton setAlpha:0.0f];
+                                 // status bar
+                                 self.isStatusBarHidden = YES;
+                                 [self setNeedsStatusBarAppearanceUpdate];
                              } completion:^(BOOL finished) {
                                  // 애니메이션 완료 로직..
                                  DLog(@"Done 1");
@@ -351,8 +355,11 @@
                                      self.plusView.hidden = !self.plusView.hidden;
                                  }
                                  [self.plusView setAlpha:1.0f];
-                                 // loaction Button
+                                 // loaction Button    
                                  [self.locationButton setAlpha:1.0f];
+                                 // status bar
+                                 self.isStatusBarHidden = NO;
+                                 [self setNeedsStatusBarAppearanceUpdate];
                              } completion:^(BOOL finished) {
                                  // 애니메이션 완료 로직..
                                  DLog(@"Done 2");
@@ -360,7 +367,10 @@
         }
     }
 }
-
+// status bar
+- (BOOL)prefersStatusBarHidden {
+    return self.isStatusBarHidden;
+}
 #pragma mark - GMSMapViewDelegate
 /****************************************************************************
  *                                                                          *
