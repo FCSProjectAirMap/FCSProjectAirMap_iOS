@@ -214,8 +214,14 @@ static const CGFloat overlayrHeight = 30.0f;
     // 현재 나의 위치 정보 가져오기.
     self.locationManager = [[CLLocationManager alloc] init];
     
-    // delegate Connect
+    // 델리게이트
     self.locationManager.delegate = self;
+    // 로케이션 정확도 (배터리로 동작할 때 권장되는 가장 수준높은 정확도)
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    // 거리 필터 구성. 어느 정도 거리의 위치변화가 생겼을 때 어플이 알람을 받을지 말지 설정하는 프로퍼티. (1500미터)
+    self.locationManager.distanceFilter = 1500.0;
+    
+    
     // 사용중인 위치 정보 요청 (항상)
     if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
         [self.locationManager requestAlwaysAuthorization];
@@ -240,6 +246,12 @@ static const CGFloat overlayrHeight = 30.0f;
     self.view = self.mapView;
 }
 
+#pragma mark - CLLocationManager Delegate
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation {
+    NSLog(@"newLocation : %@", newLocation);
+}
 #pragma mark - Action Method
 /****************************************************************************
  *                                                                          *
