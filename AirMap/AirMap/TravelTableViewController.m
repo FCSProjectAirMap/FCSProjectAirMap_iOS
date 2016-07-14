@@ -13,6 +13,7 @@
 @property (nonatomic, weak) UITableView *travelTableView;
 @property (nonatomic, strong) RLMResults *resultArray;
 @property (nonatomic, strong) UserInfo *userInfo;
+@property (nonatomic, strong) RLMNotificationToken *notification;
 
 @end
 
@@ -35,6 +36,12 @@
     if (self.resultArray.count > 0) {
         self.userInfo = self.resultArray[0];
     }
+    
+    __weak typeof(self) weakSelf = self;
+    self.notification = [[RLMRealm defaultRealm] addNotificationBlock:^(NSString * _Nonnull notification, RLMRealm * _Nonnull realm) {
+        NSLog(@"notification : %@", notification);
+        [weakSelf.travelTableView reloadData];
+    }];
 }
 
 #pragma mark - General Method
@@ -109,6 +116,8 @@
 // 여행 경로 추가 버튼 이벤트
 // issues : 버튼을 계속 클릭 시 AlertView가 계송 생성 됨. 확인 버튼을 누를 경우 비활성화 시킨 버튼을 활성화 시킬 수 있지만, 취소버튼을 누를경우 방법이....
 - (void)travelTableViewAddTouchUpInside:(UIBarButtonItem *)barButtonItem {
+    __weak typeof(self) weakSelf = self;
+    
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     alert.horizontalButtons = YES;
     [alert removeTopCircle];
@@ -148,24 +157,17 @@
          DLog(@"여행 경로 생성 : %@", travelNameTextField.text);
          
          // 여행 경로 생성! Realm에 저장.
-         RLMRealm *realm = [RLMRealm defaultRealm];
          TravelList *travelist = [[TravelList alloc] init];
          travelist.travel_title = travelNameTextField.text;
          travelist.activity = NO;
          
-         NSLog(@"%ld", self.userInfo.travel_list.count);
+         NSLog(@"Travel List Count : %ld", self.userInfo.travel_list.count);
          
          // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
-         [realm beginWriteTransaction];
-         [self.userInfo.travel_list addObject:travelist];
-         [realm commitWriteTransaction];
          
-         // tableview insert
-         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.userInfo.travel_list count] - 1 inSection:0]];
-         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
-         
-         // tableview reloadData
-         [self.travelTableView reloadData];
+         [[RLMRealm defaultRealm] transactionWithBlock:^{
+             [weakSelf.userInfo.travel_list addObject:travelist];
+         }];
      }];
     
     [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
@@ -215,28 +217,31 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
     // 셀 선택 해제
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - MGSwipeTableCellDelegate
 // Swipe했을 때 실행되는 Delegate
 -(BOOL) swipeTableCell:(MGSwipeTableCell*) cell tappedButtonAtIndex:(NSInteger) index direction:(MGSwipeDirection)direction fromExpansion:(BOOL) fromExpansion {
+    // path 가져오기
+    NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
     
     // Delete
     if (direction == MGSwipeDirectionRightToLeft && index == 0) {
         DLog(@"Delete Touch");
-        // path 가져오기
-        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         
         // Realm Data delete
+        __weak typeof(self) weakSelf = self;
+        TravelList *travelList = [self.userInfo.travel_list objectAtIndex:path.row];
+        [[RLMRealm defaultRealm] transactionWithBlock:^{
+            [[RLMRealm defaultRealm] deleteObject:travelList];
+            [weakSelf.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+        }];
         
-        [self.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         return NO;
     } // modify
     else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
         DLog(@"modify Touch");
-        // path 가져오기
-//        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         
     }
     
