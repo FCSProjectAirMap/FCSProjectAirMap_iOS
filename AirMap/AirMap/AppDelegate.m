@@ -33,7 +33,7 @@
     self.window.rootViewController = mapViewController;
     
     if ([FBSDKAccessToken currentAccessToken]) {
-        [self showLoginView];
+//        [self showLoginView];
     } else {
         // No, display the login page.
         [self showLoginView];

@@ -45,7 +45,7 @@ static const CGFloat overlayrHeight = 30.0f;
     self.path = [GMSMutablePath path];
     self.isAnimating = YES;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSession:) name:@"GrafiaLoginSussessNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSession:) name:@"NotiForParentViewTouch" object:nil];
 }
 
 
