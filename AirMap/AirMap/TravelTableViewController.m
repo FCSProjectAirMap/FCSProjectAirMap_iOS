@@ -11,6 +11,8 @@
 @interface TravelTableViewController ()
 
 @property (nonatomic, weak) UITableView *travelTableView;
+@property (nonatomic, strong) RLMResults *resultArray;
+@property (nonatomic, strong) UserInfo *userInfo;
 
 @end
 
@@ -19,7 +21,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // UI View
     [self setupUI];
+    
+    // realm파일 저장되어 있는 경로.
+    NSLog(@"%@", [RLMRealm defaultRealm].configuration.fileURL);
+    
+    // user_id의 데이터 정보를 검색.
+    // 로그인 할 때 키체인에 저장시켜둔 id를 가져와 해당 객체를 찾는다.
+    self.resultArray = [UserInfo objectsWhere:@"user_id == %@", @"wngus606@gmail.com"];
+    // 이미 로그인 할때 해당 아이디로 Realm데이터에 insert됨으로 조건을 줄 필요는 없지만 일단 적어 둠.
+    // result 객체의 수가 0 이상일 경우는 이미 있는 데이터
+    if (self.resultArray.count > 0) {
+        self.userInfo = self.resultArray[0];
+    }
 }
 
 #pragma mark - General Method
@@ -133,11 +148,21 @@
          DLog(@"여행 경로 생성 : %@", travelNameTextField.text);
          
          // 여행 경로 생성! Realm에 저장.
+         RLMRealm *realm = [RLMRealm defaultRealm];
+         TravelList *travelist = [[TravelList alloc] init];
+         travelist.travel_title = travelNameTextField.text;
+         travelist.activity = NO;
          
+         NSLog(@"%ld", self.userInfo.travel_list.count);
+         
+         // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
+         [realm beginWriteTransaction];
+         [self.userInfo.travel_list addObject:travelist];
+         [realm commitWriteTransaction];
          
          // tableview insert
-//         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.dataArray count] - 1 inSection:0]];
-//         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
+         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.userInfo.travel_list count] - 1 inSection:0]];
+         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
          
          // tableview reloadData
          [self.travelTableView reloadData];
@@ -159,7 +184,7 @@
 }
 // 한 Section당 row의 개수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return self.userInfo.travel_list.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -170,7 +195,9 @@
         cell.delegate = self;
     }
     
+    TravelList *travelList = [self.userInfo.travel_list objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"Georgia-Bold" size:25.0f];
+    cell.textLabel.text = travelList.travel_title;
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
     cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
@@ -209,7 +236,7 @@
     else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
         DLog(@"modify Touch");
         // path 가져오기
-        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
+//        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         
     }
     

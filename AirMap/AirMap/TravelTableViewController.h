@@ -11,6 +11,7 @@
 #import "SCLAlertView.h"
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
+#import "UserInfo.h"
 
 @protocol TravelTableViewControllerDelegate <NSObject>
 

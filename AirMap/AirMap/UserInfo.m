@@ -10,6 +10,11 @@
 
 @implementation UserInfo
 
+// 기본키 생성.
++ (NSString *)primaryKey {
+    return @"user_id";
+}
+
 // Specify default values for properties
 
 //+ (NSDictionary *)defaultPropertyValues
