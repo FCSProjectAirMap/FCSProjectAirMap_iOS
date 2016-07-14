@@ -8,6 +8,8 @@
 
 #import "MapViewController.h"
 
+static const CGFloat overlayrHeight = 30.0f;
+
 @interface MapViewController ()
 
 @property (nonatomic) GMSMapView *mapView;
@@ -20,11 +22,13 @@
 @property (nonatomic, weak) UIButton *travelButton;
 @property (nonatomic, weak) UIButton *locationButton;
 @property (nonatomic, weak) UIView *plusView;
+@property (nonatomic) UIView *overlayView;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
 
 @property (nonatomic) BOOL isAnimating;
+@property (nonatomic) BOOL isStatusBarHidden;
 
 @end
 
@@ -34,6 +38,7 @@
     [super viewDidLoad];
     // 구글 지도 만들어 주기.
     [self createGoogleMapView];
+    
     // view 만들어 주기.
     [self setupUI];
     
@@ -105,8 +110,25 @@
     const CGFloat Y_MARGIN = 10.0f;
     const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     
+    // overlay View
+    UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.mapView.frame.size.height - overlayrHeight, self.mapView.frame.size.width, overlayrHeight)];
+    overlayView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f];
+    [self.mapView addSubview:overlayView];
+    self.overlayView = overlayView;
+    
+    // location Button
+    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    locationButton.frame = CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT - overlayrHeight, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [locationButton setBackgroundImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
+    [locationButton setContentMode:UIViewContentModeScaleAspectFit];
+    [locationButton addTarget:self
+                       action:@selector(locationButtonTouchUpInside:)
+             forControlEvents:UIControlEventTouchUpInside];
+    [self.mapView addSubview:locationButton];
+    self.locationButton = locationButton;
+    
     // plus Button
-    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
+    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.locationButton.frame.origin.x, self.locationButton.frame.origin.y - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
     [plusButton setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
     [plusButton setContentMode:UIViewContentModeScaleAspectFit];
     [plusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -164,17 +186,6 @@
     [self.mapView addSubview:menuButton];
     self.menuButton = menuButton;
     
-    // location Button
-    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    locationButton.frame = CGRectMake(X_MARGIN, menuButton.frame.origin.y + menuButton.frame.size.height + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    [locationButton setBackgroundImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
-    [locationButton setContentMode:UIViewContentModeScaleAspectFit];
-    [locationButton addTarget:self
-                       action:@selector(locationButtonTouchUpInside:)
-             forControlEvents:UIControlEventTouchUpInside];
-    [self.mapView addSubview:locationButton];
-    self.locationButton = locationButton;
-    
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
     UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(X_MARGIN + menuButton.frame.size.width, menuButton.frame.origin.y, self.mapView.frame.size.width-menuButton.frame.size.width - (X_MARGIN*2), TEXTFIELD_HEIGHT)];
@@ -221,10 +232,10 @@
                                                             longitude:self.locationManager.location.coordinate.longitude
                                                                  zoom:5];
     self.mapView = [GMSMapView mapWithFrame:self.view.frame camera:camera];
-    [self.mapView setDelegate:self];
-    [self.mapView setMyLocationEnabled:YES];
+    self.mapView.delegate = self;
+    self.mapView.myLocationEnabled = YES;
+    self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, overlayrHeight, 0.0f);
     self.view = self.mapView;
-    
 }
 
 #pragma mark - Action Method
@@ -332,6 +343,9 @@
                                  [self.plusView setAlpha:0.0f];
                                  // loaction Button
                                  [self.locationButton setAlpha:0.0f];
+                                 // status bar
+                                 self.isStatusBarHidden = YES;
+                                 [self setNeedsStatusBarAppearanceUpdate];
                              } completion:^(BOOL finished) {
                                  // 애니메이션 완료 로직..
                                  DLog(@"Done 1");
@@ -360,8 +374,11 @@
                                      self.plusView.hidden = !self.plusView.hidden;
                                  }
                                  [self.plusView setAlpha:1.0f];
-                                 // loaction Button
+                                 // loaction Button    
                                  [self.locationButton setAlpha:1.0f];
+                                 // status bar
+                                 self.isStatusBarHidden = NO;
+                                 [self setNeedsStatusBarAppearanceUpdate];
                              } completion:^(BOOL finished) {
                                  // 애니메이션 완료 로직..
                                  DLog(@"Done 2");
@@ -372,7 +389,10 @@
     }
     }
 }
-
+// status bar
+- (BOOL)prefersStatusBarHidden {
+    return self.isStatusBarHidden;
+}
 #pragma mark - GMSMapViewDelegate
 /****************************************************************************
  *                                                                          *

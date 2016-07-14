@@ -11,14 +11,25 @@
 @interface TravelTableViewController ()
 
 // ##SJ Test
-@property (nonatomic) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSDateFormatter *today;
+@property (nonatomic, strong) NSMutableArray *formatDate;
+
+@property (nonatomic, weak) UITableView *travelTableView;
+
 @end
 
 @implementation TravelTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // ##SJ Test
+    self.today = [[NSDateFormatter alloc] init];
+    self.formatDate = [[NSMutableArray alloc] initWithCapacity:1];
+    [self.today setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     
+    
+    [self setupUI];
     self.title = @"여행 경로";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
@@ -37,12 +48,54 @@
     self.dataArray = [[NSMutableArray alloc] initWithCapacity:1];
 }
 
+#pragma mark - General Method
+- (void)setupUI {
+    // table View
+    UITableView *travelTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
+    [self.view addSubview:travelTableView];
+    self.travelTableView = travelTableView;
+    self.travelTableView.delegate = self;
+    self.travelTableView.dataSource = self;
+}
+// Cell 오른쪽에 나오는 버튼들 생성 메서드
+- (NSArray *)createSwipeRightButtons:(NSInteger) number {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
+    NSArray *titles = @[@"삭제"];
+    NSArray *colors = @[[UIColor redColor]];
+    for (NSInteger i = 0; i < number; ++i) {
+        MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
+            NSLog(@"Convenience callback received (right).");
+            BOOL autoHide = (i != 0);
+            return autoHide;
+        }];
+        [result addObject:button];
+    }
+    return result;
+}
+
+// Cell 왼쪽에 나오는 버튼들 생성 메서드
+- (NSArray *)createSwipeLeftButton:(NSInteger) number {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
+    NSArray *colors = @[[UIColor colorWithRed:0.59 green:0.29 blue:0.08 alpha:1.0]];
+    NSArray *icons = @[[UIImage imageNamed:@""]];
+    for (NSInteger i = 0; i < number; ++i) {
+        MGSwipeButton * button = [MGSwipeButton buttonWithTitle:@"" icon:icons[i] backgroundColor:colors[i] padding:15 callback:^BOOL(MGSwipeTableCell * sender){
+            NSLog(@"Convenience callback received (left).");
+            return YES;
+        }];
+        [result addObject:button];
+    }
+    return result;
+}
+
 #pragma mark - Action Method
 
+// 여행 경로 닫기 버튼 이벤트
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+// 여행 경로 추가 버튼 이벤트
 - (void)travelTableViewAddTouchUpInside:(UIBarButtonItem *)barButtonItem {
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     alert.horizontalButtons = YES;
@@ -81,15 +134,18 @@
          return YES;
      } actionBlock:^{
          DLog(@"%@", travelNameTextField.text);
+         // ##SJ Test
+         [self.formatDate addObject:[self.today stringFromDate:[NSDate date]]];
+         
          // response DataCenter insert?
          [self.dataArray addObject:travelNameTextField.text];
          
          // tableview insert
          NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.dataArray count] - 1 inSection:0]];
-         [self.tableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationAutomatic];
+         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
          
          // tableview reloadData
-         [self.tableView reloadData];
+         [self.travelTableView reloadData];
      }];
     
     [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
@@ -99,9 +155,13 @@
 // 한 row의 cell 높이
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // 기본이 44.0
-    return 60;
+    return 70.0f;
 }
 
+// tableview header Height
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return CGFLOAT_MIN;
+}
 // 한 Section당 row의 개수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.dataArray count];
@@ -111,9 +171,12 @@
     NSString *reuseIdentifier = @"Cell";
     MGSwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil) {
-        cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+        cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
         cell.delegate = self;
     }
+    
+    cell.textLabel.font = [UIFont fontWithName:@"Georgia-Bold" size:25.0f];
+    cell.detailTextLabel.text = [self.formatDate objectAtIndex:indexPath.row];
     cell.textLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
@@ -140,7 +203,7 @@
     // Delete
     if (direction == MGSwipeDirectionRightToLeft && index == 0) {
         // path 가져오기
-        NSIndexPath *path = [self.tableView indexPathForCell:cell];
+        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         // data delete
         [self.dataArray removeObjectAtIndex:path.row];
         
@@ -148,77 +211,11 @@
             DLog(@"남아 있는 trabel title : %@", strMsg);
         }
         
-        [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         return NO;
     }
     
     return YES;
 }
-
-#pragma mark - General Method
-// Cell 오른쪽에 나오는 버튼들 생성 메서드
-- (NSArray *)createSwipeRightButtons:(NSInteger) number {
-    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
-    NSArray *titles = @[@"삭제"];
-    NSArray *colors = @[[UIColor redColor]];
-    for (NSInteger i = 0; i < number; ++i) {
-        MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
-            NSLog(@"Convenience callback received (right).");
-            BOOL autoHide = (i != 0);
-            return autoHide;
-        }];
-        [result addObject:button];
-    }
-    return result;
-}
-
-// Cell 왼쪽에 나오는 버튼들 생성 메서드
-- (NSArray *)createSwipeLeftButton:(NSInteger) number {
-    NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
-    NSArray *colors = @[[UIColor colorWithRed:0.59 green:0.29 blue:0.08 alpha:1.0]];
-    NSArray *icons = @[[UIImage imageNamed:@""]];
-    for (NSInteger i = 0; i < number; ++i) {
-        MGSwipeButton * button = [MGSwipeButton buttonWithTitle:@"" icon:icons[i] backgroundColor:colors[i] padding:15 callback:^BOOL(MGSwipeTableCell * sender){
-            NSLog(@"Convenience callback received (left).");
-            return YES;
-        }];
-        [result addObject:button];
-    }
-    return result;
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 @end
