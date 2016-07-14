@@ -30,8 +30,8 @@
     // Configure the view for the selected state
 }
 
-- (void)setInfoDic:(NSDictionary *)infoDic {
-    _travelDetailInfoDictionary = infoDic;
+- (void)setTravelDetailInfoDictionary:(NSDictionary *)travelDetailInfoDictionary {
+    _travelDetailInfoDictionary = travelDetailInfoDictionary;
     
     [self setInfoWithInfodic];
 }
@@ -45,10 +45,10 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    CGFloat floatNum = [[self.travelDetailInfoDictionary objectForKey:@"imageHeight"] floatValue];
+    CGFloat imageHeight = [[self.travelDetailInfoDictionary objectForKey:@"imageHeight"] floatValue];
     
     // content Image View
-    self.contentImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, floatNum - 50.0f)];
+    self.contentImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, imageHeight - 50.0f)];
     self.contentImageView.contentMode = UIViewContentModeScaleToFill;
     [self.contentView addSubview:self.contentImageView];
     

@@ -136,10 +136,10 @@
         return buttonConfig;
     };
     
-    SCLTextView *travelNameTextField = [alert addTextField:@"제목"];
+    SCLTextView *travelTitleTextField = [alert addTextField:@"제목"];
     [alert addButton:@"저장"
      validationBlock:^BOOL{
-         if (travelNameTextField.text.length < 1) {
+         if (travelTitleTextField.text.length < 1) {
              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"경고!!!"
                                                                                        message:@"경로 제목을 입력 해주세요!"
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -154,14 +154,19 @@
          }
          return YES;
      } actionBlock:^{
-         DLog(@"여행 경로 생성 : %@", travelNameTextField.text);
+         DLog(@"여행 경로 생성 : %@", travelTitleTextField.text);
          
          // 여행 경로 생성! Realm에 저장.
          TravelList *travelist = [[TravelList alloc] init];
-         travelist.travel_title = travelNameTextField.text;
+         travelist.travel_title = travelTitleTextField.text;
          travelist.activity = NO;
          
-         NSLog(@"Travel List Count : %ld", weakSelf.userInfo.travel_list.count);
+         // ##SJ Test Method
+         for (NSInteger i = 0; i < 10; ++i) {
+             [travelist.image_metadatas addObject:[self testMethod:travelTitleTextField.text index:i]];
+         }
+         
+         DLog(@"Travel List Count : %ld", weakSelf.userInfo.travel_list.count);
          
          // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
          
@@ -171,6 +176,19 @@
      }];
     
     [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
+}
+
+// ##SJ Test
+- (ImageMetaData *)testMethod:(NSString *)travelTitle index:(NSInteger)index {
+    
+    ImageMetaData *imageMetaDatas = [[ImageMetaData alloc] init];
+    imageMetaDatas.creation_date = [NSDate date];
+    imageMetaDatas.latitude = 13.3f;
+    imageMetaDatas.longitude = 34.99923f;
+    imageMetaDatas.timestamp = 23234.234f;
+    imageMetaDatas.timezone_date = [NSDate date];
+    imageMetaDatas.country = [NSString stringWithFormat:@"%@_%ld", travelTitle, index];
+    return imageMetaDatas;
 }
 
 #pragma mark - TableViewDeleage, TableViewDataSource
@@ -243,6 +261,10 @@
     else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
         DLog(@"modify Touch");
         
+        TravelList *travelList = [self.userInfo.travel_list objectAtIndex:path.row];
+        // TravelDetail View Controller 호출
+        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
+        [self.navigationController pushViewController:travelDetailViewController animated:YES];
     }
     
     return YES;
