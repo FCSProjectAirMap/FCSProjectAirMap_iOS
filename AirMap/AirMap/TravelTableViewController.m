@@ -161,7 +161,7 @@
          travelist.travel_title = travelNameTextField.text;
          travelist.activity = NO;
          
-         NSLog(@"Travel List Count : %ld", self.userInfo.travel_list.count);
+         NSLog(@"Travel List Count : %ld", weakSelf.userInfo.travel_list.count);
          
          // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
          
