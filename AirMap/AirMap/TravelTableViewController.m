@@ -10,11 +10,6 @@
 
 @interface TravelTableViewController ()
 
-// ##SJ Test
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSDateFormatter *today;
-@property (nonatomic, strong) NSMutableArray *formatDate;
-
 @property (nonatomic, weak) UITableView *travelTableView;
 
 @end
@@ -23,13 +18,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // ##SJ Test
-    self.today = [[NSDateFormatter alloc] init];
-    self.formatDate = [[NSMutableArray alloc] initWithCapacity:1];
-    [self.today setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    
     
     [self setupUI];
+}
+
+#pragma mark - General Method
+- (void)setupUI {
+    // navigation bar
     self.title = @"여행 경로";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
@@ -45,11 +40,6 @@
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
     
-    self.dataArray = [[NSMutableArray alloc] initWithCapacity:1];
-}
-
-#pragma mark - General Method
-- (void)setupUI {
     // table View
     UITableView *travelTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
     [self.view addSubview:travelTableView];
@@ -57,7 +47,8 @@
     self.travelTableView.delegate = self;
     self.travelTableView.dataSource = self;
 }
-// Cell 오른쪽에 나오는 버튼들 생성 메서드
+
+// Swipe Cell 오른쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeRightButtons:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
     NSArray *titles = @[@"삭 제", @"수 정"];
@@ -73,7 +64,7 @@
     return result;
 }
 
-// Cell 왼쪽에 나오는 버튼들 생성 메서드
+// Swipe Cell 왼쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeLeftButton:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
     NSArray *colors = @[[UIColor colorWithRed:0.59 green:0.29 blue:0.08 alpha:1.0]];
@@ -88,7 +79,7 @@
     return result;
 }
 
-// delegate Method
+// Delegate Method (해당 셀을 선택 시 선택 된 셀의 title을 MapView에 념겨준다.)
 - (void)selectTravelTitle:(NSString *) title {
     [self.delegate selectTravelTitle:title];
 }
@@ -101,6 +92,7 @@
 }
 
 // 여행 경로 추가 버튼 이벤트
+// issues : 버튼을 계속 클릭 시 AlertView가 계송 생성 됨. 확인 버튼을 누를 경우 비활성화 시킨 버튼을 활성화 시킬 수 있지만, 취소버튼을 누를경우 방법이....
 - (void)travelTableViewAddTouchUpInside:(UIBarButtonItem *)barButtonItem {
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     alert.horizontalButtons = YES;
@@ -138,16 +130,14 @@
          }
          return YES;
      } actionBlock:^{
-         DLog(@"%@", travelNameTextField.text);
-         // ##SJ Test
-         [self.formatDate addObject:[self.today stringFromDate:[NSDate date]]];
+         DLog(@"여행 경로 생성 : %@", travelNameTextField.text);
          
-         // response DataCenter insert?
-         [self.dataArray addObject:travelNameTextField.text];
+         // 여행 경로 생성! Realm에 저장.
+         
          
          // tableview insert
-         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.dataArray count] - 1 inSection:0]];
-         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
+//         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.dataArray count] - 1 inSection:0]];
+//         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
          
          // tableview reloadData
          [self.travelTableView reloadData];
@@ -169,7 +159,7 @@
 }
 // 한 Section당 row의 개수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataArray count];
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -181,9 +171,6 @@
     }
     
     cell.textLabel.font = [UIFont fontWithName:@"Georgia-Bold" size:25.0f];
-    cell.detailTextLabel.text = [self.formatDate objectAtIndex:indexPath.row];
-    cell.textLabel.text = [self.dataArray objectAtIndex:indexPath.row];
-//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
     cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
@@ -213,12 +200,8 @@
         DLog(@"Delete Touch");
         // path 가져오기
         NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
-        // data delete
-        [self.dataArray removeObjectAtIndex:path.row];
         
-        for (NSString *strMsg in self.dataArray) {
-            DLog(@"남아 있는 trabel title : %@", strMsg);
-        }
+        // Realm Data delete
         
         [self.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         return NO;
@@ -228,10 +211,6 @@
         // path 가져오기
         NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         
-        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] init];
-        travelDetailViewController.travelName = [self.dataArray objectAtIndex:path.row];
-        [travelDetailViewController.dataDetailArray addObjectsFromArray:@[@"도오쿄~", @"가나자와~", @"외키나와", @"아마쿠사~", @"고베", @"구마모토", @"나가노"]];
-        [self.navigationController pushViewController:travelDetailViewController animated:YES];
     }
     
     return YES;
