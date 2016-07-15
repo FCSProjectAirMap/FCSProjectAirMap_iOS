@@ -13,7 +13,7 @@
 
 @property NSString *user_id;
 @property NSString *user_name;
-@property NSString *token;
+@property NSString *user_token;
 @property RLMArray<TravelList> *travel_list;
 
 @end

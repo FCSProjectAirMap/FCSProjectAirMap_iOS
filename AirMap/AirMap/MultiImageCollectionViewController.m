@@ -179,13 +179,14 @@ const CGFloat spacing = 2;
     // 선택된 사진 메타데이터 추출
     [self.imageDataCenter extractMetadataFromImage];
     NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
+    // 메타데이터 realm 저장
+    [self.imageDataCenter saveToReamlmDB];
     
     // 이미지, 메타데이터 업로드
     [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
     [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
 
     [self.imageDataCenter resetSelectedFiles];
-    
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
     }];
 }
