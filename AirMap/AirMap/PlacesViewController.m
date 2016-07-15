@@ -38,8 +38,15 @@
 }
 
 - (void)createView {
+    
+    const CGFloat BUTTON_SIZE_WIDTH = 50.0f;
+//    const CGFloat BUTTON_SIZE_HEIGHT = 50.0f;
+    const CGFloat X_MARGIN = 10.0f;
+    const CGFloat Y_MARGIN = 10.0f;
+    const CGFloat TEXTFIELD_HEIGHT = 45.0f;
+    
     // 설정 버튼
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0f, 10.0f*4, 48.0f, 45.0f)];
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, TEXTFIELD_HEIGHT)];
     [backButton addTarget:self
                    action:@selector(backButtonTouchUpInside:)
          forControlEvents:UIControlEventTouchUpInside];
@@ -50,7 +57,7 @@
     
     // 구글지도 검색 텍스트 필드
     // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
-    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(10.0f + backButton.frame.size.width, backButton.frame.origin.y, self.view.frame.size.width - backButton.frame.size.width - (10.0f*2), 45.0f)];
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(X_MARGIN + backButton.frame.size.width, backButton.frame.origin.y, self.view.frame.size.width - backButton.frame.size.width - (X_MARGIN*2), TEXTFIELD_HEIGHT)];
     [searchField addTarget:self
                     action:@selector(searchFieldDidChange:)
           forControlEvents:UIControlEventEditingChanged];
@@ -71,10 +78,9 @@
     self.tableDataSource.delegate = self;
     
     // Table View Controller
-    self.resultTableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+    self.resultTableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     self.resultTableViewController.tableView.delegate = self.tableDataSource;
     self.resultTableViewController.tableView.dataSource = self.tableDataSource;
-    
 }
 
 

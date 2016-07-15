@@ -10,12 +10,10 @@
 
 @interface TravelTableViewController ()
 
-// ##SJ Test
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSDateFormatter *today;
-@property (nonatomic, strong) NSMutableArray *formatDate;
-
 @property (nonatomic, weak) UITableView *travelTableView;
+@property (nonatomic, strong) RLMResults *resultArray;
+@property (nonatomic, strong) UserInfo *userInfo;
+@property (nonatomic, strong) RLMNotificationToken *notification;
 
 @end
 
@@ -23,13 +21,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // ##SJ Test
-    self.today = [[NSDateFormatter alloc] init];
-    self.formatDate = [[NSMutableArray alloc] initWithCapacity:1];
-    [self.today setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     
-    
+    // UI View
     [self setupUI];
+    
+    // realm파일 저장되어 있는 경로.
+    NSLog(@"%@", [RLMRealm defaultRealm].configuration.fileURL);
+    
+    // user_id의 데이터 정보를 검색.
+    // 로그인 할 때 키체인에 저장시켜둔 id를 가져와 해당 객체를 찾는다.
+    self.resultArray = [UserInfo objectsWhere:@"user_id == %@", @"wngus606@gmail.com"];
+    // 이미 로그인 할때 해당 아이디로 Realm데이터에 insert됨으로 조건을 줄 필요는 없지만 일단 적어 둠.
+    // result 객체의 수가 0 이상일 경우는 이미 있는 데이터
+    if (self.resultArray.count > 0) {
+        self.userInfo = self.resultArray[0];
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    self.notification = [[RLMRealm defaultRealm] addNotificationBlock:^(NSString * _Nonnull notification, RLMRealm * _Nonnull realm) {
+        NSLog(@"notification : %@", notification);
+        [weakSelf.travelTableView reloadData];
+    }];
+}
+
+#pragma mark - General Method
+- (void)setupUI {
+    // navigation bar
     self.title = @"여행 경로";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
@@ -45,11 +62,6 @@
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
     
-    self.dataArray = [[NSMutableArray alloc] initWithCapacity:1];
-}
-
-#pragma mark - General Method
-- (void)setupUI {
     // table View
     UITableView *travelTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
     [self.view addSubview:travelTableView];
@@ -57,7 +69,8 @@
     self.travelTableView.delegate = self;
     self.travelTableView.dataSource = self;
 }
-// Cell 오른쪽에 나오는 버튼들 생성 메서드
+
+// Swipe Cell 오른쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeRightButtons:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
     NSArray *titles = @[@"삭 제", @"수 정"];
@@ -73,7 +86,7 @@
     return result;
 }
 
-// Cell 왼쪽에 나오는 버튼들 생성 메서드
+// Swipe Cell 왼쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeLeftButton:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
     NSArray *colors = @[[UIColor colorWithRed:0.59 green:0.29 blue:0.08 alpha:1.0]];
@@ -88,7 +101,7 @@
     return result;
 }
 
-// delegate Method
+// Delegate Method (해당 셀을 선택 시 선택 된 셀의 title을 MapView에 념겨준다.)
 - (void)selectTravelTitle:(NSString *) title {
     [self.delegate selectTravelTitle:title];
 }
@@ -101,7 +114,10 @@
 }
 
 // 여행 경로 추가 버튼 이벤트
+// issues : 버튼을 계속 클릭 시 AlertView가 계송 생성 됨. 확인 버튼을 누를 경우 비활성화 시킨 버튼을 활성화 시킬 수 있지만, 취소버튼을 누를경우 방법이....
 - (void)travelTableViewAddTouchUpInside:(UIBarButtonItem *)barButtonItem {
+    __weak typeof(self) weakSelf = self;
+    
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     alert.horizontalButtons = YES;
     [alert removeTopCircle];
@@ -120,10 +136,10 @@
         return buttonConfig;
     };
     
-    SCLTextView *travelNameTextField = [alert addTextField:@"제목"];
+    SCLTextView *travelTitleTextField = [alert addTextField:@"제목"];
     [alert addButton:@"저장"
      validationBlock:^BOOL{
-         if (travelNameTextField.text.length < 1) {
+         if (travelTitleTextField.text.length < 1) {
              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"경고!!!"
                                                                                        message:@"경로 제목을 입력 해주세요!"
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -138,22 +154,41 @@
          }
          return YES;
      } actionBlock:^{
-         DLog(@"%@", travelNameTextField.text);
-         // ##SJ Test
-         [self.formatDate addObject:[self.today stringFromDate:[NSDate date]]];
+         DLog(@"여행 경로 생성 : %@", travelTitleTextField.text);
          
-         // response DataCenter insert?
-         [self.dataArray addObject:travelNameTextField.text];
+         // 여행 경로 생성! Realm에 저장.
+         TravelList *travelist = [[TravelList alloc] init];
+         travelist.travel_title = travelTitleTextField.text;
+         travelist.activity = NO;
          
-         // tableview insert
-         NSArray *path = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.dataArray count] - 1 inSection:0]];
-         [self.travelTableView insertRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationRight];
+         // ##SJ Test Method
+         for (NSInteger i = 0; i < 10; ++i) {
+             [travelist.image_metadatas addObject:[self testMethod:travelTitleTextField.text index:i]];
+         }
          
-         // tableview reloadData
-         [self.travelTableView reloadData];
+         DLog(@"Travel List Count : %ld", weakSelf.userInfo.travel_list.count);
+         
+         // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
+         
+         [[RLMRealm defaultRealm] transactionWithBlock:^{
+             [weakSelf.userInfo.travel_list addObject:travelist];
+         }];
      }];
     
     [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
+}
+
+// ##SJ Test
+- (ImageMetaData *)testMethod:(NSString *)travelTitle index:(NSInteger)index {
+    
+    ImageMetaData *imageMetaDatas = [[ImageMetaData alloc] init];
+    imageMetaDatas.creation_date = [NSString stringWithFormat:@"%@", [NSDate date]];
+    imageMetaDatas.latitude = 13.3f;
+    imageMetaDatas.longitude = 34.99923f;
+    imageMetaDatas.timestamp = 23234.234f;
+    imageMetaDatas.timezone_date = [NSDate date];
+    imageMetaDatas.country = [NSString stringWithFormat:@"%@_%ld", travelTitle, index];
+    return imageMetaDatas;
 }
 
 #pragma mark - TableViewDeleage, TableViewDataSource
@@ -169,7 +204,7 @@
 }
 // 한 Section당 row의 개수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataArray count];
+    return self.userInfo.travel_list.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -180,10 +215,9 @@
         cell.delegate = self;
     }
     
+    TravelList *travelList = [self.userInfo.travel_list objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"Georgia-Bold" size:25.0f];
-    cell.detailTextLabel.text = [self.formatDate objectAtIndex:indexPath.row];
-    cell.textLabel.text = [self.dataArray objectAtIndex:indexPath.row];
-//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = travelList.travel_title;
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
     cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
@@ -201,36 +235,35 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
     // 셀 선택 해제
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - MGSwipeTableCellDelegate
 // Swipe했을 때 실행되는 Delegate
 -(BOOL) swipeTableCell:(MGSwipeTableCell*) cell tappedButtonAtIndex:(NSInteger) index direction:(MGSwipeDirection)direction fromExpansion:(BOOL) fromExpansion {
+    // path 가져오기
+    NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
     
     // Delete
     if (direction == MGSwipeDirectionRightToLeft && index == 0) {
         DLog(@"Delete Touch");
-        // path 가져오기
-        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
-        // data delete
-        [self.dataArray removeObjectAtIndex:path.row];
         
-        for (NSString *strMsg in self.dataArray) {
-            DLog(@"남아 있는 trabel title : %@", strMsg);
-        }
+        // Realm Data delete
+        __weak typeof(self) weakSelf = self;
+        TravelList *travelList = [self.userInfo.travel_list objectAtIndex:path.row];
+        [[RLMRealm defaultRealm] transactionWithBlock:^{
+            [[RLMRealm defaultRealm] deleteObject:travelList];
+            [weakSelf.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+        }];
         
-        [self.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         return NO;
     } // modify
     else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
         DLog(@"modify Touch");
-        // path 가져오기
-        NSIndexPath *path = [self.travelTableView indexPathForCell:cell];
         
-        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] init];
-        travelDetailViewController.travelName = [self.dataArray objectAtIndex:path.row];
-        [travelDetailViewController.dataDetailArray addObjectsFromArray:@[@"도오쿄~", @"가나자와~", @"외키나와", @"아마쿠사~", @"고베", @"구마모토", @"나가노"]];
+        TravelList *travelList = [self.userInfo.travel_list objectAtIndex:path.row];
+        // TravelDetail View Controller 호출
+        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
         [self.navigationController pushViewController:travelDetailViewController animated:YES];
     }
     
