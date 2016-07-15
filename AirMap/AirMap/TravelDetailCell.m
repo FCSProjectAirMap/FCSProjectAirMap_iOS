@@ -66,9 +66,9 @@
     
     // country Label
     self.countryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, self.timezoneDateLabel.bounds.size.height, self.bounds.size.width, 20.0f)];
-    self.countryLabel.textColor = [UIColor blackColor];
-    self.countryLabel.backgroundColor = [UIColor purpleColor];
-    self.countryLabel.textAlignment = NSTextAlignmentLeft;
+    self.countryLabel.textColor = [UIColor whiteColor];
+    self.countryLabel.backgroundColor = [UIColor blackColor];
+    self.countryLabel.textAlignment = NSTextAlignmentCenter;
     [self.bottomView addSubview:self.countryLabel];
     
     [self setInfoWithInfodic];

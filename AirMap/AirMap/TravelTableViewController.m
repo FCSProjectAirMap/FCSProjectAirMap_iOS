@@ -182,7 +182,7 @@
 - (ImageMetaData *)testMethod:(NSString *)travelTitle index:(NSInteger)index {
     
     ImageMetaData *imageMetaDatas = [[ImageMetaData alloc] init];
-    imageMetaDatas.creation_date = [NSDate date];
+    imageMetaDatas.creation_date = [NSString stringWithFormat:@"%@", [NSDate date]];
     imageMetaDatas.latitude = 13.3f;
     imageMetaDatas.longitude = 34.99923f;
     imageMetaDatas.timestamp = 23234.234f;
