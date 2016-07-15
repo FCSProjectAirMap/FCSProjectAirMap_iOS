@@ -10,7 +10,7 @@
 
 @interface ImageMetaData : RLMObject
 
-@property NSDate *creation_date;
+@property NSString *creation_date;
 @property float latitude;
 @property float longitude;
 @property float timestamp;
