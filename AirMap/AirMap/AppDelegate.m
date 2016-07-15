@@ -56,35 +56,35 @@
 
 - (void)showLoginView
 {
-    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
-    
-    if([keychainItem objectForKey: (__bridge id)kSecAttrAccount] && [keychainItem objectForKey:(__bridge id)kSecValueData])
-    {
-//        ServerConnection *serverConnection = [[ServerConnection alloc]init];
-//        [serverConnection authenticatewhenAutoLoginEmail:[keychainItem objectForKey: (__bridge id)kSecAttrAccount] withUserPassword:[keychainItem objectForKey:(__bridge id)kSecValueData] completion:^(BOOL success) {
-//            NSLog(@"오토로그인 구동");
-//            if (success) {
-//                NSLog(@"오토로그인 석세스");
-//            } else {
-//                NSLog(@"오토로그인 fa일");
-//                
-////                [self alertStatus:@"Login failed\n check your ID & Password again" :@"Error" :1];
-//                ViewController *loginViewController = [[ViewController alloc]init];
-//                [self.window makeKeyAndVisible];
-//                [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
-//                
-//                
-//            }
-//        }];
-
-    }
-    else
-    {
+//    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
+//    
+//    if([keychainItem objectForKey: (__bridge id)kSecAttrAccount] && [keychainItem objectForKey:(__bridge id)kSecValueData])
+//    {
+////        ServerConnection *serverConnection = [[ServerConnection alloc]init];
+////        [serverConnection authenticatewhenAutoLoginEmail:[keychainItem objectForKey: (__bridge id)kSecAttrAccount] withUserPassword:[keychainItem objectForKey:(__bridge id)kSecValueData] completion:^(BOOL success) {
+////            NSLog(@"오토로그인 구동");
+////            if (success) {
+////                NSLog(@"오토로그인 석세스");
+////            } else {
+////                NSLog(@"오토로그인 fa일");
+////                
+//////                [self alertStatus:@"Login failed\n check your ID & Password again" :@"Error" :1];
+////                ViewController *loginViewController = [[ViewController alloc]init];
+////                [self.window makeKeyAndVisible];
+////                [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
+////                
+////                
+////            }
+////        }];
+//
+//    }
+//    else
+//    {
         ViewController *loginViewController = [[ViewController alloc]init];
         [self.window makeKeyAndVisible];
         [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
 
-    }
+//    }
 }
 
 

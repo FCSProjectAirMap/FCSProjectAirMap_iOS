@@ -88,6 +88,7 @@
     [self.view bringSubviewToFront:emailTF];
     self.emailField =emailTF;
     [self.view addSubview:emailTF];
+    [emailTF setKeyboardType:UIKeyboardTypeEmailAddress];
     offsetY +=emailTF.frame.size.height+VIEW_MARGIN;
     
     UITextField *passwordTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
@@ -318,8 +319,8 @@
                                        
                                        KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
                                        
-                                       [keychainItem setObject:@"email" forKey:(__bridge id)kSecAttrAccount];
-                                       [keychainItem setObject:@"password" forKey:(__bridge id)kSecValueData];
+                                       [keychainItem setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
+                                       [keychainItem setObject:_passWordField.text forKey:(__bridge id)kSecValueData];
                                        
                                             [self dismissViewControllerAnimated:YES completion:nil];
                                        
@@ -356,7 +357,7 @@
     [UIView animateWithDuration:0.5 animations:^{
        
         CGRect newFrame = self.view.frame;
-        newFrame.origin.y -=   self.view.frame.size.height/3;
+        newFrame.origin.y -=   self.view.frame.size.height/4;
         self.view.frame = newFrame;
         
     }];
@@ -368,7 +369,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         
         CGRect newFrame = self.view.frame;
-        newFrame.origin.y += self.view.frame.size.height/3;
+        newFrame.origin.y += self.view.frame.size.height/4;
         self.view.frame = newFrame;
         
     }];

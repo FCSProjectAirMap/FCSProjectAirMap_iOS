@@ -45,6 +45,7 @@
     self.emailField =emailTF;
     [self.view addSubview:emailTF];
     offsetY +=emailTF.frame.size.height+VIEW_MARGIN;
+    [emailTF setKeyboardType:UIKeyboardTypeEmailAddress];
     
     
     

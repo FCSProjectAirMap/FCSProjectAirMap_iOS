@@ -13,6 +13,7 @@
 #import "ViewController.h"
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
+#import "MenuSlideViewController.h"
 
 //#import <AFNetworking/AFHTTPSessionManager.h>
 
