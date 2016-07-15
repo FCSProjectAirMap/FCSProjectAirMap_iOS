@@ -142,7 +142,7 @@ const CGFloat imageShortLength = 640;
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
         NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
-        
+//        NSData *creationDate = (NSData *)asset.creationDate;
         //        NSArray *location = @[latitude, longitude];
         NSDictionary *metaData = @{@"creationDate": creationDate,
                                    @"timestamp":timestamp,
@@ -157,6 +157,38 @@ const CGFloat imageShortLength = 640;
 
 - (NSMutableArray *)callSelectedData {
     return self.selectedDatas;
+}
+
+# pragma mark - Reamlm
+
+- (void)saveToReamlmDB {
+    NSLog(@"%@", [RLMRealm defaultRealm].configuration.fileURL);
+    
+    TravelList *travelList = [[TravelList alloc] init];
+    travelList.travel_title = @"유럽 여행";
+    travelList.activity = YES;
+
+    for (NSInteger i = 0; i < self.selectedDatas.count; i++) {
+    
+    ImageMetaData *imageMetaData = [[ImageMetaData alloc] init];
+    imageMetaData.creation_date = [self.selectedDatas[i] objectForKey:@"creationDate"] ;
+    imageMetaData.latitude = [[self.selectedDatas[i] objectForKey:@"latitude"] floatValue] ;
+    imageMetaData.longitude = [[self.selectedDatas[i] objectForKey:@"longitude"] floatValue];
+    imageMetaData.timestamp = [[self.selectedDatas[i] objectForKey:@"timestamp"] floatValue];
+        
+        [travelList.image_metadatas addObject:imageMetaData];
+    }
+    
+    UserInfo *userInfo = [[UserInfo alloc] init];
+    userInfo.user_id = @"travelMaker@gmail.com";
+    userInfo.user_name = @"TM";
+    userInfo.user_token = @"token";
+    [userInfo.travel_list addObject:travelList];
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm addObject:userInfo];
+    [realm commitWriteTransaction];
 }
 
 @end

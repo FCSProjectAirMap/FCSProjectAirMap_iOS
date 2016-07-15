@@ -18,6 +18,8 @@
 - (void)removeSelectedAsset:(PHAsset *)asset;
 - (void)resetSelectedFiles;
 
+- (void)saveToReamlmDB;
+
 - (PHFetchResult *)callFetchResult;
 - (NSMutableArray *)callSelectedAssets;
 - (NSMutableArray *)callSelectedImages;

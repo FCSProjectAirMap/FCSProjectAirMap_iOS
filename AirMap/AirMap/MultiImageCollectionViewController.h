@@ -11,6 +11,7 @@
 #import "MultiImageDataCenter.h"
 #import "ImageRequestObject.h"
 #import "BadgeView.h"
+#import "UserInfo.h"
 
 @interface MultiImageCollectionViewController : UIViewController
 

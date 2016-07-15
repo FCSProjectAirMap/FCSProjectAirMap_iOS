@@ -44,8 +44,11 @@
 
     
     [self.window makeKeyAndVisible];
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    config.schemaVersion = 2;
     
- 
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+    
     return YES;
 }
 

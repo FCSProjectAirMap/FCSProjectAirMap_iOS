@@ -217,7 +217,6 @@
         [self clickRegisterButton:self.registerButton];
     }
     
-    
     return YES;
 }
 

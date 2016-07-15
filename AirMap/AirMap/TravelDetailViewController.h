@@ -7,15 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MGSwipeButton.h"
-#import "MGSwipeTableCell.h"
+#import "TravelDetailCell.h"
+#import "UserInfo.h"
 
 @interface TravelDetailViewController : UIViewController
-<UITableViewDelegate, UITableViewDataSource,MGSwipeTableCellDelegate>
+<UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) NSString *travelName;
-
-// ##SJ Test
-@property (nonatomic) NSMutableArray *dataDetailArray;
+- (instancetype)initWithTravelList:(TravelList *)travelList;
 
 @end

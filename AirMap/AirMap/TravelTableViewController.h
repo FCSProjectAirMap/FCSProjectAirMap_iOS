@@ -11,8 +11,17 @@
 #import "SCLAlertView.h"
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
+#import "UserInfo.h"
+
+@protocol TravelTableViewControllerDelegate <NSObject>
+
+- (void)selectTravelTitle:(NSString *)title;
+
+@end
 
 @interface TravelTableViewController : UIViewController
 <UITableViewDelegate, UITableViewDataSource,MGSwipeTableCellDelegate>
+
+@property (nonatomic, strong) id <TravelTableViewControllerDelegate> delegate;
 
 @end
