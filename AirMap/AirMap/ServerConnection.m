@@ -11,6 +11,8 @@
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
 #import "ViewController.h"
+#import "KeychainItemWrapper.h"
+#import <Security/Security.h>
 
 //#import <AFNetworking/AFHTTPSessionManager.h>
 
@@ -43,6 +45,39 @@
     //                                      }];
     //    [dataTask resume];
 }
+
+- (void)authenticatewhenAutoLoginEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
+                       completion:(void (^)(BOOL success))completionBlock
+{
+    
+    NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/login/"];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *params = @{@"email": userEmail,
+                             @"password": userPassword};
+    [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        
+        //        if (completionBlock) {
+        completionBlock(YES);
+        //        }
+        
+        NSLog(@"Authentication Success");
+        NSLog(@"JSON: %@",responseObject);
+        
+        
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        //        if (completionBlock) {
+        completionBlock(NO);
+        //        }
+        
+        NSLog(@"Authentication Failure");
+        NSLog(@"Error : %@", error);
+    }];
+
+    
+}
+
 
 - (void)authenticateWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
                        completion:(void (^)(BOOL success))completionBlock{

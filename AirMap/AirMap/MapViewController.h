@@ -19,4 +19,6 @@
 @interface MapViewController : UIViewController
 <GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate, TravelTableViewControllerDelegate>
 
+
+@property (nonatomic) BOOL isSlideMenuOpen;
 @end

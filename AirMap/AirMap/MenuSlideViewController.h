@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SKSTableView.h"
 
 @interface MenuSlideViewController : UIViewController
-<UITableViewDelegate, UITableViewDataSource>
+<UITableViewDelegate, UITableViewDataSource,SKSTableViewDelegate>
 
 @property (nonatomic, strong) NSString *userID;
 
+
+@property (nonatomic, weak) SKSTableView *tableView;
 @end

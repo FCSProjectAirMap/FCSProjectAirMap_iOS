@@ -45,6 +45,14 @@ static const CGFloat overlayrHeight = 30.0f;
     
     self.path = [GMSMutablePath path];
     self.isAnimating = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSession:) name:@"NotiForParentViewTouch" object:nil];
+}
+
+
+- (void) getSession:(NSNotification *) notif
+{
+    self.isSlideMenuOpen = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -310,6 +318,7 @@ static const CGFloat overlayrHeight = 30.0f;
     DLog(@"메뉴 버튼 눌렀따!");
     MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
     [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    self.isSlideMenuOpen = YES;
     [self addChildViewController:menuSlideView];
     [self.view addSubview:menuSlideView.view];
     [UIView animateWithDuration:0.4 animations:^{
@@ -327,8 +336,8 @@ static const CGFloat overlayrHeight = 30.0f;
 
 // 지도를 탭 했을 경우 UI들 숨기기 메서드
 -(void)appearanceSearchBar:(UITapGestureRecognizer *)recognizer {
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded)
+    if(self.isSlideMenuOpen ==NO){
+        if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         // endEditing
         [self.view endEditing:YES];
@@ -398,6 +407,9 @@ static const CGFloat overlayrHeight = 30.0f;
                                  DLog(@"Done 2");
                              }];
         }
+    }else{
+        
+    }
     }
 }
 // status bar
