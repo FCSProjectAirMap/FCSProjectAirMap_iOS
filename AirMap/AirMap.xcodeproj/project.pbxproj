@@ -388,6 +388,11 @@
 					EC714C6C1D2AB8A000165A58 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = E973CQ3L5R;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
