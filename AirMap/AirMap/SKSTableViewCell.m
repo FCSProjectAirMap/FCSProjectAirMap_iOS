@@ -23,8 +23,10 @@
     if (self) {
         self.expandable = YES;
         self.expanded = NO;
+    
     }
     return self;
+    
 }
 
 - (void)layoutSubviews
@@ -114,5 +116,7 @@ static UIImage *_image = nil;
         
     }];
 }
+
+
 
 @end

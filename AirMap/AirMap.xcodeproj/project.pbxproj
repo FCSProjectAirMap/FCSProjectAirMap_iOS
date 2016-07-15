@@ -14,6 +14,8 @@
 		E45989651D374D55007A7BC9 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E45989601D374D55007A7BC9 /* SKSTableViewCellIndicator.m */; };
 		E45989661D374D55007A7BC9 /* expandableImage.png in Resources */ = {isa = PBXBuildFile; fileRef = E45989611D374D55007A7BC9 /* expandableImage.png */; };
 		E45989671D374D55007A7BC9 /* expandableImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E45989621D374D55007A7BC9 /* expandableImage@2x.png */; };
+		E48BCFD51D3892C800DDB722 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48BCFD41D3892C800DDB722 /* Security.framework */; };
+		E48BCFD81D3898E900DDB722 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */; };
 		E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */; };
 		E4D39BD01D337AF500DE48D9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */; };
 		E4D39BD11D337AF500DE48D9 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */; };
@@ -73,6 +75,9 @@
 		E45989601D374D55007A7BC9 /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
 		E45989611D374D55007A7BC9 /* expandableImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expandableImage.png; sourceTree = "<group>"; };
 		E45989621D374D55007A7BC9 /* expandableImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expandableImage@2x.png"; sourceTree = "<group>"; };
+		E48BCFD41D3892C800DDB722 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		E48BCFD61D3898E900DDB722 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = AirMap/etc/facebook/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = AirMap/etc/facebook/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = AirMap/etc/facebook/FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -157,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E48BCFD51D3892C800DDB722 /* Security.framework in Frameworks */,
 				E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */,
 				E4D39BD01D337AF500DE48D9 /* FBSDKLoginKit.framework in Frameworks */,
 				E4D39BD11D337AF500DE48D9 /* FBSDKShareKit.framework in Frameworks */,
@@ -181,6 +187,7 @@
 		A4E58478D95AEC7D234D7B7E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E48BCFD41D3892C800DDB722 /* Security.framework */,
 				E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */,
 				E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */,
 				E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */,
@@ -216,6 +223,8 @@
 				E4D39BD81D337B6E00DE48D9 /* ServerConnection.m */,
 				E4D39BD91D337B6E00DE48D9 /* NSString+NSString___emailValidation.h */,
 				E4D39BDA1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m */,
+				E48BCFD61D3898E900DDB722 /* KeychainItemWrapper.h */,
+				E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -505,6 +514,7 @@
 				E4D39BDD1D337B6E00DE48D9 /* ServerConnection.m in Sources */,
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				ECFC53131D32883000EF311B /* SCLTimerDisplay.m in Sources */,
+				E48BCFD81D3898E900DDB722 /* KeychainItemWrapper.m in Sources */,
 				E45989641D374D55007A7BC9 /* SKSTableViewCell.m in Sources */,
 				ECFC53111D32883000EF311B /* SCLSwitchView.m in Sources */,
 				ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */,

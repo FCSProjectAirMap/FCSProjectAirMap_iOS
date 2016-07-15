@@ -105,11 +105,14 @@
 //    self.menuTableView.dataSource = self;
 //    
     SKSTableView *sksTableView= [[SKSTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, MENU_VIEW_WIDTH, bottomView.frame.size.height) style:UITableViewStylePlain];
+    
+//    self.tableView.delegate = self;
+//    self.tableView.dataSource = self;
+    sksTableView.SKSTableViewDelegate = self;
     [self.bottomView addSubview: sksTableView];
     self.tableView = sksTableView;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.SKSTableViewDelegate = self;
+    
+
     
 }
 
@@ -194,14 +197,21 @@
     SKSTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell)
+    {
         cell = [[SKSTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
     
     cell.textLabel.text = self.contents[indexPath.section][indexPath.row][0];
+    cell.selected = YES;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     
     if ((indexPath.section == 0 && (indexPath.row == 1 || indexPath.row == 0 || indexPath.row == 2)))
         cell.expandable = YES;
     else
         cell.expandable = NO;
+    
+  
+
     
     return cell;
 }
@@ -216,7 +226,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@", self.contents[indexPath.section][indexPath.row][indexPath.subRow]];
+    
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    
     
     return cell;
 }
@@ -228,13 +241,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+    
+    NSLog(@"didSelectRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+    
+    
+   
 }
 
 - (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+    NSLog(@"didSelectSubRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
 }
+
 
 
 

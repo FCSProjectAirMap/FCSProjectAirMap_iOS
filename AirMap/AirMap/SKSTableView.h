@@ -81,6 +81,9 @@
  */
 - (CGFloat)tableView:(SKSTableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath;
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+;
+
 /**
  * Tells the delegate that the specified subrow is now selected.
  *

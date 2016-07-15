@@ -18,6 +18,8 @@
 #import "ServerConnection.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MapViewController.h"
+#import <Security/Security.h>
+#import "KeychainItemWrapper.h"
 
 
 
@@ -58,6 +60,10 @@
         //        [self alertStatus:@"Not registered" :@"Alert" :1];
     }else{
         NSLog(@"User registered");
+        
+
+        
+
     }
     
 //    Background image
@@ -307,7 +313,15 @@
                                    if (success) {
                                        NSLog(@"석세스");
                                        
-                                       [self dismissViewControllerAnimated:YES completion:nil];
+                                  
+                                       
+                                       
+                                       KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
+                                       
+                                       [keychainItem setObject:@"email" forKey:(__bridge id)kSecAttrAccount];
+                                       [keychainItem setObject:@"password" forKey:(__bridge id)kSecValueData];
+                                       
+                                            [self dismissViewControllerAnimated:YES completion:nil];
                                        
                                        
                                    } else {
@@ -321,6 +335,14 @@
     
 }
 
+- (BOOL)isUserLogged
+{
+    KeychainItemWrapper *wrapper = [[KeychainItemWrapper alloc] initWithIdentifier:@"My_Unique_Id" accessGroup:nil];
+    NSString *username = [wrapper objectForKey:(__bridge id)kSecAttrAccount];
+    NSString *password = [wrapper objectForKey:(__bridge id)kSecValueData];
+    BOOL isLogged = ([username length] > 0 && [password length] > 0);
+    return isLogged;
+}
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
