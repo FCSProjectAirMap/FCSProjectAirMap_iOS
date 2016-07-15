@@ -20,6 +20,7 @@
 #import "MapViewController.h"
 #import <Security/Security.h>
 #import "KeychainItemWrapper.h"
+#import "UserInfo.h"
 
 
 

@@ -14,6 +14,7 @@
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
 #import "MenuSlideViewController.h"
+#import "UserInfo.h"
 
 //#import <AFNetworking/AFHTTPSessionManager.h>
 
@@ -97,6 +98,17 @@
         
         NSLog(@"Authentication Success");
         NSLog(@"JSON: %@",responseObject);
+        
+        //Store Data (email, token) in UserInfo (realm)
+        UserInfo * userInfo = [[UserInfo alloc]init];
+        userInfo.user_id = userEmail;
+        userInfo.user_token = [responseObject objectForKey:@"token"];
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        [realm addOrUpdateObject:userInfo];
+        [realm commitWriteTransaction];
+    
         
         
         
