@@ -249,7 +249,6 @@ static const CGFloat overlayrHeight = 45.0f;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     // 거리 필터 구성. 어느 정도 거리의 위치변화가 생겼을 때 어플이 알람을 받을지 말지 설정하는 프로퍼티. (1500미터)
     self.locationManager.distanceFilter = 1500.0;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
     
     
     // 사용중인 위치 정보 요청 (사용할때만)
