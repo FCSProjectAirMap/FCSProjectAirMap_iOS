@@ -9,6 +9,8 @@
 #import "MenuSlideViewController.h"
 #import "SKSTableView.h"
 #import "SKSTableViewCell.h"
+#import "KeychainItemWrapper.h"
+#import <Security/Security.h>
 
 @interface MenuSlideViewController ()
 
@@ -96,6 +98,10 @@
     userIDLabel.font = [UIFont systemFontOfSize:15.0f];
     [self.topView addSubview:userIDLabel];
     self.userIDLabel = userIDLabel;
+    
+    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
+    self.userIDLabel.text = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
+    
     
     // menu Table View
 //    UITableView *menuTableView = [[UITableView alloc] initWithFrame: style:UITableViewStylePlain];
