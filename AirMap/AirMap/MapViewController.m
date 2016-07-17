@@ -8,7 +8,7 @@
 
 #import "MapViewController.h"
 
-static const CGFloat overlayrHeight = 30.0f;
+static const CGFloat overlayrHeight = 45.0f;
 
 @interface MapViewController ()
 
@@ -23,7 +23,7 @@ static const CGFloat overlayrHeight = 30.0f;
 @property (nonatomic, weak) UIButton *locationButton;
 @property (nonatomic, weak) UIView *plusView;
 @property (nonatomic, weak) UIView *overlayView;
-@property (nonatomic, weak) UILabel *overlayTravelTitleLabel;
+@property (nonatomic, weak) UIButton *overlayButton;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
@@ -35,6 +35,7 @@ static const CGFloat overlayrHeight = 30.0f;
 
 @implementation MapViewController
 
+#pragma mark - View LifeCycel
 - (void)viewDidLoad {
     [super viewDidLoad];
     // 구글 지도 만들어 주기.
@@ -114,17 +115,19 @@ static const CGFloat overlayrHeight = 30.0f;
     
     // overlay View
     UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.mapView.frame.size.height - overlayrHeight, self.mapView.frame.size.width, overlayrHeight)];
-    overlayView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f];
+    overlayView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:0.9f];
     [self.mapView addSubview:overlayView];
     self.overlayView = overlayView;
     
-    // overlayTravelTitle Label
-    UILabel *overlayTravelTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.overlayView.frame.size.width, self.overlayView.frame.size.height)];
-    overlayTravelTitleLabel.text = @"";
-    overlayTravelTitleLabel.textColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
-    overlayTravelTitleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.overlayView addSubview:overlayTravelTitleLabel];
-    self.overlayTravelTitleLabel = overlayTravelTitleLabel;
+    // overlayTravelTitle Button
+    UIButton *overlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    overlayButton.frame = CGRectMake(0.0f, 0.0f, self.overlayView.frame.size.width, self.overlayView.frame.size.height);
+    overlayButton.titleLabel.textColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f];
+    [overlayButton addTarget:self
+                      action:@selector(overlayButtonTouchUpInside:)
+            forControlEvents:UIControlEventTouchUpInside];
+    [self.overlayView addSubview:overlayButton];
+    self.overlayButton = overlayButton;
     
     // location Button
     UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -219,29 +222,9 @@ static const CGFloat overlayrHeight = 30.0f;
 
 // 구글지도 만들어주는 메서드
 - (void)createGoogleMapView {
-    // 현재 나의 위치 정보 가져오기.
-    self.locationManager = [[CLLocationManager alloc] init];
     
-    // 델리게이트
-    self.locationManager.delegate = self;
-    // 로케이션 정확도 (배터리로 동작할 때 권장되는 가장 수준높은 정확도)
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    // 거리 필터 구성. 어느 정도 거리의 위치변화가 생겼을 때 어플이 알람을 받을지 말지 설정하는 프로퍼티. (1500미터)
-    self.locationManager.distanceFilter = 1500.0;
-    
-    
-    // 사용중인 위치 정보 요청 (항상)
-    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-        [self.locationManager requestAlwaysAuthorization];
-    }
-    
-    // 현재위치 업데이트
-    [self.locationManager startUpdatingLocation];
-    
-    // 위도
-    DLog(@"latitude : %f", self.locationManager.location.coordinate.latitude);
-    // 경도
-    DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
+    // location 설정 메서드
+    [self travelLocationManager];
     
     // 화면에서 보는 영역?
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude
@@ -254,12 +237,50 @@ static const CGFloat overlayrHeight = 30.0f;
     self.view = self.mapView;
 }
 
-#pragma mark - CLLocationManager Delegate
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation {
-    NSLog(@"newLocation : %@", newLocation);
+- (void)travelLocationManager {
+    // 현재 나의 위치 정보 가져오기.
+    // nil일 경우에만
+    if (self.locationManager == nil)
+        self.locationManager = [[CLLocationManager alloc] init];
+    
+    // 델리게이트
+    self.locationManager.delegate = self;
+    // 로케이션 정확도 (배터리로 동작할 때 권장되는 가장 수준높은 정확도)
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    // 거리 필터 구성. 어느 정도 거리의 위치변화가 생겼을 때 어플이 알람을 받을지 말지 설정하는 프로퍼티. (1500미터)
+    self.locationManager.distanceFilter = 1500.0;
+    
+    
+    // 사용중인 위치 정보 요청 (사용할때만)
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
+    // 위도
+    DLog(@"latitude : %f", self.locationManager.location.coordinate.latitude);
+    // 경도
+    DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
 }
+
+#pragma mark - CLLocationManager Delegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    CLLocation *newLocation = [locations lastObject];
+    [CATransaction begin];
+    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
+    // change the camera, set the zoom, whatever.  Just make sure to call the animate* method.
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude zoom:16.0f];
+    [self.mapView animateToCameraPosition:cameraPosition];
+    [CATransaction commit];
+    
+    DLog(@"latiotude : %f", newLocation.coordinate.latitude);
+    DLog(@"longitude : %f", newLocation.coordinate.longitude);
+}
+
+// Location 정보를 못가져 올때 Error Delegate
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    DLog(@"LocationManager Error : %@", error);
+}
+
 #pragma mark - Action Method
 /****************************************************************************
  *                                                                          *
@@ -299,18 +320,21 @@ static const CGFloat overlayrHeight = 30.0f;
 // 현재위치로 화면 이동 이벤트
 - (void)locationButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재 위치로 이동!");
-    // 현재위치 업데이트
-    [self.locationManager startUpdatingLocation];
-    if (!self.locationManager.location || !CLLocationCoordinate2DIsValid(self.locationManager.location.coordinate)) {
-        return;
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse ||
+        status == kCLAuthorizationStatusAuthorizedAlways) {
+        DLog(@"Location When In Use");
+        [self.locationManager startUpdatingLocation];
+        
+    } else if (status == kCLAuthorizationStatusNotDetermined) {
+        DLog(@"Location Not Determined");
+        [self.locationManager requestWhenInUseAuthorization];
+        
+    }else if (status == kCLAuthorizationStatusDenied ||
+               status == kCLAuthorizationStatusRestricted) {
+        DLog(@"Location Denied");
+        [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"[설정] > [AirMap] > [위치] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다."];
     }
-    
-    [CATransaction begin];
-    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
-    // change the camera, set the zoom, whatever.  Just make sure to call the animate* method.
-    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:16.0f];
-    [self.mapView animateToCameraPosition:cameraPosition];
-    [CATransaction commit];
 }
 
 // 메뉴버튼 이벤트
@@ -338,80 +362,98 @@ static const CGFloat overlayrHeight = 30.0f;
 -(void)appearanceSearchBar:(UITapGestureRecognizer *)recognizer {
     if(self.isSlideMenuOpen ==NO){
         if (recognizer.state == UIGestureRecognizerStateEnded)
-    {
-        // endEditing
-        [self.view endEditing:YES];
-        
-        // searchBar가 숨어있지 않을 때
-        if (self.isAnimating) {
-            self.isAnimating = NO;
-            [UIView animateWithDuration:0.5f
-                                  delay:0.0f
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 // 애니메이션 진행 로직..
-                                 // menu Button
-                                 [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
-                                                                      self.menuButton.frame.origin.y - 130.0f,
-                                                                      self.menuButton.frame.size.width,
-                                                                      self.menuButton.frame.size.height)];
-                                 // search field
-                                 [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
-                                                                       self.searchField.frame.origin.y - 130.0f,
-                                                                       self.searchField.frame.size.width,
-                                                                       self.searchField.frame.size.height)];
-                                 // plus Button
-                                 [self.plusButton setAlpha:0.0f];
-                                 // plus View
-                                 [self.plusView setAlpha:0.0f];
-                                 // loaction Button
-                                 [self.locationButton setAlpha:0.0f];
-                                 // status bar
-                                 self.isStatusBarHidden = YES;
-                                 [self setNeedsStatusBarAppearanceUpdate];
-                             } completion:^(BOOL finished) {
-                                 // 애니메이션 완료 로직..
-                                 DLog(@"Done 1");
-                             }];
-        } else {
-            self.isAnimating = YES;
-            [UIView animateWithDuration:0.5f
-                                  delay:0.0f
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 // 애니메이션 진행 로직..
-                                 // menu Button
-                                 [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
-                                                                      self.menuButton.frame.origin.y + 130.0f,
-                                                                      self.menuButton.frame.size.width,
-                                                                      self.menuButton.frame.size.height)];
-                                 // search field
-                                 [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
-                                                                       self.searchField.frame.origin.y + 130.0f,
-                                                                       self.searchField.frame.size.width,
-                                                                       self.searchField.frame.size.height)];
-                                 // plus Button
-                                 [self.plusButton setAlpha:1.0f];
-                                 // plus View
-                                 if (![self.plusView isHidden]) {
-                                     self.plusView.hidden = !self.plusView.hidden;
-                                 }
-                                 [self.plusView setAlpha:1.0f];
-                                 // loaction Button    
-                                 [self.locationButton setAlpha:1.0f];
-                                 // status bar
-                                 self.isStatusBarHidden = NO;
-                                 [self setNeedsStatusBarAppearanceUpdate];
-                             } completion:^(BOOL finished) {
-                                 // 애니메이션 완료 로직..
-                                 DLog(@"Done 2");
-                             }];
+        {
+            // endEditing
+            [self.view endEditing:YES];
+            
+            // searchBar가 숨어있지 않을 때
+            if (self.isAnimating) {
+                self.isAnimating = NO;
+                [UIView animateWithDuration:0.5f
+                                      delay:0.0f
+                                    options:UIViewAnimationOptionCurveEaseIn
+                                 animations:^{
+                                     // 애니메이션 진행 로직..
+                                     // menu Button
+                                     [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
+                                                                          self.menuButton.frame.origin.y - 130.0f,
+                                                                          self.menuButton.frame.size.width,
+                                                                          self.menuButton.frame.size.height)];
+                                     // search field
+                                     [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
+                                                                           self.searchField.frame.origin.y - 130.0f,
+                                                                           self.searchField.frame.size.width,
+                                                                           self.searchField.frame.size.height)];
+                                     // plus Button
+                                     [self.plusButton setAlpha:0.0f];
+                                     // plus View
+                                     [self.plusView setAlpha:0.0f];
+                                     // loaction Button
+                                     [self.locationButton setAlpha:0.0f];
+                                     // status bar
+                                     self.isStatusBarHidden = YES;
+                                     // overlay view
+                                     self.mapView.padding = UIEdgeInsetsMake(0.0, 0.0, -overlayrHeight, 0.0);
+                                     [self.overlayView setFrame:CGRectMake(self.overlayView.frame.origin.x,
+                                                                           self.overlayView.frame.origin.y + overlayrHeight,
+                                                                           self.overlayView.frame.size.width,
+                                                                           self.overlayView.frame.size.height)];
+                                     [self setNeedsStatusBarAppearanceUpdate];
+                                 } completion:^(BOOL finished) {
+                                     // 애니메이션 완료 로직..
+                                     DLog(@"Done 1");
+                                 }];
+            } else {
+                self.isAnimating = YES;
+                [UIView animateWithDuration:0.5f
+                                      delay:0.0f
+                                    options:UIViewAnimationOptionCurveEaseIn
+                                 animations:^{
+                                     // 애니메이션 진행 로직..
+                                     // menu Button
+                                     [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
+                                                                          self.menuButton.frame.origin.y + 130.0f,
+                                                                          self.menuButton.frame.size.width,
+                                                                          self.menuButton.frame.size.height)];
+                                     // search field
+                                     [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
+                                                                           self.searchField.frame.origin.y + 130.0f,
+                                                                           self.searchField.frame.size.width,
+                                                                           self.searchField.frame.size.height)];
+                                     // plus Button
+                                     [self.plusButton setAlpha:1.0f];
+                                     // plus View
+                                     if (![self.plusView isHidden]) {
+                                         self.plusView.hidden = !self.plusView.hidden;
+                                     }
+                                     [self.plusView setAlpha:1.0f];
+                                     // loaction Button
+                                     [self.locationButton setAlpha:1.0f];
+                                     // status bar
+                                     self.isStatusBarHidden = NO;
+                                     // overlay view
+                                     self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, overlayrHeight, 0.0f);
+                                     [self.overlayView setFrame:CGRectMake(self.overlayView.frame.origin.x,
+                                                                           self.overlayView.frame.origin.y - overlayrHeight,
+                                                                           self.overlayView.frame.size.width,
+                                                                           self.overlayView.frame.size.height)];
+                                     
+                                     [self setNeedsStatusBarAppearanceUpdate];
+                                 } completion:^(BOOL finished) {
+                                     // 애니메이션 완료 로직..
+                                     DLog(@"Done 2");
+                                 }];
+            }
+        }else{
+            
         }
-    }else{
-        
-    }
     }
 }
+// bottom overlay Button 클릭 이벤트
+- (void)overlayButtonTouchUpInside:(UIButton *)sender {
+    DLog(@"overlayButton TouchUp");
+}
+
 // status bar
 - (BOOL)prefersStatusBarHidden {
     return self.isStatusBarHidden;
@@ -425,7 +467,7 @@ static const CGFloat overlayrHeight = 30.0f;
 
 #pragma mark - TravelTableViewController Delegate
 - (void)selectTravelTitle:(NSString *)title {
-    self.overlayTravelTitleLabel.text = title;
+    [self.overlayButton setTitle:title forState:UIControlStateNormal];
 }
 
 @end
