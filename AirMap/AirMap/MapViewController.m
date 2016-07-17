@@ -35,6 +35,7 @@ static const CGFloat overlayrHeight = 45.0f;
 
 @implementation MapViewController
 
+#pragma mark - View LifeCycel
 - (void)viewDidLoad {
     [super viewDidLoad];
     // 구글 지도 만들어 주기.
@@ -221,29 +222,9 @@ static const CGFloat overlayrHeight = 45.0f;
 
 // 구글지도 만들어주는 메서드
 - (void)createGoogleMapView {
-    // 현재 나의 위치 정보 가져오기.
-    self.locationManager = [[CLLocationManager alloc] init];
     
-    // 델리게이트
-    self.locationManager.delegate = self;
-    // 로케이션 정확도 (배터리로 동작할 때 권장되는 가장 수준높은 정확도)
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    // 거리 필터 구성. 어느 정도 거리의 위치변화가 생겼을 때 어플이 알람을 받을지 말지 설정하는 프로퍼티. (1500미터)
-    self.locationManager.distanceFilter = 1500.0;
-    
-    
-    // 사용중인 위치 정보 요청 (항상)
-    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-        [self.locationManager requestAlwaysAuthorization];
-    }
-    
-    // 현재위치 업데이트
-    [self.locationManager startUpdatingLocation];
-    
-    // 위도
-    DLog(@"latitude : %f", self.locationManager.location.coordinate.latitude);
-    // 경도
-    DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
+    // location 설정 메서드
+    [self travelLocationManager];
     
     // 화면에서 보는 영역?
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude
@@ -256,12 +237,51 @@ static const CGFloat overlayrHeight = 45.0f;
     self.view = self.mapView;
 }
 
-#pragma mark - CLLocationManager Delegate
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation {
-    NSLog(@"newLocation : %@", newLocation);
+- (void)travelLocationManager {
+    // 현재 나의 위치 정보 가져오기.
+    // nil일 경우에만
+    if (self.locationManager == nil)
+        self.locationManager = [[CLLocationManager alloc] init];
+    
+    // 델리게이트
+    self.locationManager.delegate = self;
+    // 로케이션 정확도 (배터리로 동작할 때 권장되는 가장 수준높은 정확도)
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    // 거리 필터 구성. 어느 정도 거리의 위치변화가 생겼을 때 어플이 알람을 받을지 말지 설정하는 프로퍼티. (1500미터)
+    self.locationManager.distanceFilter = 1500.0;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+    
+    
+    // 사용중인 위치 정보 요청 (사용할때만)
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
+    // 위도
+    DLog(@"latitude : %f", self.locationManager.location.coordinate.latitude);
+    // 경도
+    DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
 }
+
+#pragma mark - CLLocationManager Delegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    CLLocation *newLocation = [locations lastObject];
+    [CATransaction begin];
+    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
+    // change the camera, set the zoom, whatever.  Just make sure to call the animate* method.
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude zoom:16.0f];
+    [self.mapView animateToCameraPosition:cameraPosition];
+    [CATransaction commit];
+    
+    DLog(@"latiotude : %f", newLocation.coordinate.latitude);
+    DLog(@"longitude : %f", newLocation.coordinate.longitude);
+}
+
+// Location 정보를 못가져 올때 Error Delegate
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    DLog(@"LocationManager Error : %@", error);
+}
+
 #pragma mark - Action Method
 /****************************************************************************
  *                                                                          *
@@ -301,18 +321,21 @@ static const CGFloat overlayrHeight = 45.0f;
 // 현재위치로 화면 이동 이벤트
 - (void)locationButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재 위치로 이동!");
-    // 현재위치 업데이트
-    [self.locationManager startUpdatingLocation];
-    if (!self.locationManager.location || !CLLocationCoordinate2DIsValid(self.locationManager.location.coordinate)) {
-        return;
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse ||
+        status == kCLAuthorizationStatusAuthorizedAlways) {
+        DLog(@"Location When In Use");
+        [self.locationManager startUpdatingLocation];
+        
+    } else if (status == kCLAuthorizationStatusNotDetermined) {
+        DLog(@"Location Not Determined");
+        [self.locationManager requestWhenInUseAuthorization];
+        
+    }else if (status == kCLAuthorizationStatusDenied ||
+               status == kCLAuthorizationStatusRestricted) {
+        DLog(@"Location Denied");
+        [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"[설정] > [AirMap] > [위치] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다."];
     }
-    
-    [CATransaction begin];
-    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
-    // change the camera, set the zoom, whatever.  Just make sure to call the animate* method.
-    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:16.0f];
-    [self.mapView animateToCameraPosition:cameraPosition];
-    [CATransaction commit];
 }
 
 // 메뉴버튼 이벤트
