@@ -58,14 +58,6 @@
 		ECF8552B1D3C933C00EBEE94 /* TravelActivation.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */; };
 		ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F61D32883000EF311B /* MGSwipeButton.m */; };
 		ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F81D32883000EF311B /* MGSwipeTableCell.m */; };
-		ECFC530D1D32883000EF311B /* SCLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52FB1D32883000EF311B /* SCLAlertView.m */; };
-		ECFC530E1D32883000EF311B /* SCLAlertViewResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52FD1D32883000EF311B /* SCLAlertViewResponder.m */; };
-		ECFC530F1D32883000EF311B /* SCLAlertViewStyleKit.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52FF1D32883000EF311B /* SCLAlertViewStyleKit.m */; };
-		ECFC53101D32883000EF311B /* SCLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53011D32883000EF311B /* SCLButton.m */; };
-		ECFC53111D32883000EF311B /* SCLSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53041D32883000EF311B /* SCLSwitchView.m */; };
-		ECFC53121D32883000EF311B /* SCLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53061D32883000EF311B /* SCLTextView.m */; };
-		ECFC53131D32883000EF311B /* SCLTimerDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53081D32883000EF311B /* SCLTimerDisplay.m */; };
-		ECFC53141D32883000EF311B /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC530A1D32883000EF311B /* UIImage+ImageEffects.m */; };
 		ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC53161D328C0700EF311B /* TravelDetailViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -154,23 +146,6 @@
 		ECFC52F61D32883000EF311B /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
 		ECFC52F71D32883000EF311B /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
 		ECFC52F81D32883000EF311B /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
-		ECFC52FA1D32883000EF311B /* SCLAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLAlertView.h; sourceTree = "<group>"; };
-		ECFC52FB1D32883000EF311B /* SCLAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLAlertView.m; sourceTree = "<group>"; };
-		ECFC52FC1D32883000EF311B /* SCLAlertViewResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLAlertViewResponder.h; sourceTree = "<group>"; };
-		ECFC52FD1D32883000EF311B /* SCLAlertViewResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLAlertViewResponder.m; sourceTree = "<group>"; };
-		ECFC52FE1D32883000EF311B /* SCLAlertViewStyleKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLAlertViewStyleKit.h; sourceTree = "<group>"; };
-		ECFC52FF1D32883000EF311B /* SCLAlertViewStyleKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLAlertViewStyleKit.m; sourceTree = "<group>"; };
-		ECFC53001D32883000EF311B /* SCLButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLButton.h; sourceTree = "<group>"; };
-		ECFC53011D32883000EF311B /* SCLButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLButton.m; sourceTree = "<group>"; };
-		ECFC53021D32883000EF311B /* SCLMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLMacros.h; sourceTree = "<group>"; };
-		ECFC53031D32883000EF311B /* SCLSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLSwitchView.h; sourceTree = "<group>"; };
-		ECFC53041D32883000EF311B /* SCLSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLSwitchView.m; sourceTree = "<group>"; };
-		ECFC53051D32883000EF311B /* SCLTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLTextView.h; sourceTree = "<group>"; };
-		ECFC53061D32883000EF311B /* SCLTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLTextView.m; sourceTree = "<group>"; };
-		ECFC53071D32883000EF311B /* SCLTimerDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLTimerDisplay.h; sourceTree = "<group>"; };
-		ECFC53081D32883000EF311B /* SCLTimerDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLTimerDisplay.m; sourceTree = "<group>"; };
-		ECFC53091D32883000EF311B /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
-		ECFC530A1D32883000EF311B /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		ECFC53151D328C0700EF311B /* TravelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailViewController.h; sourceTree = "<group>"; };
 		ECFC53161D328C0700EF311B /* TravelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -293,7 +268,6 @@
 				ECB520601D376D6A0013549B /* Realm */,
 				E4D39BD21D337B6200DE48D9 /* Login */,
 				ECFC52F41D32883000EF311B /* MGSwipeTableCell */,
-				ECFC52F91D32883000EF311B /* SCLAlertView */,
 				ECD5C1301D2FA90500A551D8 /* Map */,
 				E9FAEB3C1D2BD4D900014449 /* MultiImageSelect */,
 				EC750B931D2B9E0300A54374 /* Resource */,
@@ -388,30 +362,6 @@
 				ECFC52F81D32883000EF311B /* MGSwipeTableCell.m */,
 			);
 			path = MGSwipeTableCell;
-			sourceTree = "<group>";
-		};
-		ECFC52F91D32883000EF311B /* SCLAlertView */ = {
-			isa = PBXGroup;
-			children = (
-				ECFC52FA1D32883000EF311B /* SCLAlertView.h */,
-				ECFC52FB1D32883000EF311B /* SCLAlertView.m */,
-				ECFC52FC1D32883000EF311B /* SCLAlertViewResponder.h */,
-				ECFC52FD1D32883000EF311B /* SCLAlertViewResponder.m */,
-				ECFC52FE1D32883000EF311B /* SCLAlertViewStyleKit.h */,
-				ECFC52FF1D32883000EF311B /* SCLAlertViewStyleKit.m */,
-				ECFC53001D32883000EF311B /* SCLButton.h */,
-				ECFC53011D32883000EF311B /* SCLButton.m */,
-				ECFC53021D32883000EF311B /* SCLMacros.h */,
-				ECFC53031D32883000EF311B /* SCLSwitchView.h */,
-				ECFC53041D32883000EF311B /* SCLSwitchView.m */,
-				ECFC53051D32883000EF311B /* SCLTextView.h */,
-				ECFC53061D32883000EF311B /* SCLTextView.m */,
-				ECFC53071D32883000EF311B /* SCLTimerDisplay.h */,
-				ECFC53081D32883000EF311B /* SCLTimerDisplay.m */,
-				ECFC53091D32883000EF311B /* UIImage+ImageEffects.h */,
-				ECFC530A1D32883000EF311B /* UIImage+ImageEffects.m */,
-			);
-			path = SCLAlertView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -554,9 +504,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E45989651D374D55007A7BC9 /* SKSTableViewCellIndicator.m in Sources */,
-				ECFC530D1D32883000EF311B /* SCLAlertView.m in Sources */,
-				ECFC53101D32883000EF311B /* SCLButton.m in Sources */,
-				ECFC530E1D32883000EF311B /* SCLAlertViewResponder.m in Sources */,
 				E4D39BDE1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m in Sources */,
 				ECB520691D376DD20013549B /* ImageData.m in Sources */,
 				EC50DD841D2D1299009B6C91 /* PlacesViewController.m in Sources */,
@@ -567,10 +514,8 @@
 				E4D39BDD1D337B6E00DE48D9 /* ServerConnection.m in Sources */,
 				EC714C891D2ABC5F00165A58 /* MapViewController.m in Sources */,
 				ECF8552B1D3C933C00EBEE94 /* TravelActivation.m in Sources */,
-				ECFC53131D32883000EF311B /* SCLTimerDisplay.m in Sources */,
 				E48BCFD81D3898E900DDB722 /* KeychainItemWrapper.m in Sources */,
 				E45989641D374D55007A7BC9 /* SKSTableViewCell.m in Sources */,
-				ECFC53111D32883000EF311B /* SCLSwitchView.m in Sources */,
 				ECB520901D38007A0013549B /* TravelDetailCell.m in Sources */,
 				ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */,
 				ECA084F81D2E268100141B29 /* TravelTableViewController.m in Sources */,
@@ -582,12 +527,9 @@
 				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
 				E9063C351D2E796200F28F69 /* BadgeView.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
-				ECFC530F1D32883000EF311B /* SCLAlertViewStyleKit.m in Sources */,
 				ECACB5F81D3D173B00EAFCD7 /* CustomIOSAlertView.m in Sources */,
 				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
 				E45989631D374D55007A7BC9 /* SKSTableView.m in Sources */,
-				ECFC53121D32883000EF311B /* SCLTextView.m in Sources */,
-				ECFC53141D32883000EF311B /* UIImage+ImageEffects.m in Sources */,
 				E4D39BDC1D337B6E00DE48D9 /* SignUpViewController.m in Sources */,
 				E4D39BDB1D337B6E00DE48D9 /* ViewController.m in Sources */,
 				ECB520661D376DB00013549B /* TravelList.m in Sources */,

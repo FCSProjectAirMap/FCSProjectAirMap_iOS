@@ -200,7 +200,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSLog(@"didSelectRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+//    NSLog(@"didSelectRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
     
     
     
@@ -208,7 +208,7 @@
 
 - (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectSubRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+//    NSLog(@"didSelectSubRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
 }
 
 
