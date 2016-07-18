@@ -459,6 +459,7 @@ static const CGFloat overlayrHeight = 45.0f;
     }
     // Activity되어 있는 여행 리스트를 보여준다.
     TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
+    travelDetailViewController.overLayFlag = YES;
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
     [self presentViewController:navi animated:YES completion:^{
         

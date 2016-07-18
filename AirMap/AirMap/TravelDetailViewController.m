@@ -45,10 +45,20 @@ const CGFloat ROW_HEIGHT = 300.0f;
 
 #pragma mark - General Method
 - (void)setupUI {
-    // Navigation Bar TitleText Color
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
-    // Navigation Bar Color
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
+    
+    // overLayView 선택할 시.
+    if (self.overLayFlag) {
+        // Navigation Bar TitleText Color
+        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
+        // Navigation Bar Color
+        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
+        // Navigation left Button
+        UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(travelTableViewCloseTouchUpInside:)];
+        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
+    }
     
     // view
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -90,9 +100,9 @@ const CGFloat ROW_HEIGHT = 300.0f;
 }
 
 #pragma mark - Action Method
-//- (void)travelDetailCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
+- (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - TableViewDelegate, TableViewDataSource
 // section header height
