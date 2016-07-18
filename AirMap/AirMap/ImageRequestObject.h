@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "MultiImageDataCenter.h"
 #import "AFNetworking.h"
+#import "KeychainItemWrapper.h"
 
 @interface ImageRequestObject : UIView
 
 + (instancetype)sharedInstance;
-- (void)uploadImages:(NSMutableArray *)selectedImages inTravelTitle:(NSString *)travelTitle;
-- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas inTravelTitle:(NSString *)travelTitle;
+- (void)uploadImages:(NSMutableArray *)selectedImages;
+- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas;
 
 @end
