@@ -262,6 +262,19 @@ static const CGFloat overlayrHeight = 45.0f;
     DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
 }
 
+// PlusView Hidden method
+- (void)plusViewHidden {
+    self.plusView.hidden = !self.plusView.hidden;
+}
+
+- (void)travelListViewCall {
+    TravelTableViewController *travelTabelViewController = [[TravelTableViewController alloc] init];
+    travelTabelViewController.delegate = self;
+    // Nivigation
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
+    [self presentViewController:navi animated:YES completion:nil];
+}
+
 #pragma mark - CLLocationManager Delegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     CLLocation *newLocation = [locations lastObject];
@@ -290,23 +303,38 @@ static const CGFloat overlayrHeight = 45.0f;
 // PlusButton 눌렀을때.
 - (void)plusButtonTouchUpInside:(UIButton *)sender {
     DLog(@"플러스 버튼 눌러!");
-    self.plusView.hidden = !self.plusView.hidden;
+    [self plusViewHidden];
 }
 
 - (void)travelButtonTouchUpInside:(UIButton *)sender {
     DLog(@"여행 경로 추가");
-    TravelTableViewController *travelTabelViewController = [[TravelTableViewController alloc] init];
-    travelTabelViewController.delegate = self;
-    // Nivigation
-    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
-    [self presentViewController:navi animated:YES completion:nil];
-    self.plusView.hidden = !self.plusView.hidden;
+    [self travelListViewCall];
+    [self plusViewHidden];
 }
 
 - (void)albumButtonTouchUpInside:(UIButton *)sender {
     DLog(@"앨범 불러오기.");
-    self.plusView.hidden = !self.plusView.hidden;
+    [self plusViewHidden];
     
+    // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
+    if ([TravelActivation defaultInstance].travelList == nil) {
+        // Alert를 호출해 알려준다.
+        CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
+        [alert setContainerView:[self createAlertCustomView]];
+        [alert setButtonTitles:[NSMutableArray arrayWithObjects:@"확 인", @"취 소", nil]];
+        [alert setDelegate:self];
+        [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
+            if (buttonIndex == 0) {
+                [self travelListViewCall];
+            } else if (buttonIndex ==1 ) {
+                DLog(@"취소");
+            }
+            [alertView close];
+        }];
+        
+        [alert show];
+        return;
+    }
     // 사진권한 확인(앨범/설정화면으로 이동)
     [AuthorizationControll moveToMultiImageSelectFrom:self];
 }
@@ -314,7 +342,7 @@ static const CGFloat overlayrHeight = 45.0f;
 // 현재위치 찍어주는 이벤트
 - (void)locationAddButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재위치 마커 찍기");
-    self.plusView.hidden = !self.plusView.hidden;
+    [self plusViewHidden];
 }
 
 // 현재위치로 화면 이동 이벤트
@@ -452,24 +480,41 @@ static const CGFloat overlayrHeight = 45.0f;
 // bottom overlay Button 클릭 이벤트
 - (void)overlayButtonTouchUpInside:(UIButton *)sender {
     DLog(@"overlayButton TouchUp");
-    // 현재 활성화된 여행이 없을 경우 ToastView를 보여준다.
+    // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
     if ([TravelActivation defaultInstance].travelList == nil) {
-        [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"여행을 선택해 주세요~!"];
+        [self travelListViewCall];
         return;
     }
     // Activity되어 있는 여행 리스트를 보여준다.
     TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
     travelDetailViewController.overLayFlag = YES;
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
-    [self presentViewController:navi animated:YES completion:^{
-        
-    }];
+    [self presentViewController:navi animated:YES completion:nil];
 }
 
 // status bar
 - (BOOL)prefersStatusBarHidden {
     return self.isStatusBarHidden;
 }
+
+#pragma mark - CustomIOSAlertView Method, Delegate
+// AlertView에 보여지는 CustomView
+- (UIView *)createAlertCustomView
+{
+    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 00.f, 290.0f, 100.0f)];
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, customView.frame.size.width, customView.frame.size.height)];
+    textLabel.textAlignment = NSTextAlignmentCenter;
+    textLabel.numberOfLines = 0;
+    textLabel.font = [UIFont systemFontOfSize:15.0f];
+    textLabel.text = @"선택 된 여행이 없습니다.\n확인을 누르시면 여행생성 화면으로 이동합니다.";
+    [customView addSubview:textLabel];
+    return customView;
+}
+// CustomIOSAlertView Delegate
+- (void)customIOS7dialogButtonTouchUpInside:(id)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+}
+
 #pragma mark - GMSMapViewDelegate
 /****************************************************************************
  *                                                                          *

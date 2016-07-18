@@ -74,16 +74,26 @@
         NSLog(@"JSON: %@",responseObject);
         
         //Store Data (email, token) in UserInfo (realm)
-        UserInfo * userInfo = [[UserInfo alloc]init];
-        userInfo.user_id = userEmail;
-        userInfo.user_token = [responseObject objectForKey:@"token"];
-        
+        // ##SJ
         RLMRealm *realm = [RLMRealm defaultRealm];
-        [realm beginWriteTransaction];
-        [realm addOrUpdateObject:userInfo];
-        [realm commitWriteTransaction];
-    
-        
+        RLMResults *resultArray = [UserInfo objectsWhere:@"user_id == %@", userEmail];
+        UserInfo *userinfo = nil;
+        if (resultArray.count > 0) {
+            // 이미 있는 데이터
+            userinfo = resultArray[0];
+            [realm beginWriteTransaction];
+            userinfo.user_token = [responseObject objectForKey:@"token"];
+            [realm commitWriteTransaction];
+        } else {
+            // 새로운 데이터
+            userinfo = [[UserInfo alloc]init];
+            userinfo.user_id = userEmail;
+            userinfo.user_token = [responseObject objectForKey:@"token"];
+            [realm beginWriteTransaction];
+            [realm addObject:userinfo];
+            [realm commitWriteTransaction];
+        }
+        // ##SJ End
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         //        if (completionBlock) {
