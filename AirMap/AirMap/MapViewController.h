@@ -13,6 +13,7 @@
 #import "MultiImageCollectionViewController.h"
 #import "MenuSlideViewController.h"
 #import "AuthorizationControll.h"
+#import "TravelActivation.h"
 
 @import GoogleMaps;
 

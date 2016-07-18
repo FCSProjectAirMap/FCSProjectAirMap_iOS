@@ -481,6 +481,7 @@ forHTTPHeaderField:(NSString *)field
     if (parameters) {
         if (self.queryStringSerialization) {
             NSError *serializationError;
+            
             query = self.queryStringSerialization(request, parameters, &serializationError);
 
             if (serializationError) {
@@ -499,6 +500,8 @@ forHTTPHeaderField:(NSString *)field
         }
     }
 
+  
+    
     if ([self.HTTPMethodsEncodingParametersInURI containsObject:[[request HTTPMethod] uppercaseString]]) {
         if (query && query.length > 0) {
             mutableRequest.URL = [NSURL URLWithString:[[mutableRequest.URL absoluteString] stringByAppendingFormat:mutableRequest.URL.query ? @"&%@" : @"?%@", query]];
