@@ -316,6 +316,25 @@ static const CGFloat overlayrHeight = 45.0f;
     DLog(@"앨범 불러오기.");
     [self plusViewHidden];
     
+    // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
+    if ([TravelActivation defaultInstance].travelList == nil) {
+        // Alert를 호출해 알려준다.
+        CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
+        [alert setContainerView:[self createAlertCustomView]];
+        [alert setButtonTitles:[NSMutableArray arrayWithObjects:@"확 인", @"취 소", nil]];
+        [alert setDelegate:self];
+        [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
+            if (buttonIndex == 0) {
+                [self travelListViewCall];
+            } else if (buttonIndex ==1 ) {
+                DLog(@"취소");
+            }
+            [alertView close];
+        }];
+        
+        [alert show];
+        return;
+    }
     // 사진권한 확인(앨범/설정화면으로 이동)
     [AuthorizationControll moveToMultiImageSelectFrom:self];
 }
@@ -477,6 +496,25 @@ static const CGFloat overlayrHeight = 45.0f;
 - (BOOL)prefersStatusBarHidden {
     return self.isStatusBarHidden;
 }
+
+#pragma mark - CustomIOSAlertView Method, Delegate
+// AlertView에 보여지는 CustomView
+- (UIView *)createAlertCustomView
+{
+    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 00.f, 290.0f, 100.0f)];
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, customView.frame.size.width, customView.frame.size.height)];
+    textLabel.textAlignment = NSTextAlignmentCenter;
+    textLabel.numberOfLines = 0;
+    textLabel.font = [UIFont systemFontOfSize:15.0f];
+    textLabel.text = @"선택 된 여행이 없습니다.\n확인을 누르시면 여행생성 화면으로 이동합니다.";
+    [customView addSubview:textLabel];
+    return customView;
+}
+// CustomIOSAlertView Delegate
+- (void)customIOS7dialogButtonTouchUpInside:(id)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+}
+
 #pragma mark - GMSMapViewDelegate
 /****************************************************************************
  *                                                                          *

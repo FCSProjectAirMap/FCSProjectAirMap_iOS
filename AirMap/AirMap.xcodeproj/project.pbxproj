@@ -50,6 +50,7 @@
 		EC714C8B1D2ABD1C00165A58 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC714C8A1D2ABD1C00165A58 /* CoreLocation.framework */; };
 		ECA084F81D2E268100141B29 /* TravelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA084F71D2E268100141B29 /* TravelTableViewController.m */; };
 		ECA085021D2E8C8A00141B29 /* Ryan.png in Resources */ = {isa = PBXBuildFile; fileRef = ECA085011D2E8C8A00141B29 /* Ryan.png */; };
+		ECACB5F81D3D173B00EAFCD7 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECACB5F71D3D173B00EAFCD7 /* CustomIOSAlertView.m */; };
 		ECB520631D376D990013549B /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB520621D376D990013549B /* UserInfo.m */; };
 		ECB520661D376DB00013549B /* TravelList.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB520651D376DB00013549B /* TravelList.m */; };
 		ECB520691D376DD20013549B /* ImageMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB520681D376DD20013549B /* ImageMetaData.m */; };
@@ -137,6 +138,8 @@
 		ECA084F61D2E268100141B29 /* TravelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTableViewController.h; sourceTree = "<group>"; };
 		ECA084F71D2E268100141B29 /* TravelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelTableViewController.m; sourceTree = "<group>"; };
 		ECA085011D2E8C8A00141B29 /* Ryan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ryan.png; sourceTree = "<group>"; };
+		ECACB5F61D3D173B00EAFCD7 /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
+		ECACB5F71D3D173B00EAFCD7 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
 		ECB520611D376D990013549B /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		ECB520621D376D990013549B /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		ECB520641D376DB00013549B /* TravelList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelList.h; sourceTree = "<group>"; };
@@ -286,6 +289,7 @@
 		EC714C6F1D2AB8A000165A58 /* AirMap */ = {
 			isa = PBXGroup;
 			children = (
+				ECACB5F51D3D173B00EAFCD7 /* CutomIOSAlertView */,
 				ECB520601D376D6A0013549B /* Realm */,
 				E4D39BD21D337B6200DE48D9 /* Login */,
 				ECFC52F41D32883000EF311B /* MGSwipeTableCell */,
@@ -329,6 +333,15 @@
 				EC50DD7E1D2CE407009B6C91 /* Menu_icon.png */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		ECACB5F51D3D173B00EAFCD7 /* CutomIOSAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				ECACB5F61D3D173B00EAFCD7 /* CustomIOSAlertView.h */,
+				ECACB5F71D3D173B00EAFCD7 /* CustomIOSAlertView.m */,
+			);
+			path = CutomIOSAlertView;
 			sourceTree = "<group>";
 		};
 		ECB520601D376D6A0013549B /* Realm */ = {
@@ -570,6 +583,7 @@
 				E9063C351D2E796200F28F69 /* BadgeView.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 				ECFC530F1D32883000EF311B /* SCLAlertViewStyleKit.m in Sources */,
+				ECACB5F81D3D173B00EAFCD7 /* CustomIOSAlertView.m in Sources */,
 				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
 				E45989631D374D55007A7BC9 /* SKSTableView.m in Sources */,
 				ECFC53121D32883000EF311B /* SCLTextView.m in Sources */,
