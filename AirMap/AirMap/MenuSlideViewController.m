@@ -48,6 +48,7 @@
     [super viewDidLoad];
     [self setupUI];
     
+    //add TapGestureRecognizer to dismiss slideview when touch on another place
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSomeWhereElse:)];
     [self.rightView addGestureRecognizer:tapGesture];
     
@@ -98,22 +99,12 @@
     userIDLabel.font = [UIFont systemFontOfSize:15.0f];
     [self.topView addSubview:userIDLabel];
     self.userIDLabel = userIDLabel;
-    
-    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
+    // set ID (from keychain)
+    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
     self.userIDLabel.text = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
     
-    
-    // menu Table View
-//    UITableView *menuTableView = [[UITableView alloc] initWithFrame: style:UITableViewStylePlain];
-////    [self.bottomView addSubview:menuTableView];
-//    self.menuTableView = menuTableView;
-//    self.menuTableView.delegate = self;
-//    self.menuTableView.dataSource = self;
-//    
+  
     SKSTableView *sksTableView= [[SKSTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, MENU_VIEW_WIDTH, bottomView.frame.size.height) style:UITableViewStylePlain];
-    
-//    self.tableView.delegate = self;
-//    self.tableView.dataSource = self;
     sksTableView.SKSTableViewDelegate = self;
     [self.bottomView addSubview: sksTableView];
     self.tableView = sksTableView;
@@ -146,15 +137,7 @@
 }
 
 
-#pragma mark - UITableViewDelegate, UITableViewDataSource
-// Section Title
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    NSLog(@"Section Title : %@", [self.menuSectionTitle objectAtIndex:section]);
-//    return [self.menuDetailDictionary objectForKey:[self.menuSectionTitle objectAtIndex:section]];
-//}
-
-
-
+#pragma mark Contents for TableView (Materials of DataSource)
 
 - (NSArray *)contents
 {
@@ -169,6 +152,16 @@
     }
     
     return _contents;
+}
+
+
+
+
+#pragma mark TableView DataSource & Delegate
+
+// Section Height
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 40.0f;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -196,6 +189,31 @@
     return NO;
 }
 
+
+
+
+- (CGFloat)tableView:(SKSTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60.0f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSLog(@"didSelectRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+    
+    
+    
+}
+
+- (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"didSelectSubRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
+}
+
+
+
+// Cell setting for Row
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SKSTableViewCell";
@@ -216,12 +234,13 @@
     else
         cell.expandable = NO;
     
-  
-
+    
+    
     
     return cell;
 }
 
+//Cell setting for subRow
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"UITableViewCell";
@@ -240,53 +259,6 @@
     return cell;
 }
 
-- (CGFloat)tableView:(SKSTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 60.0f;
-}
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    NSLog(@"didSelectRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
-    
-    
-   
-}
-
-- (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"didSelectSubRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
-}
-
-
-
-
-
-
-// Section Height
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40.0f;
-}
-//// Section Count
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    NSLog(@"Section Count : %ld", [self.menuSectionTitle count]);
-//    return [self.menuSectionTitle count];
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    NSLog(@"row Count : %ld", [[self.menuDetailDictionary objectForKey:[self.menuSectionTitle objectAtIndex:section]] count]);
-//    return [[self.menuDetailDictionary objectForKey:[self.menuSectionTitle objectAtIndex:section]] count];
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSString *reuseIdentifier = @"Cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-//    }
-//    
-//    return cell;
-//}
 
 @end

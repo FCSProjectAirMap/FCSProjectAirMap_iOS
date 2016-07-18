@@ -13,10 +13,8 @@
 - (void)authenticateWithUserEmail:(NSString *)userEmail
                  withUserPassword:(NSString *)userPassword
                        completion:(void (^)(BOOL success))completionBlock;
-- (void)registerWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword;
+- (void)registerWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword completion:(void (^)(BOOL success))completionBlock;
 -(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userName;
 
-- (void)authenticatewhenAutoLoginEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
-                            completion:(void (^)(BOOL success))completionBlock;
 
 @end
