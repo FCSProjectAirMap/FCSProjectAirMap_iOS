@@ -52,30 +52,14 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setHidden: YES];
     
-    // NSUserDefaults for user autologin(Temporary)
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    
-    if(![userDefault boolForKey:@"registered"]){
-        NSLog(@"No user registered");
-        
-        //        [self alertStatus:@"Not registered" :@"Alert" :1];
-    }else{
-        NSLog(@"User registered");
-        
-
-        
-
-    }
-    
-//    Background image
+    //    Background image
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ryan10.png"]];
     [backgroundView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:backgroundView];
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     
-   
-//    emaillabel//passwordlabel
+//    emailTextField & passwordTextField Setting
     const CGFloat VIEW_MARGIN = 20*screenWidth/375;
     CGSize textFieldSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6, 40);
     CGSize buttonSize = CGSizeMake(80*screenWidth/375, 30*screenWidth/375);
@@ -85,7 +69,7 @@
     UITextField *emailTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
     [emailTF setBackgroundColor:[UIColor whiteColor]];
     [emailTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [emailTF setPlaceholder:@"input email-address"];
+    [emailTF setPlaceholder:@"이메일을 입력하세요"];
     [self.view bringSubviewToFront:emailTF];
     self.emailField =emailTF;
     [self.view addSubview:emailTF];
@@ -95,7 +79,7 @@
     UITextField *passwordTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
     [passwordTF setBorderStyle:UITextBorderStyleRoundedRect];
     [passwordTF setBackgroundColor:[UIColor whiteColor]];
-    [passwordTF setPlaceholder:@"input Password"];
+    [passwordTF setPlaceholder:@"패스워드를 입력하세요"];
     [self.view bringSubviewToFront:passwordTF];
     self.passWordField = passwordTF;
     [self.view addSubview:passwordTF];
@@ -120,15 +104,13 @@
     
     
     const CGFloat BUTTONVIEW_MARGIN = 35*screenWidth/375;
-//    signup, Login, LoginwithFacebook Button
-    
+
+    //    signup, Login, LoginwithFacebook Button setting
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     loginButton.backgroundColor =[UIColor darkGrayColor];
-    [loginButton setTitle:@"Login" forState:UIControlStateNormal];
+    [loginButton setTitle:@"로그인" forState:UIControlStateNormal];
     [loginButton setFrame:CGRectMake(BUTTONVIEW_MARGIN,0,buttonSize.width,buttonSize.height)];
     [loginButton addTarget:self action:@selector(clickLoginButton:) forControlEvents:UIControlEventTouchUpInside];
-//    CGSize maximumbuttonSize = CGSizeMake(loginButton.frame.size.width,buttonSize.height);
-//    CGSize expectSize = [loginButton sizeThatFits:maximumbuttonSize];
     loginButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     loginButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.loginButton = loginButton;
@@ -137,7 +119,7 @@
     
     UIButton *signupButton = [UIButton buttonWithType:UIButtonTypeCustom];
     signupButton.backgroundColor = [UIColor greenColor];
-    [signupButton setTitle:@"SignUp" forState:UIControlStateNormal];
+    [signupButton setTitle:@"회원가입" forState:UIControlStateNormal];
     [signupButton setFrame:CGRectMake(BUTTONVIEW_MARGIN*2 + buttonSize.width,0, buttonSize.width, buttonSize.height)];
     [signupButton addTarget:self action:@selector(clickSignUpButton:) forControlEvents:UIControlEventTouchUpInside];
     signupButton.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -148,7 +130,7 @@
     
     UIButton *facebookLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     facebookLoginButton.backgroundColor = [UIColor blueColor];
-    [facebookLoginButton setTitle:@"FaceBook" forState:UIControlStateNormal];
+    [facebookLoginButton setTitle:@"페이스북" forState:UIControlStateNormal];
     [facebookLoginButton setFrame:CGRectMake(BUTTONVIEW_MARGIN*3+buttonSize.width*2,0, buttonSize.width, buttonSize.height)];
     [facebookLoginButton addTarget:self action:@selector(facebookLoginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [buttonView addSubview:facebookLoginButton];
@@ -157,18 +139,21 @@
     facebookLoginButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.facebookLoginButton = facebookLoginButton;
     
+    
+
 }
 
+#pragma mark Action Method
+// Selector Method of SignUp button
 -(void)clickSignUpButton:(UIButton*)sender{
     
     SignUpViewController *signupVC = [[SignUpViewController alloc]init];
-    [self presentViewController:signupVC animated:YES completion:nil];
-    
+    [self.navigationController pushViewController:signupVC animated:YES];
     
 }
 
 
-//Selector method of FacebookLoginButton
+// Selector method of FacebookLoginButton
 -(void)facebookLoginButtonClicked
 {
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc]init];
@@ -180,11 +165,7 @@
         }else{
             NSLog(@"Logged in");
             NSLog(@"Result : %@",result);
-            //ACTION After Login
-//            MainPageViewController *main = [[MainPageViewController alloc] init];
-//            [self.navigationController pushViewController:main animated:YES];
             
-            //After FBSDKLoginMangager permitted
             if([result.grantedPermissions containsObject:@"email"])
                             {
                                 NSLog(@"result is %@",result);
@@ -198,51 +179,7 @@
             
         }
     }];
-
-    
-//    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]initWithGraphPath:@"/me" parameters:@{@"fields":@"id,name,email"} HTTPMethod:@"GET"];
-//    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error){
-//        NSLog (@"result : %@",result);
-//        name = [result valueForKey:@"name"];
-//        email = [result valueForKey:@"email"];
-//        accessToken = [result valueForKey:@"id"];
-//         ;
-//    }];
-    
 }
-
-
-//- (IBAction)clickFacebookButton:(UIButton *)sender {
-//    
-//    NSLog(@"button pushed");
-//    
-//    FBSDKLoginManager * login =[[FBSDKLoginManager alloc]init];
-//    [login logInWithReadPermissions:@[@"email"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error){
-//        if (error) {
-//            NSLog(@"process error");
-//        }else if(result.isCancelled){
-//            NSLog(@"canceled");
-//        }else{
-//            NSLog(@"Logged in");
-//            //로그인후 액션
-//            MainPageViewController * mainPage = [[MainPageViewController alloc]init];
-//            [self.navigationController pushViewController:mainPage animated:YES ];
-//            
-//            
-//            if([result.grantedPermissions containsObject:@"email"])
-//            {
-//                NSLog(@"result is %@",result);
-//                [self fetchUserInfo];
-//            }
-//            
-//        }
-//    }];
-//    
-//}
-//
-
-
-
 
 
 //fetch email, name from Facebook userConnection
@@ -265,22 +202,6 @@
             }
             ServerConnection *serverConnection = [[ServerConnection alloc]init];
             [serverConnection sendUserInfoFromFacebook:[result objectForKey:@"email"] :[result objectForKey:@"name"]];
-            
-            
-            
-            
-//            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"http://52.78.72.132/login/"
-//                                               parameters:@{ @"fields":@"id, name, email" }
-//                                               HTTPMethod:@"POST"]
-//             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-//                 if ([error.userInfo[FBSDKGraphRequestErrorGraphErrorCode] isEqual:@200]) {
-//                     NSLog(@"permission error");
-//                 }else{
-//                     NSLog(@"LoginSuccess - facebook");
-//                     NSLog(@"JSON: %@",connection);
-//                     [self dismissViewControllerAnimated:YES completion:nil];
-//                 }];
-            
         }
     }];
     [connection start];
@@ -289,7 +210,7 @@
 }
 
 
-//alert method for easily fetch
+//alert method for Use easily
 - (void)alertStatus:(NSString *)msg :(NSString *)title :(int) tag
 {
     
@@ -304,7 +225,7 @@
     
 }
 
-//click ordinary LoginButton method(IBAction)
+//selector Method of ordinary loginButton
 - (void)clickLoginButton:(UIButton *)sender {
 
     ServerConnection * connection =[[ServerConnection alloc]init];
@@ -314,11 +235,9 @@
                                    NSLog(@"구동");
                                    if (success) {
                                        NSLog(@"석세스");
-                                       
-                                  
-                                       
-                                       
-                                       KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
+                            
+                                       // Set ID & Password in Keychain for AutoLogin
+                                       KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
                                        
                                        [keychainItem setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
                                        [keychainItem setObject:_passWordField.text forKey:(__bridge id)kSecValueData];
@@ -329,7 +248,7 @@
                                    } else {
                                        NSLog(@"fa일");
                                        
-                                       [self alertStatus:@"Login failed\n check your ID & Password again" :@"Error" :1];
+                                       [self alertStatus:@"로그인이 실패했습니다. 아이디와 비밀번호를 다시 확인해 주세요" :@"에러" :1];
                                        
                                        
                                    }
@@ -337,16 +256,8 @@
     
 }
 
-- (BOOL)isUserLogged
-{
-    KeychainItemWrapper *wrapper = [[KeychainItemWrapper alloc] initWithIdentifier:@"My_Unique_Id" accessGroup:nil];
-    NSString *username = [wrapper objectForKey:(__bridge id)kSecAttrAccount];
-    NSString *password = [wrapper objectForKey:(__bridge id)kSecValueData];
-    BOOL isLogged = ([username length] > 0 && [password length] > 0);
-    return isLogged;
-}
-
-
+#pragma mark TextFieldDelegate
+// TextField Delegate
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
@@ -354,7 +265,7 @@
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
-{   //CGFloat upsize = self.view.frame.size.hegith/3;
+{
     [UIView animateWithDuration:0.5 animations:^{
        
         CGRect newFrame = self.view.frame;
