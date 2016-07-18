@@ -111,7 +111,7 @@ const CGFloat ROW_HEIGHT = 300.0f;
     if (cell == nil) {
         cell = [[TravelDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     }
-    ImageMetaData *imageMetaData = self.travelList.image_metadatas[indexPath.row];
+    ImageData *imageMetaData = self.travelList.image_metadatas[indexPath.row];
     NSDictionary *travelDetailInfoDictionary = @{ @"image_name": @"Ryan.png",
                                                   @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
                                                   @"country": imageMetaData.country,

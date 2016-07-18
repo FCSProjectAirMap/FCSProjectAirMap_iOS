@@ -191,13 +191,13 @@ const CGFloat imageShortLength = 640;
     
     for (NSInteger i = 0; i < self.selectedMetadatasWithGPS.count; i++) {
         
-        ImageMetaData *imageMetaData = [[ImageMetaData alloc] init];
-        imageMetaData.creation_date = [self.selectedMetadatasWithGPS[i] objectForKey:@"creationDate"] ;
-        imageMetaData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
-        imageMetaData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
-        imageMetaData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] floatValue];
+        ImageData *imageData = [[ImageData alloc] init];
+        imageData.creation_date = [self.selectedMetadatasWithGPS[i] objectForKey:@"creationDate"] ;
+        imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
+        imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
+        imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] floatValue];
         
-        [travelActivation.travelList.image_metadatas addObject:imageMetaData];
+        [travelActivation.travelList.image_metadatas addObject:imageData];
     }
     
     UserInfo *userInfo = [[UserInfo alloc] init];

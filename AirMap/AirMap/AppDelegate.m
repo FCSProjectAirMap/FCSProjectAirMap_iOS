@@ -48,7 +48,7 @@
     
     // Realm
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    config.schemaVersion = 3;
+    config.schemaVersion = 4;
     
     [RLMRealmConfiguration setDefaultConfiguration:config];
     
