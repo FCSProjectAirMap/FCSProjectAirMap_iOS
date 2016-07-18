@@ -14,6 +14,7 @@
 #import "MGSwipeButton.h"
 #import "UserInfo.h"
 #import "TravelActivation.h"
+#import "KeychainItemWrapper.h"
 
 @protocol TravelTableViewControllerDelegate <NSObject>
 

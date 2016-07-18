@@ -12,6 +12,8 @@
 @interface TravelActivation : NSObject
 
 @property (nonatomic, strong) TravelList *travelList;
+
 + (instancetype)defaultInstance;
+- (void)travelListActivation:(TravelList *)travelList;
 
 @end
