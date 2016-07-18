@@ -42,9 +42,13 @@
 //    [[RLMRealm defaultRealm] addOrUpdateObject:uInfo];
 //    [[RLMRealm defaultRealm] commitWriteTransaction];
     
+    // set ID (from keychain)
+    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+    NSString *keyChainUser_id = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
+    
     // user_id의 데이터 정보를 검색.
     // 로그인 할 때 키체인에 저장시켜둔 id를 가져와 해당 객체를 찾는다.
-    self.resultArray = [UserInfo objectsWhere:@"user_id == %@", @"wngus606@gmail.com"];
+    self.resultArray = [UserInfo objectsWhere:@"user_id == %@", keyChainUser_id];
     // 이미 로그인 할때 해당 아이디로 Realm데이터에 insert됨으로 조건을 줄 필요는 없지만 일단 적어 둠.
     // result 객체의 수가 0 이상일 경우는 이미 있는 데이터
     if (self.resultArray.count > 0) {
@@ -246,7 +250,7 @@
     
     // 선택된 여행을 활성화 시켜준다.
     TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
-    [self travelListActivation:travelList];
+    [self.travelActivation travelListActivation:travelList];
     
     // Modal을 MapViewController (rootViewController)에서 호출해야 하기 때문에 rootView의 instance를 참조 해서 앨범 뷰를 호출한다.
     __weak typeof(UIViewController *) weakSelf = [UIApplication sharedApplication].keyWindow.rootViewController;
@@ -260,24 +264,6 @@
             [AuthorizationControll moveToMultiImageSelectFrom:weakSelf];
         }
     }];
-}
-
-- (void)travelListActivation:(TravelList *)travelList {
-    // 활성화 싱글톤 객체가 참조하고 있을 경우.
-    if (self.travelActivation.travelList != nil) {
-        
-        // 참조하고있는 객체의 Activity 값을 YES에서 NO로 바꿔준다. (Realm의 값이 바뀌므로 Transation안에서 작업해야 함.)
-        [[RLMRealm defaultRealm] beginWriteTransaction];
-        self.travelActivation.travelList.activity = NO;
-        [[RLMRealm defaultRealm] commitWriteTransaction];
-    }
-    
-    // 선택된 여행의 activity 컬럼을 NO에서 YES로 바꿔준다. (Realm의 값이 바뀌므로 Transation안에서 작업해야 함.)
-    [[RLMRealm defaultRealm] beginWriteTransaction];
-    travelList.activity = YES;
-    [[RLMRealm defaultRealm] commitWriteTransaction];
-    // 싱글톤 객체가 선택된 여행을 참조한다.
-    self.travelActivation.travelList = travelList;
 }
 
 #pragma mark - MGSwipeTableCellDelegate
