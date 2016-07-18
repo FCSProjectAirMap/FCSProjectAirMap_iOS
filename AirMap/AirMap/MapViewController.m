@@ -479,6 +479,12 @@ static const CGFloat overlayrHeight = 45.0f;
 // bottom overlay Button 클릭 이벤트
 - (void)overlayButtonTouchUpInside:(UIButton *)sender {
     DLog(@"overlayButton TouchUp");
+    // Activity되어 있는 여행 리스트를 보여준다.
+    TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
+    [self presentViewController:navi animated:YES completion:^{
+        
+    }];
 }
 
 // status bar
