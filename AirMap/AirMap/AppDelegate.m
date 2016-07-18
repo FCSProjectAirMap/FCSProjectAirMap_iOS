@@ -31,23 +31,30 @@
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
     
+    // Set MapViewController to RootViewController
     MapViewController *mapViewController = [[MapViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = mapViewController;
     
+    // Check FaceBook Token and decide if LoginViewContoller Open or Close
     if ([FBSDKAccessToken currentAccessToken]) {
         [self showLoginView];
     } else {
-        // No, display the login page.
+        // display the login page.
         [self showLoginView];
     }
 
-    
     [self.window makeKeyAndVisible];
+    
+    // Realm
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
     config.schemaVersion = 2;
     
     [RLMRealmConfiguration setDefaultConfiguration:config];
+    
+
+//    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:loginViewController];
+//    navigationController.
     
     return YES;
 }
@@ -56,35 +63,35 @@
 
 - (void)showLoginView
 {
-//    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"YourAppLogin" accessGroup:nil];
-//    
-//    if([keychainItem objectForKey: (__bridge id)kSecAttrAccount] && [keychainItem objectForKey:(__bridge id)kSecValueData])
-//    {
-////        ServerConnection *serverConnection = [[ServerConnection alloc]init];
-////        [serverConnection authenticatewhenAutoLoginEmail:[keychainItem objectForKey: (__bridge id)kSecAttrAccount] withUserPassword:[keychainItem objectForKey:(__bridge id)kSecValueData] completion:^(BOOL success) {
-////            NSLog(@"오토로그인 구동");
-////            if (success) {
-////                NSLog(@"오토로그인 석세스");
-////            } else {
-////                NSLog(@"오토로그인 fa일");
-////                
-//////                [self alertStatus:@"Login failed\n check your ID & Password again" :@"Error" :1];
-////                ViewController *loginViewController = [[ViewController alloc]init];
-////                [self.window makeKeyAndVisible];
-////                [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
-////                
-////                
-////            }
-////        }];
-//
-//    }
-//    else
-//    {
+    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+    
+    //Set Keychain, and match ID & Password in Server and decide to present LoginViewController
+    if([keychainItem objectForKey: (__bridge id)kSecAttrAccount] && [keychainItem objectForKey:(__bridge id)kSecValueData])
+    {
+        ServerConnection *serverConnection = [[ServerConnection alloc]init];
+        [serverConnection authenticateWithUserEmail:[keychainItem objectForKey: (__bridge id)kSecAttrAccount] withUserPassword:[keychainItem objectForKey:(__bridge id)kSecValueData] completion:^(BOOL success) {
+            NSLog(@"오토로그인 구동");
+            if (success) {
+                NSLog(@"오토로그인 석세스");
+            } else {
+                NSLog(@"오토로그인 fa일");
+                // Check ID & Password in Keychain, and if autoLogin is failed, Present the LoginViewController
+                ViewController *loginViewController = [[ViewController alloc]init];
+                [self.window makeKeyAndVisible];
+                loginViewController.modalPresentationStyle = UIModalPresentationPopover;
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginViewController];
+                [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
+            }
+        }];
+
+    }
+    else
+    {
         ViewController *loginViewController = [[ViewController alloc]init];
         [self.window makeKeyAndVisible];
         [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
 
-//    }
+    }
 }
 
 

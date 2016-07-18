@@ -26,7 +26,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
     [self.view setBackgroundColor:[UIColor orangeColor]];
     
     const CGFloat VIEW_MARGIN = 20;
@@ -40,7 +39,7 @@
     UITextField *emailTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
     [emailTF setBackgroundColor:[UIColor whiteColor]];
     [emailTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [emailTF setPlaceholder:@"input email-address"];
+    [emailTF setPlaceholder:@"이메일을 입력해주세요"];
     [self.view bringSubviewToFront:emailTF];
     self.emailField =emailTF;
     [self.view addSubview:emailTF];
@@ -52,7 +51,7 @@
     UITextField *passwordTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
     [passwordTF setBorderStyle:UITextBorderStyleRoundedRect];
     [passwordTF setBackgroundColor:[UIColor whiteColor]];
-    [passwordTF setPlaceholder:@"input Password"];
+    [passwordTF setPlaceholder:@"패스워드를 입력해주세요"];
     [self.view bringSubviewToFront:passwordTF];
     self.passWordField = passwordTF;
     [self.view addSubview:passwordTF];
@@ -63,7 +62,7 @@
     UITextField *repasswordTF = [[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
     [repasswordTF setBorderStyle:UITextBorderStyleRoundedRect];
     [repasswordTF setBackgroundColor:[UIColor whiteColor]];
-    [repasswordTF setPlaceholder:@"input Password again"];
+    [repasswordTF setPlaceholder:@"패스워드를 한번더 입력해주세요"];
     [self.view bringSubviewToFront:repasswordTF];
     self.rePasswordField = repasswordTF;
     [self.view addSubview:repasswordTF];
@@ -89,7 +88,7 @@
     //make backbutton and registerbutton
     UIButton *registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     registerButton.backgroundColor = [UIColor cyanColor];
-    [registerButton setTitle:@"Register" forState:UIControlStateNormal];
+    [registerButton setTitle:@"등록" forState:UIControlStateNormal];
     [registerButton setFrame:CGRectMake(VIEW_MARGIN+buttonSize.width*2-10, offsetY, buttonSize.width, buttonSize.height)];
     [registerButton addTarget:self action:@selector(clickRegisterButton:) forControlEvents:UIControlEventTouchUpInside];
     self.registerButton = registerButton;
@@ -106,6 +105,8 @@
 }
 
 
+
+//email validation
 -(BOOL)isValidEmail
 {
     BOOL stricterFilter = NO;
@@ -121,14 +122,16 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark actionMethod
 - (void)clickBackbutton:(UIButton *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)clickRegisterButton:(UIButton *)sender {
     
     if([self.emailField.text isEqualToString:@""] ||[self.passWordField.text isEqualToString:@""]||[self.rePasswordField.text isEqualToString:@""]){
         // Error Alert( not filled)
-        [self alertStatus:@"not filled" :@"Error" :1];
+        [self alertStatus:@"모든 칸을 채워주세요" :@"에러" :1];
         
     }else{
         if([self.emailField.text isValidEmail])
@@ -136,7 +139,7 @@
         [self checkPasswordMatch];
         }
         else{
-            [self alertStatus:@"not valid Email form" :@"Error" :1];
+            [self alertStatus:@"올바른 이메일 형식이 아닙니다." :@"에러" :1];
         }
         
         
@@ -153,29 +156,41 @@
         [self registerNewUser];
     }else{
         NSLog(@"Doesn't match password");
-        [self alertStatus:@"Doesn't match password":@"Error" :1];
+        [self alertStatus:@"패스워드가 일치하지 않습니다.":@"에러" :1];
     }
 }
 
 //register new user method
 -(void)registerNewUser{
-    //    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    //    [defaults setObject:self.emailField.text forKey:@"userEmail"];
-    //    [defaults setObject:self.passWordField.text forKey:@"userPassword"];
-    //    [defaults setBool:YES forKey:@"registered"];
-    //
-    //    [defaults synchronize];
-    //    [self alertStatus:@"You've registered a new user" :@"Success" :1];
-    
     ServerConnection * connection =[[ServerConnection alloc]init];
     //register User method
-    [connection registerWithUserEmail:self.emailField.text withUserPassword:self.passWordField.text];
+                 [connection registerWithUserEmail:self.emailField.text withUserPassword:self.passWordField.text completion:^(BOOL success) {
+        NSLog(@"register operation");
+        if (success) {
+            NSLog(@"register newUser Success");
+             [self alertStatus:@"회원가입이 완료되었습니다." :@"성공" :1];
+            
+//            // Set ID & Password in Keychain for AutoLogin
+//            KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+//            
+//            [keychainItem setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
+//            [keychainItem setObject:_passWordField.text forKey:(__bridge id)kSecValueData];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+    // check the coincidence of ID and the operation of failure to Register
+        } else {
+            NSLog(@"register fail of error");
+            
+            [self alertStatus:@"아이디가 중복되었습니다. 다시 확인해 주세요." :@"에러" :1];
+            
+            
+        }
+    }];
+
     
-    [self alertStatus:@"You've been registered" :@"Success" :1];
+//
     
-   //Action After register user
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//    [self dismissViewControllerAnimated:YES completion:nil];
+
 }
 
 //alert method for easily fetch
@@ -201,6 +216,7 @@
 }
 
 
+#pragma mark TextField Delegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
