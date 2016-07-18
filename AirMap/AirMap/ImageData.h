@@ -8,7 +8,7 @@
 
 #import <Realm/Realm.h>
 
-@interface ImageMetaData : RLMObject
+@interface ImageData : RLMObject
 
 @property NSString *creation_date;
 @property float latitude;
@@ -19,9 +19,10 @@
 @property NSString *city;
 @property NSString *thumbnail_url;
 @property NSString *image_url;
+@property NSData *image;
 
 @end
 
 // This protocol enables typed collections. i.e.:
-// RLMArray<ImageMetaData>
-RLM_ARRAY_TYPE(ImageMetaData)
+// RLMArray<ImageData>
+RLM_ARRAY_TYPE(ImageData)

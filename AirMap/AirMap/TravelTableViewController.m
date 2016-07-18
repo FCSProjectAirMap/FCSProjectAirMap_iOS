@@ -194,9 +194,9 @@
 }
 
 // ##SJ Test
-- (ImageMetaData *)testMethod:(NSString *)travelTitle index:(NSInteger)index {
+- (ImageData *)testMethod:(NSString *)travelTitle index:(NSInteger)index {
     
-    ImageMetaData *imageMetaDatas = [[ImageMetaData alloc] init];
+    ImageData *imageMetaDatas = [[ImageData alloc] init];
     imageMetaDatas.creation_date = [NSString stringWithFormat:@"%@", [NSDate date]];
     imageMetaDatas.latitude = 13.3f;
     imageMetaDatas.longitude = 34.99923f;

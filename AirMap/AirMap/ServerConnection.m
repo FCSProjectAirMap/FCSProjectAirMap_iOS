@@ -85,7 +85,6 @@
     
         
         
-        
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         //        if (completionBlock) {
         completionBlock(NO);
