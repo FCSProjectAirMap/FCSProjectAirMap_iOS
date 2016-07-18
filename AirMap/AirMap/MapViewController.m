@@ -452,8 +452,14 @@ static const CGFloat overlayrHeight = 45.0f;
 // bottom overlay Button 클릭 이벤트
 - (void)overlayButtonTouchUpInside:(UIButton *)sender {
     DLog(@"overlayButton TouchUp");
+    // 현재 활성화된 여행이 없을 경우 ToastView를 보여준다.
+    if ([TravelActivation defaultInstance].travelList == nil) {
+        [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"여행을 선택해 주세요~!"];
+        return;
+    }
     // Activity되어 있는 여행 리스트를 보여준다.
     TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
+    travelDetailViewController.overLayFlag = YES;
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
     [self presentViewController:navi animated:YES completion:^{
         
