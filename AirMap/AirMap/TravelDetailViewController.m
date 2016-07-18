@@ -45,6 +45,10 @@ const CGFloat ROW_HEIGHT = 300.0f;
 
 #pragma mark - General Method
 - (void)setupUI {
+    // Navigation Bar TitleText Color
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
+    // Navigation Bar Color
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
     
     // view
     [self.view setBackgroundColor:[UIColor whiteColor]];

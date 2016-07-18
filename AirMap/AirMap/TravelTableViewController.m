@@ -122,7 +122,7 @@
 
 // 활성화된 여행을 참조하는 메서드.
 - (void)travelListActivation:(TravelList *)travelList {
-    // 서로 같은 객체 일 경우는 작업 할 필요가 없다. 바로 return 
+    // 서로 같은 객체 일 경우는 작업 할 필요가 없다. 바로 return
     if ([self.travelActivation.travelList isEqual:travelList])
         return;
     
