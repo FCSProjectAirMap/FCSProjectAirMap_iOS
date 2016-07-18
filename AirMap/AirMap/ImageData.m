@@ -6,9 +6,9 @@
 //  Copyright © 2016년 FCSProjectAirMap. All rights reserved.
 //
 
-#import "ImageMetaData.h"
+#import "ImageData.h"
 
-@implementation ImageMetaData
+@implementation ImageData
 
 // Specify default values for properties
 

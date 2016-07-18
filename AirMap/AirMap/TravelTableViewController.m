@@ -32,16 +32,6 @@
     // realm파일 저장되어 있는 경로.
     NSLog(@"%@", [RLMRealm defaultRealm].configuration.fileURL);
     
-    // ##SJ Test
-//    UserInfo *uInfo = [[UserInfo alloc] init];
-//    uInfo.user_id = @"wngus606@gmail.com";
-//    uInfo.user_name = @"써주";
-//    uInfo.user_token = @"43242342gfgjklfgjsdfjksjfk";
-//    
-//    [[RLMRealm defaultRealm] beginWriteTransaction];
-//    [[RLMRealm defaultRealm] addOrUpdateObject:uInfo];
-//    [[RLMRealm defaultRealm] commitWriteTransaction];
-    
     // set ID (from keychain)
     KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
     NSString *keyChainUser_id = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
@@ -179,11 +169,6 @@
          travelist.travel_title = travelTitleTextField.text;
          travelist.activity = NO;
          
-         // ##SJ Test Method
-         for (NSInteger i = 0; i < 10; ++i) {
-             [travelist.image_metadatas addObject:[self testMethod:travelTitleTextField.text index:i]];
-         }
-         
          // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
          [[RLMRealm defaultRealm] transactionWithBlock:^{
              [weakSelf.travelUserInfo.travel_list addObject:travelist];
@@ -191,19 +176,6 @@
      }];
     
     [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
-}
-
-// ##SJ Test
-- (ImageMetaData *)testMethod:(NSString *)travelTitle index:(NSInteger)index {
-    
-    ImageMetaData *imageMetaDatas = [[ImageMetaData alloc] init];
-    imageMetaDatas.creation_date = [NSString stringWithFormat:@"%@", [NSDate date]];
-    imageMetaDatas.latitude = 13.3f;
-    imageMetaDatas.longitude = 34.99923f;
-    imageMetaDatas.timestamp = 23234.234f;
-    imageMetaDatas.timezone_date = [NSDate date];
-    imageMetaDatas.country = [NSString stringWithFormat:@"%@_%ld", travelTitle, index];
-    return imageMetaDatas;
 }
 
 #pragma mark - TableViewDeleage, TableViewDataSource
