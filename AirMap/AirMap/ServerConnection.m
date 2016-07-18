@@ -15,14 +15,19 @@
 #import <Security/Security.h>
 #import "MenuSlideViewController.h"
 #import "UserInfo.h"
+#import <Social/Social.h>
+#import <Accounts/Accounts.h>
+
 
 @interface ServerConnection()
+
 
 
 @end
 
 
 @implementation ServerConnection
+
 
 //- (void)authenticatewhenAutoLoginEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
 //                       completion:(void (^)(BOOL success))completionBlock
@@ -100,28 +105,49 @@
 //send Email, and username from facebook to server and get JWT Token
 -(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userName {
     
-    
-    NSURL *URL = [NSURL URLWithString:@"LoginServer"];
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    NSDictionary *params = @{@"email":email,
-                             @"userName": userName};
-    [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/signup/"];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        NSDictionary *params = @{@"email":email,
+                                 @"password": userName};
+        [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+            
+            
+            NSLog(@"facebook Info send Success in first");
+            NSLog(@"JSON: %@",responseObject);
+            
+            
+            
+            
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+            
+            NSLog(@"facebook Info send Failure in first");
+            NSLog(@"Error : %@", error);
+            NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/login/"];
+            
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            NSDictionary *params = @{@"email":email,
+                                     @"password": userName};
+            [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+                
+                
+                NSLog(@"facebook Info send Success in use");
+                NSLog(@"JSON: %@",responseObject);
+                
+                
+                
+                
+            } failure:^(NSURLSessionTask *operation, NSError *error) {
+                
+                NSLog(@"facebook Info send Failure in use");
+                NSLog(@"Error : %@", error);
+            }];
 
-        
-        NSLog(@"facebook Info send Success");
-        NSLog(@"JSON: %@",responseObject);
+        }];
         
         
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        
-        NSLog(@"facebook Info send Failure");
-        NSLog(@"Error : %@", error);
-    }];
+    }
 
-    
-}
+
 
 
 //Register New Eamil, and Password in server.
@@ -138,8 +164,20 @@
     }failure:^(NSURLSessionTask *operation, NSError *error) {
         completionBlock(NO);
         NSLog(@"Register fail");
-        NSLog(@"Error : %@",error);
-    }];
+        NSLog(@"니가원하는 Error : %@",error);
+
+        
+        
+        NSHTTPURLResponse* r = (NSHTTPURLResponse*)operation.response;
+        NSInteger errorMessage =r.statusCode;
+        if(errorMessage == 500 || errorMessage == 403)
+        {
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"Notierrorcontains500" object:self userInfo:nil];
+            
+        }else{
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"NotierrorfortheotherThing" object:self userInfo:nil];
+        }
+        }];
 }
 
 
