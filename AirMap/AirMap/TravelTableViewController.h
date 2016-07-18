@@ -13,6 +13,7 @@
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "UserInfo.h"
+#import "TravelActivation.h"
 
 @protocol TravelTableViewControllerDelegate <NSObject>
 
