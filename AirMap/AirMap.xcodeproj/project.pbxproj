@@ -32,6 +32,7 @@
 		E4D39BE11D337C3500DE48D9 /* backbutton10.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D39BDF1D337C3500DE48D9 /* backbutton10.png */; };
 		E4D39BE21D337C3500DE48D9 /* Ryan10.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D39BE01D337C3500DE48D9 /* Ryan10.png */; };
 		E9058ED91D3E149600305A93 /* travelmaker.png in Resources */ = {isa = PBXBuildFile; fileRef = E9058ED81D3E149600305A93 /* travelmaker.png */; };
+		E9058EDA1D3E1B0500305A93 /* NanumGothic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E9058ED71D3E13E500305A93 /* NanumGothic.otf */; };
 		E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */; };
 		E9063C321D2E45DB00F28F69 /* ImageRequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C311D2E45DB00F28F69 /* ImageRequestObject.m */; };
 		E9063C351D2E796200F28F69 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C341D2E796200F28F69 /* BadgeView.m */; };
@@ -455,6 +456,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9058EDA1D3E1B0500305A93 /* NanumGothic.otf in Resources */,
 				E4D39BE21D337C3500DE48D9 /* Ryan10.png in Resources */,
 				E4889F251D3E0CB600B03A31 /* SignupIcon.png in Resources */,
 				E45989661D374D55007A7BC9 /* expandableImage.png in Resources */,
