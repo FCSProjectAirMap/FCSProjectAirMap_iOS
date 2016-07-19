@@ -91,7 +91,7 @@
     // application Name Label
     UILabel *applicationNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, topView.frame.size.height/2, topView.frame.size.width, 50.0f)];
     applicationNameLabel.text = @"Travel-MK";
-    applicationNameLabel.font = [UIFont systemFontOfSize:20.0f];
+    applicationNameLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:20.0f];
     applicationNameLabel.textColor = [UIColor blackColor];
     applicationNameLabel.textAlignment = NSTextAlignmentCenter;
     [self.topView addSubview:applicationNameLabel];
@@ -101,7 +101,7 @@
     UILabel *userIDLabel = [[UILabel alloc] initWithFrame:CGRectMake(X_MARGIN, topView.frame.size.height - 50.0f, topView.frame.size.width - X_MARGIN, 50.0f)];
     userIDLabel.text = self.userID;
     userIDLabel.textColor = [UIColor blackColor];
-    userIDLabel.font = [UIFont systemFontOfSize:15.0f];
+    userIDLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0f];
     [self.topView addSubview:userIDLabel];
     self.userIDLabel = userIDLabel;
     // set ID (from keychain)

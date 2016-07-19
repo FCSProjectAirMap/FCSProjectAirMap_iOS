@@ -197,6 +197,9 @@ const CGFloat spacing = 2;
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
         [self.imageDataCenter resetSelectedFiles];
+        
+        // ##SJ Test
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
     }];
 }
 
@@ -216,7 +219,7 @@ const CGFloat spacing = 2;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
         // title font customize
         NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:messege];
-        [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont systemFontOfSize:13]}
+        [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:13.0]}
                        range:NSMakeRange(0, messege.length )];
         [alert setValue:title forKey:@"attributedTitle"];
         
