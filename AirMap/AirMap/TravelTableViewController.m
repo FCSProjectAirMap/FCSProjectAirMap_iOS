@@ -114,68 +114,52 @@
     [self.delegate selectTravelTitle:title];
 }
 
-#pragma mark - Action Method
+- (void)showTravelListAddAlert {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"제 목"
+                                                                   message:@"여행제목을 입력해 주세요!"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                         NSString *travelTitle = alert.textFields.firstObject.text;
+                                                         if (travelTitle.length == 0 || [travelTitle containsString:@""]) {
+                                                             [self showTravelListAddAlert];
+                                                         } else {
+                                                             // 여행 경로생성~ Realm에 저장.
+                                                             TravelList *travelList = [[TravelList alloc] init];
+                                                             travelList.travel_title = travelTitle;
+                                                             travelList.activity = NO;
+                                                             
+                                                             // Realm 데이터를 추가 및 업데이트 할 경우 Transaction 안에서 적용 해야 한다.
+                                                             RLMRealm *realm = [RLMRealm defaultRealm];
+                                                             [realm beginWriteTransaction];
+                                                             [weakSelf.travelUserInfo.travel_list addObject:travelList];
+                                                             [realm commitWriteTransaction];
+                                                         }
+                                                     }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             
+                                                         }];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        [textField setPlaceholder:@"여행 제목을 입력해 주세요!"];
+    }];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
+#pragma mark - Action Method
 // 여행 경로 닫기 버튼 이벤트
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 // 여행 경로 추가 버튼 이벤트
-// issues : 버튼을 계속 클릭 시 AlertView가 계송 생성 됨. 확인 버튼을 누를 경우 비활성화 시킨 버튼을 활성화 시킬 수 있지만, 취소버튼을 누를경우 방법이....
 - (void)travelTableViewAddTouchUpInside:(UIBarButtonItem *)barButtonItem {
-    __weak typeof(self) weakSelf = self;
-    
-    SCLAlertView *alert = [[SCLAlertView alloc] init];
-    alert.horizontalButtons = YES;
-    [alert removeTopCircle];
-    
-    alert.completeButtonFormatBlock = ^NSDictionary* (void) {
-        NSMutableDictionary *buttonConfig = [[NSMutableDictionary alloc] init];
-        buttonConfig[@"backgroundColor"] = [UIColor colorWithRed:250.0/255.0f green:225.0/255.0f blue:0.0/255.0f alpha:1.0f];
-        buttonConfig[@"textColor"] = [UIColor blackColor];
-        return buttonConfig;
-    };
-    
-    alert.buttonFormatBlock = ^NSDictionary* (void) {
-        NSMutableDictionary *buttonConfig = [[NSMutableDictionary alloc] init];
-        buttonConfig[@"backgroundColor"] = [UIColor colorWithRed:250.0/255.0f green:225.0/255.0f blue:0.0/255.0f alpha:1.0f];
-        buttonConfig[@"textColor"] = [UIColor blackColor];
-        return buttonConfig;
-    };
-    
-    SCLTextView *travelTitleTextField = [alert addTextField:@"제목"];
-    [alert addButton:@"저장"
-     validationBlock:^BOOL{
-         if (travelTitleTextField.text.length < 1) {
-             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"경고!!!"
-                                                                                       message:@"경로 제목을 입력 해주세요!"
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
-                                                                style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                                                    DLog(@"오케바리~");
-                                                                }];
-             [alertController addAction:okAction];
-             [self presentViewController:alertController animated:YES completion:nil];
-                                                   
-             return NO;
-         }
-         return YES;
-     } actionBlock:^{
-         DLog(@"여행 경로 생성 : %@", travelTitleTextField.text);
-         
-         // 여행 경로 생성! Realm에 저장.
-         TravelList *travelist = [[TravelList alloc] init];
-         travelist.travel_title = travelTitleTextField.text;
-         travelist.activity = NO;
-         
-         // Realm 데이터를 추가 및 업데이트 할경우 Transaction 안에서 적용 해야 한다.
-         [[RLMRealm defaultRealm] transactionWithBlock:^{
-             [weakSelf.travelUserInfo.travel_list addObject:travelist];
-         }];
-     }];
-    
-    [alert showEdit:self title:@"제목" subTitle:@"여행 경로 제목을 작성해 주세요!" closeButtonTitle:@"취소" duration:0.0f];
+    [self showTravelListAddAlert];
 }
 
 #pragma mark - TableViewDeleage, TableViewDataSource
