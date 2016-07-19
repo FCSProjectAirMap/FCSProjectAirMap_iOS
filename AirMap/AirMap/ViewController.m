@@ -62,7 +62,8 @@
     const CGFloat VIEW_MARGIN = 20*screenWidth/375;
     
     UIImageView *imageIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TravelMakerIcon.png"]];
-    [imageIcon setFrame:CGRectMake(self.view.frame.size.width/2 -66*screenWidth/375, self.view.frame.size.height/2 - 180*screenWidth/375, 110*screenWidth/375, 110*screenWidth/375)];
+    imageIcon.contentMode = UIViewContentModeScaleAspectFit;
+    [imageIcon setFrame:CGRectMake(self.view.frame.size.width/2 -50*screenWidth/375, self.view.frame.size.height/2 - 180*screenWidth/375, 110*screenWidth/375, 110*screenWidth/375)];
     [self.view addSubview:imageIcon];
     
    //    emailTextField & passwordTextField Setting
@@ -86,7 +87,7 @@
     offsetY +=emailTF.frame.size.height;
    
     //line under email textField
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY-7*screenWidth/375, self.emailField.frame.size.width, 1)];
     lineView.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
     [self.view addSubview:lineView];
 
@@ -104,7 +105,7 @@
     [self.passWordField setSecureTextEntry:YES];
     
     //line under passwordTextField
-    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.passWordField.frame.size.width, 1)];
+    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY-7*screenWidth/375, self.passWordField.frame.size.width, 1)];
     lineView2.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
     [self.view addSubview:lineView2];
     offsetY +=VIEW_MARGIN;

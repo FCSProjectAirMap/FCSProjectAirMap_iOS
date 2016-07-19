@@ -53,7 +53,11 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSomeWhereElse:)];
     [self.rightView addGestureRecognizer:tapGesture];
     
-    [self.parentViewController.view removeGestureRecognizer:tapGesture];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+//    tap.numberOfTapsRequired = 2;
+//    [self.view addGestureRecognizer:tap];
+//    
+//    [self.parentViewController.view removeGestureRecognizer:tapGesture];
 
     
     
