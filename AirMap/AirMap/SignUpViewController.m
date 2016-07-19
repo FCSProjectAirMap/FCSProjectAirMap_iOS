@@ -51,7 +51,7 @@
     [emailTF setKeyboardType:UIKeyboardTypeEmailAddress];
     
     //line under email textField
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 2)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY-7*screenWidth/375, self.emailField.frame.size.width, 2)];
     lineView.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
     [self.view addSubview:lineView];
     offsetY +=5;
@@ -72,7 +72,7 @@
     
     
         //line under password textField
-    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 2)];
+    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY-7*screenWidth/375, self.emailField.frame.size.width, 2)];
     lineView2.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
     [self.view addSubview:lineView2];
     offsetY +=5;
@@ -91,7 +91,7 @@
     offsetY+=repasswordTF.frame.size.height;
     
     //line under repassword textField
-    UIView *lineView3 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 2)];
+    UIView *lineView3 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY-7*screenWidth/375, self.emailField.frame.size.width, 2)];
     lineView3.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
     [self.view addSubview:lineView3];
     offsetY +=VIEW_MARGIN*3;
