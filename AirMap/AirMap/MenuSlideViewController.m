@@ -11,6 +11,7 @@
 #import "SKSTableViewCell.h"
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
+#import "MapViewController.h"
 
 @interface MenuSlideViewController ()
 
@@ -52,7 +53,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSomeWhereElse:)];
     [self.rightView addGestureRecognizer:tapGesture];
     
-
+    [self.parentViewController.view removeGestureRecognizer:tapGesture];
 
     
     
