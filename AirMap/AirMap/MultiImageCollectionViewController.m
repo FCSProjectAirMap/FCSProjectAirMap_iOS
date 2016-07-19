@@ -197,6 +197,9 @@ const CGFloat spacing = 2;
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
         [self.imageDataCenter resetSelectedFiles];
+        
+        // ##SJ Test
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
     }];
 }
 
