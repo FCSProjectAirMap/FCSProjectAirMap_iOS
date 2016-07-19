@@ -180,17 +180,18 @@ const CGFloat spacing = 2;
     [self.imageDataCenter extractMetadataFromImage];
     NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
     
-    // 메타데이터 realm 저장
+    // realm 저장
     [self.imageDataCenter saveToRealmDB];
-    
+        
     // 이미지, 메타데이터 업로드
-    //    [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
-    //    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
+    [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]];
+    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages]];
     
     // GPS 정보가 없는 사진이 있을때 사용자에게 알림
     if ([[self.imageDataCenter callSelectedAssetsWithoutGPS] count] > 0) {
         
-        [self showAlertWindow:YES withMessege:[NSString stringWithFormat:@"GPS 정보가 없는 사진 %ld장은\n 경로에서 제외됩니다.", [[self.imageDataCenter callSelectedAssetsWithoutGPS] count]] withFlag:YES];
+        [self showAlertWindow:YES withMessege:[NSString stringWithFormat:@"GPS 정보가 없는 사진 %ld장은\n 경로에서 제외됩니다.",
+                                               [[self.imageDataCenter callSelectedAssetsWithoutGPS] count]] withFlag:YES];
         return;
     }
     
@@ -208,28 +209,28 @@ const CGFloat spacing = 2;
 #pragma mark - Show Alert Window
 // 선택된 사진이 10장 이상일때/GPS정보 없을때 alert띄우기
 - (void)showAlertWindow:(BOOL)isShowAlert withMessege:(NSString *)messege withFlag:(BOOL)flag {
+    __weak typeof(self) weakSelf = self;
     
     if (isShowAlert) {
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
+        // title font customize
         NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:messege];
         [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont systemFontOfSize:13]}
                        range:NSMakeRange(0, messege.length )];
-        
         [alert setValue:title forKey:@"attributedTitle"];
+        
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
+            // GPS정보가 없는 사진 유무에 따라 viewcontroller dismiss 시점 변경
             if (flag) {
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                    [self.imageDataCenter resetSelectedFiles];
+                    [weakSelf.imageDataCenter resetSelectedFiles];
                 }];
             }
         }];
         
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:^{
-            
         }];
     }
 }
