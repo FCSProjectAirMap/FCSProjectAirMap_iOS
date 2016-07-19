@@ -53,39 +53,61 @@
     [self.navigationController.navigationBar setHidden: YES];
     
     //    Background image
-    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ryan10.png"]];
-    [backgroundView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:backgroundView];
+//    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ryan10.png"]];
+//    [backgroundView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    [self.view addSubview:backgroundView];
+    [self.view setBackgroundColor:[UIColor colorWithRed:250/255.0 green:225/255.0 blue:0/255.0 alpha:1.0f]];
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    
-//    emailTextField & passwordTextField Setting
     const CGFloat VIEW_MARGIN = 20*screenWidth/375;
-    CGSize textFieldSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6, 40);
-    CGSize buttonSize = CGSizeMake(80*screenWidth/375, 30*screenWidth/375);
     
-    CGFloat offsetY = (self.view.frame.size.height/2)+120;
+    UIImageView *imageIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TravelMakerIcon.png"]];
+    [imageIcon setFrame:CGRectMake(self.view.frame.size.width/2 -66*screenWidth/375, self.view.frame.size.height/2 - 180*screenWidth/375, 110*screenWidth/375, 110*screenWidth/375)];
+    [self.view addSubview:imageIcon];
+    
+   //    emailTextField & passwordTextField Setting
+  
+    CGSize textFieldSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6, 40);
+    CGSize buttonSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6, self.view.frame.size.width/7 - VIEW_MARGIN*6/7);
+    
+    CGFloat offsetY = (self.view.frame.size.height/2)+20;
+    
+     CGFloat fontSize = 30;
     
     UITextField *emailTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
-    [emailTF setBackgroundColor:[UIColor whiteColor]];
-    [emailTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [emailTF setPlaceholder:@"이메일을 입력하세요"];
+    [emailTF setBackgroundColor:[UIColor clearColor]];
+    [emailTF setBorderStyle:UITextBorderStyleNone];
+    [emailTF setPlaceholder:@"Email"];
+    [emailTF setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
     [self.view bringSubviewToFront:emailTF];
     self.emailField =emailTF;
     [self.view addSubview:emailTF];
     [emailTF setKeyboardType:UIKeyboardTypeEmailAddress];
-    offsetY +=emailTF.frame.size.height+VIEW_MARGIN;
+    offsetY +=emailTF.frame.size.height;
+   
+    //line under email textField
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 1)];
+    lineView.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
+    [self.view addSubview:lineView];
+
     
     UITextField *passwordTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
-    [passwordTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [passwordTF setBackgroundColor:[UIColor whiteColor]];
-    [passwordTF setPlaceholder:@"패스워드를 입력하세요"];
+    [passwordTF setBorderStyle:UITextBorderStyleNone];
+    [passwordTF setBackgroundColor:[UIColor clearColor]];
+    [passwordTF setPlaceholder:@"Password"];
+    [passwordTF setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
     [self.view bringSubviewToFront:passwordTF];
     self.passWordField = passwordTF;
     [self.view addSubview:passwordTF];
-    offsetY +=passwordTF.frame.size.height+VIEW_MARGIN;
+    offsetY +=passwordTF.frame.size.height;
     
     [self.passWordField setSecureTextEntry:YES];
+    
+    //line under passwordTextField
+    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.passWordField.frame.size.width, 1)];
+    lineView2.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
+    [self.view addSubview:lineView2];
+    offsetY +=VIEW_MARGIN;
     
     
     self.emailField.delegate = self;
@@ -98,46 +120,42 @@
     
 
 //  Make buttonView contains buttons (signup,Login,LoginWithFacebook)
-    UIView *buttonView = [[UIView alloc]initWithFrame:CGRectMake(0, offsetY, self.view.frame.size.width, self.view.frame.size.height-offsetY)];
+    UIView *buttonView = [[UIView alloc]initWithFrame:CGRectMake(0, offsetY+VIEW_MARGIN, self.view.frame.size.width, self.view.frame.size.height-offsetY)];
     [buttonView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:buttonView];
     
-    
-    const CGFloat BUTTONVIEW_MARGIN = 35*screenWidth/375;
 
     //    signup, Login, LoginwithFacebook Button setting
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    loginButton.backgroundColor =[UIColor darkGrayColor];
-    [loginButton setTitle:@"로그인" forState:UIControlStateNormal];
-    [loginButton setFrame:CGRectMake(BUTTONVIEW_MARGIN,0,buttonSize.width,buttonSize.height)];
+    [loginButton setBackgroundImage:[UIImage imageNamed:@"EmailLoginIcon.png"] forState:UIControlStateNormal];
+    [loginButton setFrame:CGRectMake(VIEW_MARGIN*3,0,buttonSize.width,buttonSize.height)];
     [loginButton addTarget:self action:@selector(clickLoginButton:) forControlEvents:UIControlEventTouchUpInside];
-    loginButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    loginButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.loginButton = loginButton;
     [buttonView addSubview:loginButton];
     
+    UIButton *facebookLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [facebookLoginButton setBackgroundImage:[UIImage imageNamed:@"FaceBookLoginIcon.png"] forState:UIControlStateNormal];
+    [facebookLoginButton setFrame:CGRectMake(VIEW_MARGIN*3,buttonSize.height+VIEW_MARGIN/1.5, buttonSize.width, buttonSize.height)];
+    [facebookLoginButton addTarget:self action:@selector(facebookLoginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [buttonView addSubview:facebookLoginButton];
+    
     
     UIButton *signupButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    signupButton.backgroundColor = [UIColor greenColor];
+    signupButton.backgroundColor = [UIColor clearColor];
     [signupButton setTitle:@"회원가입" forState:UIControlStateNormal];
-    [signupButton setFrame:CGRectMake(BUTTONVIEW_MARGIN*2 + buttonSize.width,0, buttonSize.width, buttonSize.height)];
+    [signupButton setTitleColor:[UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f] forState:UIControlStateNormal];
+    [signupButton setFrame:CGRectMake(self.view.frame.size.width-60*screenWidth/375,self.view.frame.size.height-30*screenWidth/375, 40, 10)];
+    [signupButton.titleLabel setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
     [signupButton addTarget:self action:@selector(clickSignUpButton:) forControlEvents:UIControlEventTouchUpInside];
     signupButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     signupButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.signupButton = signupButton;
-    [buttonView addSubview:signupButton];
+    [self.view addSubview:signupButton];
     
     
-    UIButton *facebookLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    facebookLoginButton.backgroundColor = [UIColor blueColor];
-    [facebookLoginButton setTitle:@"페이스북" forState:UIControlStateNormal];
-    [facebookLoginButton setFrame:CGRectMake(BUTTONVIEW_MARGIN*3+buttonSize.width*2,0, buttonSize.width, buttonSize.height)];
-    [facebookLoginButton addTarget:self action:@selector(facebookLoginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [buttonView addSubview:facebookLoginButton];
+
     
-    facebookLoginButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    facebookLoginButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
-    self.facebookLoginButton = facebookLoginButton;
+
     
     
 
