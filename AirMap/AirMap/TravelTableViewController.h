@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "TravelDetailViewController.h"
 #import "AuthorizationControll.h"
-#import "SCLAlertView.h"
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "UserInfo.h"

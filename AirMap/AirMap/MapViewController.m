@@ -330,20 +330,22 @@ static const CGFloat overlayrHeight = 45.0f;
     // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
     if ([TravelActivation defaultInstance].travelList == nil) {
         // Alert를 호출해 알려준다.
-        CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-        [alert setContainerView:[self createAlertCustomView]];
-        [alert setButtonTitles:[NSMutableArray arrayWithObjects:@"확 인", @"취 소", nil]];
-        [alert setDelegate:self];
-        [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-            if (buttonIndex == 0) {
-                [self travelListViewCall];
-            } else if (buttonIndex ==1 ) {
-                DLog(@"취소");
-            }
-            [alertView close];
-        }];
-        
-        [alert show];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"경 고"
+                                                                       message:@"선택된 여행이 없습니다!\n\"확인\"을 누르시면 \n여행 경로 화면으로 이동합니다."
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             [self travelListViewCall];
+                                                         }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 
+                                                             }];
+        [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
         return;
     }
     // 사진권한 확인(앨범/설정화면으로 이동)
