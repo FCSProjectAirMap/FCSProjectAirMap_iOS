@@ -12,7 +12,12 @@
 @property (strong, nonatomic) PHFetchResult *fetchResult;
 @property (strong, nonatomic) NSMutableArray *selectedAssets;
 @property (strong, nonatomic) NSMutableArray *selectedImages;
-@property (strong, nonatomic) NSMutableArray *selectedDatas;
+
+@property (strong, nonatomic) NSMutableArray *selectedAssetsWithGPS;
+@property (strong, nonatomic) NSMutableArray *selectedAssetsWithoutGPS;
+
+@property (strong, nonatomic) NSMutableArray *selectedMetadatasWithGPS;
+@property (strong, nonatomic) NSMutableArray *selectedMetadatasWithoutGPS;
 
 @end
 
@@ -36,7 +41,12 @@ const CGFloat imageShortLength = 640;
     if (self) {
         [self loadFetchResult];
         self.selectedAssets = [[NSMutableArray alloc] init];
-        self.selectedDatas = [[NSMutableArray alloc] init];
+        
+        self.selectedAssetsWithGPS = [[NSMutableArray alloc] init];
+        self.selectedAssetsWithoutGPS = [[NSMutableArray alloc] init];
+        
+        self.selectedMetadatasWithGPS = [[NSMutableArray alloc] init];
+        self.selectedMetadatasWithoutGPS = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -74,7 +84,10 @@ const CGFloat imageShortLength = 640;
 - (void)resetSelectedFiles {
     [self.selectedAssets removeAllObjects];
     [self.selectedImages removeAllObjects];
-    [self.selectedDatas removeAllObjects];
+    [self.selectedAssetsWithGPS removeAllObjects];
+    [self.selectedAssetsWithoutGPS removeAllObjects];
+    [self.selectedMetadatasWithGPS removeAllObjects];
+    [self.selectedMetadatasWithoutGPS removeAllObjects];
 }
 
 - (PHFetchResult *)callFetchResult {
@@ -89,7 +102,7 @@ const CGFloat imageShortLength = 640;
 // PHAseet -> UIImage
 - (void)changeAssetToImage {
     
-    NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedAssets.count];
+    NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedMetadatasWithGPS.count];
     
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.resizeMode = PHImageRequestOptionsResizeModeExact;
@@ -98,7 +111,7 @@ const CGFloat imageShortLength = 640;
     
     __block UIImage *image;
     
-    for (PHAsset *asset in self.selectedAssets) {
+    for (PHAsset *asset in self.selectedAssetsWithGPS) {
         
         [[PHCachingImageManager defaultManager] requestImageForAsset:asset
                                                           targetSize:[self resizeAsset:asset]
@@ -106,7 +119,7 @@ const CGFloat imageShortLength = 640;
                                                              options:options
                                                        resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
                                                            image = result;
-
+                                                           
                                                            [selectedImages addObject:image];
                                                        }];
     }
@@ -119,12 +132,10 @@ const CGFloat imageShortLength = 640;
     
     CGFloat ratio = (CGFloat) asset.pixelWidth / asset.pixelHeight;
     
-    if (ratio > 1 ) {
+    if (ratio >= 1 ) {
         return CGSizeMake(imageShortLength * ratio, imageShortLength);
-    } else if (ratio < 1) {
-        return CGSizeMake(imageShortLength, imageShortLength / ratio);
     } else {
-        return CGSizeMake(imageShortLength, imageShortLength);
+        return CGSizeMake(imageShortLength, imageShortLength / ratio);
     }
 }
 
@@ -142,53 +153,61 @@ const CGFloat imageShortLength = 640;
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
         NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
-//        NSData *creationDate = (NSData *)asset.creationDate;
-        //        NSArray *location = @[latitude, longitude];
+        
         NSDictionary *metaData = @{@"creationDate": creationDate,
                                    @"timestamp":timestamp,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
         
-        [self.selectedDatas addObject:metaData];
+        // 위도, 경도 0, 0인 데이터 예외처리
+        if ([[metaData objectForKey:@"latitude"] doubleValue] == 0.0 && [[metaData objectForKey:@"longitude"] doubleValue] == 0.0) {
+            [self.selectedMetadatasWithoutGPS addObject:metaData];
+            [self.selectedAssetsWithoutGPS addObject:asset];
+        } else {
+            [self.selectedMetadatasWithGPS addObject:metaData];
+            [self.selectedAssetsWithGPS addObject:asset];
+        }
     }
     [self changeAssetToImage];
-    NSLog(@"%@", self.selectedDatas);
+    NSLog(@"with GPS:%@", self.selectedMetadatasWithGPS);
+    NSLog(@"without GPS:%@", self.selectedMetadatasWithoutGPS);
 }
 
 - (NSMutableArray *)callSelectedData {
-    return self.selectedDatas;
+    return self.selectedMetadatasWithGPS;
+}
+
+- (NSMutableArray *)callSelectedAssetsWithoutGPS {
+    return self.selectedAssetsWithoutGPS;
 }
 
 # pragma mark - Reamlm
 
-- (void)saveToReamlmDB {
-    NSLog(@"%@", [RLMRealm defaultRealm].configuration.fileURL);
+- (void)saveToRealmDB {
     
-    TravelList *travelList = [[TravelList alloc] init];
-    travelList.travel_title = @"유럽 여행";
-    travelList.activity = YES;
-
-    for (NSInteger i = 0; i < self.selectedDatas.count; i++) {
-    
-    ImageMetaData *imageMetaData = [[ImageMetaData alloc] init];
-    imageMetaData.creation_date = [self.selectedDatas[i] objectForKey:@"creationDate"] ;
-    imageMetaData.latitude = [[self.selectedDatas[i] objectForKey:@"latitude"] floatValue] ;
-    imageMetaData.longitude = [[self.selectedDatas[i] objectForKey:@"longitude"] floatValue];
-    imageMetaData.timestamp = [[self.selectedDatas[i] objectForKey:@"timestamp"] floatValue];
-        
-        [travelList.image_metadatas addObject:imageMetaData];
-    }
-    
-    UserInfo *userInfo = [[UserInfo alloc] init];
-    userInfo.user_id = @"travelMaker@gmail.com";
-    userInfo.user_name = @"TM";
-    userInfo.user_token = @"token";
-    [userInfo.travel_list addObject:travelList];
+    NSLog(@"%@",[RLMRealm defaultRealm].configuration.fileURL);
     
     RLMRealm *realm = [RLMRealm defaultRealm];
-    [realm beginWriteTransaction];
-    [realm addObject:userInfo];
-    [realm commitWriteTransaction];
+    // 현재 active되어있는 객체를 참조
+    TravelActivation *travelActivation = [TravelActivation defaultInstance];
+    
+    // 선택된 사진의 metadata, image property를 개별로 저장
+    for (NSInteger i = 0; i < self.selectedMetadatasWithGPS.count; i++) {
+        
+        NSData *image = UIImageJPEGRepresentation(self.selectedImages[i], 0.8);
+        
+        ImageData *imageData = [[ImageData alloc] init];
+        imageData.creation_date = [self.selectedMetadatasWithGPS[i] objectForKey:@"creationDate"] ;
+        imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
+        imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
+        imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] floatValue];
+        imageData.image = image;
+        
+        // realm DB에 metadata 저장
+        [realm beginWriteTransaction];
+        [travelActivation.travelList.image_datas addObject:imageData];
+        [realm commitWriteTransaction];
+    }
 }
 
 @end

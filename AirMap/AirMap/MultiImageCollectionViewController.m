@@ -27,7 +27,7 @@ const CGFloat spacing = 2;
     
     [self creatCollectionView];
     [self navigationControllerSetUp];
-
+    
     self.imageDataCenter = [MultiImageDataCenter sharedImageDataCenter];
 }
 
@@ -42,7 +42,7 @@ const CGFloat spacing = 2;
     self.imageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) collectionViewLayout:flowLayout];
     
     [self.imageCollectionView setBackgroundColor:[UIColor whiteColor]];
-
+    
     // collectionView delegate, dataSoucre 설정
     self.imageCollectionView.delegate = self;
     self.imageCollectionView.dataSource = self;
@@ -78,15 +78,15 @@ const CGFloat spacing = 2;
     // 이미지 매니저를 통한 이미지 가져오기(
     cell.tag = indexPath.row;
     [[PHCachingImageManager defaultManager] requestImageForAsset:imageAsset
-                                               targetSize:CGSizeMake(150,150)
-                                              contentMode:PHImageContentModeAspectFill
-                                                  options:nil
-                                            resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                                               
-                                                if (cell.tag == indexPath.row) {
-                                                cell.imageViewInCell.image = result;
-                                                }
-    }];
+                                                      targetSize:CGSizeMake(150,150)
+                                                     contentMode:PHImageContentModeAspectFill
+                                                         options:nil
+                                                   resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+                                                       
+                                                       if (cell.tag == indexPath.row) {
+                                                           cell.imageViewInCell.image = result;
+                                                       }
+                                                   }];
     
     return cell;
 }
@@ -99,7 +99,7 @@ const CGFloat spacing = 2;
         return YES;
     } else {
         // 경고
-        [self showAlertWindow:YES];
+        [self showAlertWindow:YES withMessege:@"사진은 최대 10장까지 선택 가능합니다." withFlag:NO];
         return NO;
     }
 }
@@ -116,12 +116,12 @@ const CGFloat spacing = 2;
     } else {
         [cell setSelected:NO];
     }
-//    NSLog(@"%ld",[self.imageDataCenter callSelectedAssets].count);
+    //    NSLog(@"%ld",[self.imageDataCenter callSelectedAssets].count);
 }
 
 // 재선택된 사진 빼기
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"deseleted");
+    //    NSLog(@"deseleted");
     PHAsset *deSelectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
     [self.imageDataCenter removeSelectedAsset:deSelectedAsset];
 }
@@ -171,7 +171,7 @@ const CGFloat spacing = 2;
     = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
     self.navigationItem.leftBarButtonItem.tintColor
     = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
-
+    
 }
 
 // 네비게이션 버튼 액션
@@ -179,15 +179,24 @@ const CGFloat spacing = 2;
     // 선택된 사진 메타데이터 추출
     [self.imageDataCenter extractMetadataFromImage];
     NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
-    // 메타데이터 realm 저장
-    [self.imageDataCenter saveToReamlmDB];
     
+    // realm 저장
+    [self.imageDataCenter saveToRealmDB];
+        
     // 이미지, 메타데이터 업로드
-    [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData] inTravelTitle:@"Title"];
-    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages] inTravelTitle:@"Title"];
-
-    [self.imageDataCenter resetSelectedFiles];
+    [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]];
+    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages]];
+    
+    // GPS 정보가 없는 사진이 있을때 사용자에게 알림
+    if ([[self.imageDataCenter callSelectedAssetsWithoutGPS] count] > 0) {
+        
+        [self showAlertWindow:YES withMessege:[NSString stringWithFormat:@"GPS 정보가 없는 사진 %ld장은\n 경로에서 제외됩니다.",
+                                               [[self.imageDataCenter callSelectedAssetsWithoutGPS] count]] withFlag:YES];
+        return;
+    }
+    
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self.imageDataCenter resetSelectedFiles];
     }];
 }
 
@@ -197,27 +206,33 @@ const CGFloat spacing = 2;
     }];
 }
 
-#pragma mark - Limit to 10 images
-// 선택된 사진이 10장 이상일때 alert띄우기
-- (void)showAlertWindow:(BOOL)isShowAlert {
+#pragma mark - Show Alert Window
+// 선택된 사진이 10장 이상일때/GPS정보 없을때 alert띄우기
+- (void)showAlertWindow:(BOOL)isShowAlert withMessege:(NSString *)messege withFlag:(BOOL)flag {
+    __weak typeof(self) weakSelf = self;
     
-    NSString *titleString = @"사진은 최대 10장까지 선택 가능합니다.";
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:titleString];
-    [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont systemFontOfSize:13]}
-                   range:NSMakeRange(0, titleString.length )];
-    
-    [alert setValue:title forKey:@"attributedTitle"];
-    
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    if (isShowAlert) {
         
-    }];
-    
-    [alert addAction:ok];
-    [self presentViewController:alert animated:YES completion:^{
-    
-    }];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+        // title font customize
+        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:messege];
+        [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont systemFontOfSize:13]}
+                       range:NSMakeRange(0, messege.length )];
+        [alert setValue:title forKey:@"attributedTitle"];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            // GPS정보가 없는 사진 유무에 따라 viewcontroller dismiss 시점 변경
+            if (flag) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                    [weakSelf.imageDataCenter resetSelectedFiles];
+                }];
+            }
+        }];
+        
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:^{
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

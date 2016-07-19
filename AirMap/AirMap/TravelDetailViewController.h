@@ -13,6 +13,8 @@
 @interface TravelDetailViewController : UIViewController
 <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic) BOOL overLayFlag;
+
 - (instancetype)initWithTravelList:(TravelList *)travelList;
 
 @end

@@ -46,6 +46,20 @@ const CGFloat ROW_HEIGHT = 300.0f;
 #pragma mark - General Method
 - (void)setupUI {
     
+    // overLayView 선택할 시.
+    if (self.overLayFlag) {
+        // Navigation Bar TitleText Color
+        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
+        // Navigation Bar Color
+        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
+        // Navigation left Button
+        UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(travelTableViewCloseTouchUpInside:)];
+        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
+    }
+    
     // view
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -86,9 +100,9 @@ const CGFloat ROW_HEIGHT = 300.0f;
 }
 
 #pragma mark - Action Method
-//- (void)travelDetailCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
+- (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - TableViewDelegate, TableViewDataSource
 // section header height
@@ -101,8 +115,8 @@ const CGFloat ROW_HEIGHT = 300.0f;
 }
 // 여행경로의 사진 리스트 수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    DLog(@"image_metadatas count : %ld", self.travelList.image_metadatas.count);
-    return self.travelList.image_metadatas.count;
+    DLog(@"image_metadatas count : %ld", self.travelList.image_datas.count);
+    return self.travelList.image_datas.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -111,7 +125,7 @@ const CGFloat ROW_HEIGHT = 300.0f;
     if (cell == nil) {
         cell = [[TravelDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     }
-    ImageMetaData *imageMetaData = self.travelList.image_metadatas[indexPath.row];
+    ImageData *imageMetaData = self.travelList.image_datas[indexPath.row];
     NSDictionary *travelDetailInfoDictionary = @{ @"image_name": @"Ryan.png",
                                                   @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
                                                   @"country": imageMetaData.country,

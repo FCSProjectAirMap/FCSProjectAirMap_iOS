@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 #import "MultiImageCollectionViewController.h"
+#import "TravelActivation.h"
 
 @interface MultiImageDataCenter : NSObject
 
@@ -18,12 +19,13 @@
 - (void)removeSelectedAsset:(PHAsset *)asset;
 - (void)resetSelectedFiles;
 
-- (void)saveToReamlmDB;
+- (void)saveToRealmDB;
 
 - (PHFetchResult *)callFetchResult;
 - (NSMutableArray *)callSelectedAssets;
 - (NSMutableArray *)callSelectedImages;
 - (NSMutableArray *)callSelectedData;
+- (NSMutableArray *)callSelectedAssetsWithoutGPS;
 
 - (void)extractMetadataFromImage;
 

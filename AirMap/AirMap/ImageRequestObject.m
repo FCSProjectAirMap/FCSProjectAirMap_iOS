@@ -8,12 +8,18 @@
 
 #import "ImageRequestObject.h"
 
+@interface ImageRequestObject ()
+
+@property (strong, nonatomic) NSString *JWTToken;
+@property (strong, nonatomic) NSString *travelTitle;
+
+@end
+
 @implementation ImageRequestObject
 
-static NSString * const imageRequestURL = @"http://ios.yevgnenll.me/api/images/";
-static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metadats/";
-
-
+static NSString * const imageRequestURL = @"http://52.78.72.132/create/";
+static NSString * const metadataRequestURL = @"http://52.78.72.132/create/";
+static NSString * const listRequestURL = @"http://52.78.72.132/list/";
 
 // 이미지 네트워킹 싱글톤 생성
 + (instancetype)sharedInstance {
@@ -28,109 +34,113 @@ static NSString * const metadataRequestURL = @"http://ios.yevgnenll.me/api/metad
     return object;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        // 현재 로그인 중인 회원의 아이디값 가져오기
+        KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+        NSString *keyChainUser_id = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
+        //현재 로그인 중인 회원의 토큰값 가져오기
+        RLMResults *resultArray = [UserInfo objectsWhere:@"user_id == %@", keyChainUser_id];
+        UserInfo *userInfo = resultArray[0];
+        self.JWTToken = [@"JWT " stringByAppendingString:userInfo.user_token];
+        // 현재 사용중인 여행경로 이름 가져오기
+        TravelActivation *activatedTravel = [TravelActivation defaultInstance];
+        self.travelTitle = activatedTravel.travelList.travel_title;
+    }
+    return self;
+}
+
 // 이미지 업로드 리퀘스트
-- (void)uploadImages:(NSMutableArray *)selectedImages inTravelTitle:(NSString *)travelTitle {
+- (void)uploadImages:(NSMutableArray *)selectedImages {
     
-    NSLog(@"Start upload images");
+    NSLog(@"Start Image Upload");
     
     // 업로드 parameter
-    NSDictionary *parameters = @{@"user_token":@"토큰값", @"travel_title":@"여행 이름"};
+    NSDictionary *parameters =  @{@"travel_title":self.travelTitle};
     
     // global queue 생성
     dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    NSInteger count
-    
-    = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages].count;
+    // 네트워킹을 위한 AFHTTPSettion Manager 생성, JWTToken 값으로 접근 권한 설정
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+   
+    // 선택된 사진 수만큼 사진 전송
+    NSInteger count = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages].count;
+
     for (NSInteger i = 0; i < count; i++) {
+        // 이미지 파일
         UIImage *image = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages][i];
-        
-        NSString *fileName = [NSString stringWithFormat:@"%@.jpeg",[ [MultiImageDataCenter sharedImageDataCenter] callSelectedData][i][@"timestamp"]];
+        // 파일 이름을 timestamp.jpeg로 저장
+        NSString *fileName = [NSString stringWithFormat:@"%@.jpeg",
+                              [[MultiImageDataCenter sharedImageDataCenter] callSelectedData][i][@"timestamp"]];
         
         dispatch_async(uploadQueue, ^{
-            NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST"
-                                                                                                      URLString:imageRequestURL
-                                                                                                     parameters:parameters
-                                                                                      constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                                                                                          
-                                                                                          [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
-                                                                                                                      name:@"image_data"
-                                                                                                                  fileName:fileName
-                                                                                                                  mimeType:@"image/jpeg"];
-                                                                                      }
-                                                                                                          error:nil];
-            // upload task 생성 및 실시
-            AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-            
-            NSURLSessionUploadTask *uploadTask;
-            uploadTask = [manager uploadTaskWithStreamedRequest:request
-                                                       progress:^(NSProgress * _Nonnull uploadProgress) {
-                                                           
-                                                       } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-                                                           if (error) {
-                                                               NSLog(@"Error: %@",error);
-                                                           } else {
-                                                               NSLog(@"Uploaed response: %@, responseObject: %@", response, responseObject);
-                                                               if ([responseObject[@"code"] isEqualToNumber:@201]) {
-                                                                   NSLog(@"Image MultiPart Success");
-                                                                   
-                                                               }
-                                                           }
-                                                       }];
-            
-            [uploadTask resume];
-            
+            // 큐내에서 POST로 이미지 한장씩 비동기로 전달
+            [manager POST:imageRequestURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
+                                            name:@"image_data"
+                                        fileName:fileName
+                                        mimeType:@"image/jepg"];
+                
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"Image Uploade Success");
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"Image Upload Error: %@",error);
+            }];
         });
-    }
-    ;
+    };
 }
 
 // 메타데이터 업로드 리퀘스트
-- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas inTravelTitle:(NSString *)travelTitle  {
+- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas {
     
-    NSLog(@"Start upload metadatas");
+    NSLog(@"Start Metadata Upload");
+
+    NSDictionary *metadataDic = @{@"travel_title":self.travelTitle, @"image_metadatas":selectedDatas};
     
-    //    NSArray *metadataArray = [[NSArray alloc] initWithObjects:[[MultiImageDataCenter sharedImageDataCenter] callSelectedData], nil];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
-    NSDictionary *metadataDic = @{@"user_token":@"유저 아이디",
-                                  @"travel_title":@"여행 이름",
-                                  @"image_metadatas":selectedDatas};
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
     
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:metadataDic];
-    NSLog(@"dic:%@",metadataDic);
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [manager POST:metadataRequestURL parameters:metadataDic
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+              NSLog(@"Metadata Post success!");
+              
+          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              NSLog(@"Metadata Post error: %@", error);
+          }];
     
-    NSURL *URL = [NSURL URLWithString:metadataRequestURL];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-    
-    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request
-                                                               fromData:data
-                                                               progress:^(NSProgress * _Nonnull uploadProgress) {
-                                                                   
-                                                               } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-                                                                   if (error) {
-                                                                       NSLog(@"Error: %@",error);
-                                                                   } else {
-                                                                       NSLog(@"Uploaed response: %@, responseObject: %@", response, responseObject);
-                                                                       
-                                                                       if ([responseObject[@"code"] isEqualToNumber:@201]) {
-                                                                           NSLog(@"Metadata MultiPart Success");
-                                                                           
-                                                                       }
-                                                                   }
-                                                               }];
-    
-    [uploadTask resume];
+//        [self requestMetadatas];
 }
 
-
-
-/*
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect {
- // Drawing code
- }
- */
+// 메타데이터 받는 메소드
+- (void)requestMetadatas {
+    
+    NSLog(@"Start get metadatas");
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:listRequestURL parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"get list success!");
+        NSLog(@"%@", responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"get list Error:%@", error);
+    }];
+}
 
 @end

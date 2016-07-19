@@ -7,13 +7,13 @@
 //
 
 #import <Realm/Realm.h>
-#import "ImageMetaData.h"
+#import "ImageData.h"
 
 @interface TravelList : RLMObject
 
 @property NSString *travel_title;
 @property BOOL activity;
-@property RLMArray<ImageMetaData> *image_metadatas;
+@property RLMArray<ImageData> *image_datas;
 
 @end
 
