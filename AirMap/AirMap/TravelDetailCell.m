@@ -37,7 +37,7 @@
 }
 
 - (void)setInfoWithInfodic {
-    self.contentImageView.image = [UIImage imageNamed:_travelDetailInfoDictionary[@"image_name"]];
+    self.contentImageView.image = _travelDetailInfoDictionary[@"image"];
     self.timezoneDateLabel.text = _travelDetailInfoDictionary[@"timezone_date"];
     self.countryLabel.text = _travelDetailInfoDictionary[@"country"];
 }

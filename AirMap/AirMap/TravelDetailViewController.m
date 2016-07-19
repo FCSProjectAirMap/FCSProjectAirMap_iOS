@@ -125,10 +125,13 @@ const CGFloat ROW_HEIGHT = 300.0f;
     if (cell == nil) {
         cell = [[TravelDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     }
+    
+    // Realm에 저장된 메타데이터, 이미지 가져오기
     ImageData *imageMetaData = self.travelList.image_datas[indexPath.row];
-    NSDictionary *travelDetailInfoDictionary = @{ @"image_name": @"Ryan.png",
-                                                  @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
-                                                  @"country": imageMetaData.country,
+    UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
+    NSDictionary *travelDetailInfoDictionary = @{ @"image": image,
+//                                                  @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
+//                                                  @"country": imageMetaData.country,
                                                   @"imageHeight":@(ROW_HEIGHT) };
     
     cell.travelDetailInfoDictionary = travelDetailInfoDictionary;
