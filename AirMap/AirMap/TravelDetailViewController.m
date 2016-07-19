@@ -115,8 +115,8 @@ const CGFloat ROW_HEIGHT = 300.0f;
 }
 // 여행경로의 사진 리스트 수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    DLog(@"image_metadatas count : %ld", self.travelList.image_metadatas.count);
-    return self.travelList.image_metadatas.count;
+    DLog(@"image_metadatas count : %ld", self.travelList.image_datas.count);
+    return self.travelList.image_datas.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -125,7 +125,7 @@ const CGFloat ROW_HEIGHT = 300.0f;
     if (cell == nil) {
         cell = [[TravelDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     }
-    ImageData *imageMetaData = self.travelList.image_metadatas[indexPath.row];
+    ImageData *imageMetaData = self.travelList.image_datas[indexPath.row];
     NSDictionary *travelDetailInfoDictionary = @{ @"image_name": @"Ryan.png",
                                                   @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
                                                   @"country": imageMetaData.country,

@@ -13,7 +13,7 @@
 
 @property NSString *travel_title;
 @property BOOL activity;
-@property RLMArray<ImageData> *image_metadatas;
+@property RLMArray<ImageData> *image_datas;
 
 @end
 

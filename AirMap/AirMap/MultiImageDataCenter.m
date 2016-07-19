@@ -185,29 +185,29 @@ const CGFloat imageShortLength = 640;
 
 - (void)saveToRealmDB {
     
-    NSLog(@"%@", [RLMRealm defaultRealm].configuration.fileURL);
+    NSLog(@"%@",[RLMRealm defaultRealm].configuration.fileURL);
     
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    // 현재 active되어있는 객체를 참조
     TravelActivation *travelActivation = [TravelActivation defaultInstance];
     
+    // 선택된 사진의 metadata, image property를 개별로 저장
     for (NSInteger i = 0; i < self.selectedMetadatasWithGPS.count; i++) {
+        
+        NSData *image = UIImageJPEGRepresentation(self.selectedImages[i], 0.8);
         
         ImageData *imageData = [[ImageData alloc] init];
         imageData.creation_date = [self.selectedMetadatasWithGPS[i] objectForKey:@"creationDate"] ;
         imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
         imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
         imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] floatValue];
+        imageData.image = image;
         
-        [travelActivation.travelList.image_metadatas addObject:imageData];
+        // realm DB에 metadata 저장
+        [realm beginWriteTransaction];
+        [travelActivation.travelList.image_datas addObject:imageData];
+        [realm commitWriteTransaction];
     }
-    
-    UserInfo *userInfo = [[UserInfo alloc] init];
-    
-    [userInfo.travel_list addObject:travelActivation.travelList];
-    
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    [realm beginWriteTransaction];
-    [realm addOrUpdateObject:userInfo];
-    [realm commitWriteTransaction];
 }
 
 @end

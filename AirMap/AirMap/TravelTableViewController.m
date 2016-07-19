@@ -232,7 +232,7 @@
         
         // 셀이 선택되고 해당 여행 경로의 이미지를 전송 해야 하기 때문에 앨범 뷰를 띄어준다.
         // 선택된 여행 경로에 Travel_List 데이터가 있을 경우에는 앨범뷰를 호출하지 않고 새로 추가된 경우에만 호출
-        if (travelList.image_metadatas.count < 1) {
+        if (travelList.image_datas.count < 1) {
             [AuthorizationControll moveToMultiImageSelectFrom:weakSelf];
         }
     }];
