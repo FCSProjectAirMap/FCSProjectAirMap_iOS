@@ -397,7 +397,7 @@ static const CGFloat overlayrHeight = 45.0f;
     }else if (status == kCLAuthorizationStatusDenied ||
                status == kCLAuthorizationStatusRestricted) {
         DLog(@"Location Denied");
-        [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"[설정] > [AirMap] > [위치] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다."];
+        [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"[설정] > [TravelMaker] > [위치] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다."];
     }
 }
 
@@ -557,7 +557,7 @@ static const CGFloat overlayrHeight = 45.0f;
     UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, customView.frame.size.width, customView.frame.size.height)];
     textLabel.textAlignment = NSTextAlignmentCenter;
     textLabel.numberOfLines = 0;
-    textLabel.font = [UIFont systemFontOfSize:15.0f];
+    textLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0f];
     textLabel.text = @"선택 된 여행이 없습니다.\n확인을 누르시면 여행생성 화면으로 이동합니다.";
     [customView addSubview:textLabel];
     return customView;
@@ -576,6 +576,7 @@ static const CGFloat overlayrHeight = 45.0f;
 
 #pragma mark - TravelTableViewController Delegate
 - (void)selectTravelTitle:(NSString *)title {
+    self.overlayButton.titleLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0];
     [self.overlayButton setTitle:title forState:UIControlStateNormal];
 }
 

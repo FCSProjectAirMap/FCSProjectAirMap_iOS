@@ -26,47 +26,75 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view setBackgroundColor:[UIColor orangeColor]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:250/255.0 green:225/255.0 blue:0/255.0 alpha:1.0f]];
     
-    const CGFloat VIEW_MARGIN = 20;
+
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    const CGFloat VIEW_MARGIN = 20*screenWidth/375;
    
     CGSize textFieldSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6, 40);
-    CGSize buttonSize = CGSizeMake(80, 30);
+    CGSize buttonSize = CGSizeMake(self.view.frame.size.width - VIEW_MARGIN*6,self.view.frame.size.width/7 - VIEW_MARGIN*6/7 );
     
-    CGFloat offsetY = 100;
+    CGFloat offsetY = self.view.frame.size.height/2-150*screenWidth/375;
+    CGFloat fontSize = 30;
     
 //   make email, password, repassword Textfield
     UITextField *emailTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
-    [emailTF setBackgroundColor:[UIColor whiteColor]];
-    [emailTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [emailTF setPlaceholder:@"이메일을 입력해주세요"];
+    [emailTF setBackgroundColor:[UIColor clearColor]];
+    [emailTF setBorderStyle:UITextBorderStyleNone];
+    [emailTF setPlaceholder:@"Email"];
+    [emailTF setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
     [self.view bringSubviewToFront:emailTF];
     self.emailField =emailTF;
     [self.view addSubview:emailTF];
-    offsetY +=emailTF.frame.size.height+VIEW_MARGIN;
+    offsetY +=emailTF.frame.size.height;
     [emailTF setKeyboardType:UIKeyboardTypeEmailAddress];
+    
+    //line under email textField
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 2)];
+    lineView.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
+    [self.view addSubview:lineView];
+    offsetY +=5;
+    
+
     
     
     
     UITextField *passwordTF =[[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
-    [passwordTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [passwordTF setBackgroundColor:[UIColor whiteColor]];
-    [passwordTF setPlaceholder:@"패스워드를 입력해주세요"];
+    [passwordTF setBorderStyle:UITextBorderStyleNone];
+    [passwordTF setBackgroundColor:[UIColor clearColor]];
+    [passwordTF setPlaceholder:@"Password"];
+    [passwordTF setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
     [self.view bringSubviewToFront:passwordTF];
     self.passWordField = passwordTF;
     [self.view addSubview:passwordTF];
-    offsetY +=passwordTF.frame.size.height+VIEW_MARGIN;
+    offsetY +=passwordTF.frame.size.height;
+    
+    
+        //line under password textField
+    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 2)];
+    lineView2.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
+    [self.view addSubview:lineView2];
+    offsetY +=5;
+    
 
     
     
     UITextField *repasswordTF = [[UITextField alloc]initWithFrame:CGRectMake(VIEW_MARGIN*3,offsetY,textFieldSize.width,textFieldSize.height)];
-    [repasswordTF setBorderStyle:UITextBorderStyleRoundedRect];
-    [repasswordTF setBackgroundColor:[UIColor whiteColor]];
-    [repasswordTF setPlaceholder:@"패스워드를 한번더 입력해주세요"];
+    [repasswordTF setBorderStyle:UITextBorderStyleNone];
+    [repasswordTF setBackgroundColor:[UIColor clearColor]];
+    [repasswordTF setPlaceholder:@"Password again"];
+    [repasswordTF setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
     [self.view bringSubviewToFront:repasswordTF];
     self.rePasswordField = repasswordTF;
     [self.view addSubview:repasswordTF];
-    offsetY+=repasswordTF.frame.size.height+VIEW_MARGIN;
+    offsetY+=repasswordTF.frame.size.height;
+    
+    //line under repassword textField
+    UIView *lineView3 = [[UIView alloc] initWithFrame:CGRectMake(VIEW_MARGIN*3, offsetY, self.emailField.frame.size.width, 2)];
+    lineView3.backgroundColor = [UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f];
+    [self.view addSubview:lineView3];
+    offsetY +=VIEW_MARGIN*3;
     
     
     
@@ -87,9 +115,8 @@
     
     //make backbutton and registerbutton
     UIButton *registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    registerButton.backgroundColor = [UIColor cyanColor];
-    [registerButton setTitle:@"등록" forState:UIControlStateNormal];
-    [registerButton setFrame:CGRectMake(VIEW_MARGIN+buttonSize.width*2-10, offsetY, buttonSize.width, buttonSize.height)];
+    [registerButton setBackgroundImage:[UIImage imageNamed:@"SignupIcon.png"] forState:UIControlStateNormal];
+    [registerButton setFrame:CGRectMake(VIEW_MARGIN*3, offsetY, buttonSize.width, buttonSize.height)];
     [registerButton addTarget:self action:@selector(clickRegisterButton:) forControlEvents:UIControlEventTouchUpInside];
     self.registerButton = registerButton;
     [self.view addSubview:registerButton];
