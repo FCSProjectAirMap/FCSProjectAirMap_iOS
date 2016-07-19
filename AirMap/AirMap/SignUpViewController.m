@@ -168,7 +168,7 @@
         NSLog(@"register operation");
         if (success) {
             NSLog(@"register newUser Success");
-             [self alertStatus:@"회원가입이 완료되었습니다." :@"성공" :1];
+//             [self alertStatus:@"회원가입이 완료되었습니다." :@"성공" :1];
             
 //            // Set ID & Password in Keychain for AutoLogin
 //            KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
@@ -179,10 +179,12 @@
             
     // check the coincidence of ID and the operation of failure to Register
         } else {
+            
             NSLog(@"register fail of error");
             
-            [self alertStatus:@"아이디가 중복되었습니다. 다시 확인해 주세요." :@"에러" :1];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSessionNotiError500:) name:@"Notierrorcontains500" object:nil];
             
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSessionNotiErrorAnother:) name:@"NotierrorfortheotherThing" object:nil];
             
         }
     }];
@@ -192,6 +194,17 @@
     
 
 }
+
+- (void) getSessionNotiError500:(NSNotification *) notif
+{
+    [self alertStatus:@"아이디가 중복되었습니다. 다른 아이디를 입력해 주세요":@"에러" :1];
+}
+
+- (void) getSessionNotiErrorAnother:(NSNotification *) notif
+{
+    [self alertStatus:@"네트워크 연결을 다시한번 확인해 주세요.":@"에러" :1];
+}
+
 
 //alert method for easily fetch
 - (void)alertStatus:(NSString *)msg :(NSString *)title :(int) tag

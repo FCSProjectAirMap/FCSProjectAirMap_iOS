@@ -7,6 +7,9 @@
 //
 
 #import "MapViewController.h"
+#import "KeychainItemWrapper.h"
+#import <Security/Security.h>
+#import "ViewController.h"
 
 static const CGFloat overlayrHeight = 45.0f;
 
@@ -27,6 +30,8 @@ static const CGFloat overlayrHeight = 45.0f;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
+
+@property (nonatomic, weak) UIButton *logoutButton;
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) BOOL isStatusBarHidden;
@@ -218,6 +223,12 @@ static const CGFloat overlayrHeight = 45.0f;
                                                     initWithTarget:self
                                                     action:@selector(appearanceSearchBar:)];
     [self.mapView addGestureRecognizer:tapGestureRecognizer];
+    
+    UIButton *logOutButton = [[UIButton alloc]initWithFrame:CGRectMake(20, 20, 20, 20)];
+    [logOutButton addTarget:self action:@selector(logoutButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    logOutButton.backgroundColor = [UIColor cyanColor];
+    [self.mapView addSubview:logOutButton];
+    self.logoutButton = logOutButton;
 }
 
 // 구글지도 만들어주는 메서드
@@ -378,6 +389,22 @@ static const CGFloat overlayrHeight = 45.0f;
     [UIView animateWithDuration:0.4 animations:^{
         [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
     }];
+}
+
+// 로그아웃 버튼 이벤트
+- (void)logoutButtonTouchUpInside:(UIButton *)sender {
+    DLog(@"로그아웃 버튼 클릭");
+    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+    [keychainItem resetKeychainItem];
+    
+    ViewController *loginViewController = [[ViewController alloc]init];
+    loginViewController.modalPresentationStyle = UIModalPresentationPopover;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginViewController];
+    [self presentViewController:nav animated:YES completion:nil];
+
+    
+    
+    
 }
 
 // search Field Edit
