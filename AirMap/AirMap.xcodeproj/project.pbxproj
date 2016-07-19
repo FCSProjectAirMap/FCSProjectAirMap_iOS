@@ -16,6 +16,10 @@
 		E45989671D374D55007A7BC9 /* expandableImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E45989621D374D55007A7BC9 /* expandableImage@2x.png */; };
 		E4889F161D3CA42D00B03A31 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4889F151D3CA42D00B03A31 /* Social.framework */; };
 		E4889F181D3CA43700B03A31 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4889F171D3CA43700B03A31 /* Accounts.framework */; };
+		E4889F1D1D3DF0DC00B03A31 /* TravelMakerIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E4889F1C1D3DF0DC00B03A31 /* TravelMakerIcon.png */; };
+		E4889F1F1D3DFF5100B03A31 /* EmailLoginIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E4889F1E1D3DFF5100B03A31 /* EmailLoginIcon.png */; };
+		E4889F211D3DFF5800B03A31 /* FaceBookLoginIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E4889F201D3DFF5800B03A31 /* FaceBookLoginIcon.png */; };
+		E4889F251D3E0CB600B03A31 /* SignupIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E4889F241D3E0CB600B03A31 /* SignupIcon.png */; };
 		E48BCFD51D3892C800DDB722 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48BCFD41D3892C800DDB722 /* Security.framework */; };
 		E48BCFD81D3898E900DDB722 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */; };
 		E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */; };
@@ -77,6 +81,11 @@
 		E45989621D374D55007A7BC9 /* expandableImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expandableImage@2x.png"; sourceTree = "<group>"; };
 		E4889F151D3CA42D00B03A31 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		E4889F171D3CA43700B03A31 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		E4889F1C1D3DF0DC00B03A31 /* TravelMakerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TravelMakerIcon.png; sourceTree = "<group>"; };
+		E4889F1E1D3DFF5100B03A31 /* EmailLoginIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EmailLoginIcon.png; sourceTree = "<group>"; };
+		E4889F201D3DFF5800B03A31 /* FaceBookLoginIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaceBookLoginIcon.png; sourceTree = "<group>"; };
+		E4889F241D3E0CB600B03A31 /* SignupIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SignupIcon.png; sourceTree = "<group>"; };
+		E4889F261D3E0DA400B03A31 /* NanumGothic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumGothic.otf; sourceTree = "<group>"; };
 		E48BCFD41D3892C800DDB722 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E48BCFD61D3898E900DDB722 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
 		E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
@@ -302,7 +311,12 @@
 		EC750B931D2B9E0300A54374 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E4889F261D3E0DA400B03A31 /* NanumGothic.otf */,
 				EC2F40DE1D34DD7000ABC745 /* addLocation.png */,
+				E4889F241D3E0CB600B03A31 /* SignupIcon.png */,
+				E4889F201D3DFF5800B03A31 /* FaceBookLoginIcon.png */,
+				E4889F1E1D3DFF5100B03A31 /* EmailLoginIcon.png */,
+				E4889F1C1D3DF0DC00B03A31 /* TravelMakerIcon.png */,
 				EC2F40DF1D34DD7000ABC745 /* album.png */,
 				EC2F40E01D34DD7000ABC745 /* close.png */,
 				EC2F40E11D34DD7000ABC745 /* location.png */,
@@ -439,7 +453,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4D39BE21D337C3500DE48D9 /* Ryan10.png in Resources */,
+				E4889F251D3E0CB600B03A31 /* SignupIcon.png in Resources */,
 				E45989661D374D55007A7BC9 /* expandableImage.png in Resources */,
+				E4889F211D3DFF5800B03A31 /* FaceBookLoginIcon.png in Resources */,
 				EC714C801D2AB8A000165A58 /* LaunchScreen.storyboard in Resources */,
 				EC2F40E51D34DD7000ABC745 /* album.png in Resources */,
 				EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */,
@@ -448,9 +464,11 @@
 				EC714C7D1D2AB8A000165A58 /* Assets.xcassets in Resources */,
 				ECA085021D2E8C8A00141B29 /* Ryan.png in Resources */,
 				EC2F40E71D34DD7000ABC745 /* location.png in Resources */,
+				E4889F1F1D3DFF5100B03A31 /* EmailLoginIcon.png in Resources */,
 				EC2F40E61D34DD7000ABC745 /* close.png in Resources */,
 				E45989671D374D55007A7BC9 /* expandableImage@2x.png in Resources */,
 				EC50DD811D2CF16E009B6C91 /* Back_icon.png in Resources */,
+				E4889F1D1D3DF0DC00B03A31 /* TravelMakerIcon.png in Resources */,
 				EC2F40E81D34DD7000ABC745 /* plus.png in Resources */,
 				EC2F40E91D34DD7000ABC745 /* travel.png in Resources */,
 			);
