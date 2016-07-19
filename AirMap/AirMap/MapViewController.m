@@ -16,7 +16,7 @@ static const CGFloat overlayrHeight = 45.0f;
 @interface MapViewController ()
 
 @property (nonatomic) GMSMapView *mapView;
-@property (nonatomic) GMSMutablePath *path;
+//@property (nonatomic) GMSMutablePath *path;
 @property (nonatomic) CLLocationManager *locationManager;
 
 @property (nonatomic, weak) UIButton *plusButton;
@@ -30,6 +30,7 @@ static const CGFloat overlayrHeight = 45.0f;
 
 @property (nonatomic, weak) UITextField *searchField;
 @property (nonatomic, weak) UIButton *menuButton;
+@property (nonatomic, strong) TravelActivation *travelActivation;
 
 @property (nonatomic, weak) UIButton *logoutButton;
 
@@ -43,16 +44,22 @@ static const CGFloat overlayrHeight = 45.0f;
 #pragma mark - View LifeCycel
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // 활성화된 싱글톤 객체
+    self.travelActivation = [TravelActivation defaultInstance];
+    
     // 구글 지도 만들어 주기.
     [self createGoogleMapView];
     
     // view 만들어 주기.
     [self setupUI];
     
-    self.path = [GMSMutablePath path];
+//    self.path = [GMSMutablePath path];
     self.isAnimating = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSession:) name:@"NotiForParentViewTouch" object:nil];
+    
+    // ##SJ Test
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTrackingDraw:) name:@"travelTrackingDraw" object:nil];
 }
 
 
@@ -284,6 +291,22 @@ static const CGFloat overlayrHeight = 45.0f;
     // Nivigation
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
     [self presentViewController:navi animated:YES completion:nil];
+}
+
+// google 지도에 경로 그리기.
+- (void)travelTrackingDraw:(NSNotification *)noti {
+    TravelList *travelList = self.travelActivation.travelList;
+    GMSMutablePath *path = [GMSMutablePath path];
+    for (ImageData *imageData in travelList.image_datas) {
+        CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
+        GMSMarker *marker = [GMSMarker markerWithPosition:position];
+        marker.title = @"Hello World";
+        [path addCoordinate:position];
+        GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
+        poly.strokeWidth = 8;
+        poly.map = _mapView;
+        marker.map = _mapView;
+    }
 }
 
 #pragma mark - CLLocationManager Delegate
