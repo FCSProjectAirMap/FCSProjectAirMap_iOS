@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="airplane.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ukp-iM-I3d">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TravelMakerIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ukp-iM-I3d">
                                 <rect key="frame" x="225" y="129.5" width="150" height="341"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="travelmaker.png" translatesAutoresizingMaskIntoConstraints="NO" id="UYy-ca-DvH">
@@ -42,7 +42,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="airplane.png" width="313" height="341"/>
+        <image name="TravelMakerIcon.png" width="313" height="341"/>
         <image name="travelmaker.png" width="286" height="146"/>
     </resources>
 </document>
