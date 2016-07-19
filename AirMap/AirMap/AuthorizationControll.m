@@ -10,7 +10,7 @@
 
 @implementation AuthorizationControll
 
-static NSString * const photoAuthoMessege = @"[설정] > [AirMap] > [사진] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다.";
+static NSString * const photoAuthoMessege = @"[설정] > [TravelMaker] > [사진] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다.";
 
 
 #pragma mark - CheckPHAuthorizationState

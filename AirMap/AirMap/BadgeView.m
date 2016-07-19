@@ -43,7 +43,7 @@
         label.textColor = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 1;
-        label.font = [UIFont boldSystemFontOfSize:14.0];
+        label.font = [UIFont fontWithName:@"NanumGothicOTF" size:14.0f];
         label.userInteractionEnabled = NO;
         [self addSubview:label];
         
@@ -57,7 +57,7 @@
     
     BadgeView *badgeView = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     
-    badgeView.layer.cornerRadius = 10.0;
+    badgeView.layer.cornerRadius = 10.0f;
     badgeView.userInteractionEnabled = NO;
     badgeView.textLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
     self.badgeView = badgeView;
@@ -71,7 +71,7 @@
     if (self.badgeValue > 0) {
         
         self.badgeView.backgroundColor =
-        [[UIColor alloc] initWithRed:(CGFloat)250/255 green:(CGFloat)225/255 blue:(CGFloat)0/255 alpha:1.00];
+        [[UIColor alloc] initWithRed:(CGFloat)250/255 green:(CGFloat)225/255 blue:(CGFloat)0/255 alpha:1.0f];
         self.alpha = 1.0f;
         self.textLabel.alpha = 1.0f;
         self.badgeLabel.text = [NSString stringWithFormat:@"%ld", self.badgeValue];
@@ -79,10 +79,10 @@
         // 값 변화시 뱃지 사이즈 커짐
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         
-        animation.duration = 0.2;
+        animation.duration = 0.2f;
         animation.repeatCount = 1;
-        animation.fromValue = [NSValue valueWithCGSize:CGSizeMake(1.0, 1.0)];
-        animation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.2, 1.2)];
+        animation.fromValue = [NSValue valueWithCGSize:CGSizeMake(1.0f, 1.0f)];
+        animation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.2f, 1.2f)];
         
         [self.layer addAnimation:animation forKey:@"scale_up"];
         // 0일때 badge 숨김

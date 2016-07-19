@@ -187,7 +187,7 @@
     }
     
     TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont fontWithName:@"Georgia-Bold" size:25.0f];
+    cell.textLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:25.0f];
     cell.textLabel.text = travelList.travel_title;
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
