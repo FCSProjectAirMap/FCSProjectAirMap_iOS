@@ -17,6 +17,7 @@ static const CGFloat overlayrHeight = 45.0f;
 
 @property (nonatomic) GMSMapView *mapView;
 //@property (nonatomic) GMSMutablePath *path;
+@property (nonnull) NSMutableArray *markers;
 @property (nonatomic) CLLocationManager *locationManager;
 
 @property (nonatomic, weak) UIButton *plusButton;
@@ -44,6 +45,10 @@ static const CGFloat overlayrHeight = 45.0f;
 #pragma mark - View LifeCycel
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // marker Array
+    self.markers = [NSMutableArray arrayWithCapacity:1];
+    
     // 활성화된 싱글톤 객체
     self.travelActivation = [TravelActivation defaultInstance];
     
@@ -286,6 +291,20 @@ static const CGFloat overlayrHeight = 45.0f;
     // Nivigation
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
     [self presentViewController:navi animated:YES completion:nil];
+}
+
+// fit Bounds
+- (void)didFitBounds {
+    GMSCoordinateBounds *bounds;
+    for (GMSMarker *marker in self.markers) {
+        if (bounds == nil) {
+            bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:marker.position
+                                                          coordinate:marker.position];
+        }
+        bounds = [bounds includingCoordinate:marker.position];
+    }
+    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:50.0f];
+    [self.mapView moveCamera:update];
 }
 
 #pragma mark - CLLocationManager Delegate
@@ -542,18 +561,26 @@ static const CGFloat overlayrHeight = 45.0f;
 
 // google 지도에 경로 그리기.
 - (void)travelTrackingDraw:(NSNotification *)noti {
+    // 지도위에 마커와 라인을 지워준다.
+    [self.mapView clear];
+    [self.markers removeAllObjects];
+    
     TravelList *travelList = self.travelActivation.travelList;
     GMSMutablePath *path = [GMSMutablePath path];
     for (ImageData *imageData in travelList.image_datas) {
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        marker.title = @"Hello World";
+//        marker.title = @"Hello World";
         [path addCoordinate:position];
         GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-        poly.strokeWidth = 8;
+        poly.strokeWidth = 7;
         poly.map = _mapView;
         marker.map = _mapView;
+        [self.markers addObject:marker];
     }
+    
+    // fit bounds
+    [self didFitBounds];
 }
 
 @end

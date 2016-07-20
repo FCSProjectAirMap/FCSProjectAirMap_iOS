@@ -221,6 +221,9 @@
         // 선택된 여행 경로에 Travel_List 데이터가 있을 경우에는 앨범뷰를 호출하지 않고 새로 추가된 경우에만 호출
         if (travelList.image_datas.count < 1) {
             [AuthorizationControll moveToMultiImageSelectFrom:weakSelf];
+        } else {
+            // 선택한 Cell의 경로를 그려주는 Notification을 호출한다.
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
         }
     }];
 }
