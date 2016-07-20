@@ -111,9 +111,17 @@
 
 - (void)showTravelListAddAlert {
     __weak typeof(self) weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"제 목"
-                                                                   message:@"여행제목을 입력해 주세요!"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
+    // alert font customize
+    NSString *message = @"여행 제목을 입력해 주세요~!";
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:message];
+    [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],
+                           NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:13.0]}
+                   range:NSMakeRange(0, message.length )];
+    [alert setValue:title forKey:@"attributedTitle"];
+    
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
@@ -213,6 +221,9 @@
         // 선택된 여행 경로에 Travel_List 데이터가 있을 경우에는 앨범뷰를 호출하지 않고 새로 추가된 경우에만 호출
         if (travelList.image_datas.count < 1) {
             [AuthorizationControll moveToMultiImageSelectFrom:weakSelf];
+        } else {
+            // 선택한 Cell의 경로를 그려주는 Notification을 호출한다.
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
         }
     }];
 }

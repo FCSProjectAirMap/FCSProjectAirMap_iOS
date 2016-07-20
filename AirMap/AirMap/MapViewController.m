@@ -17,6 +17,7 @@ static const CGFloat overlayrHeight = 45.0f;
 
 @property (nonatomic) GMSMapView *mapView;
 //@property (nonatomic) GMSMutablePath *path;
+@property (nonnull) NSMutableArray *markers;
 @property (nonatomic) CLLocationManager *locationManager;
 
 @property (nonatomic, weak) UIButton *plusButton;
@@ -44,6 +45,10 @@ static const CGFloat overlayrHeight = 45.0f;
 #pragma mark - View LifeCycel
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // marker Array
+    self.markers = [NSMutableArray arrayWithCapacity:1];
+    
     // 활성화된 싱글톤 객체
     self.travelActivation = [TravelActivation defaultInstance];
     
@@ -215,7 +220,6 @@ static const CGFloat overlayrHeight = 45.0f;
     self.menuButton = menuButton;
     
     // 구글지도 검색 텍스트 필드
-    // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
     UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(X_MARGIN + menuButton.frame.size.width, menuButton.frame.origin.y, self.mapView.frame.size.width-menuButton.frame.size.width - (X_MARGIN*2), TEXTFIELD_HEIGHT)];
     [searchField addTarget:self
                     action:@selector(searchFieldDidChange:)
@@ -289,6 +293,20 @@ static const CGFloat overlayrHeight = 45.0f;
     [self presentViewController:navi animated:YES completion:nil];
 }
 
+// fit Bounds
+- (void)didFitBounds {
+    GMSCoordinateBounds *bounds;
+    for (GMSMarker *marker in self.markers) {
+        if (bounds == nil) {
+            bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:marker.position
+                                                          coordinate:marker.position];
+        }
+        bounds = [bounds includingCoordinate:marker.position];
+    }
+    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:50.0f];
+    [self.mapView moveCamera:update];
+}
+
 #pragma mark - CLLocationManager Delegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     CLLocation *newLocation = [locations lastObject];
@@ -334,8 +352,16 @@ static const CGFloat overlayrHeight = 45.0f;
     if ([TravelActivation defaultInstance].travelList == nil) {
         // Alert를 호출해 알려준다.
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"경 고"
-                                                                       message:@"선택된 여행이 없습니다!\n\"확인\"을 누르시면 \n여행 경로 화면으로 이동합니다."
+                                                                       message:nil
                                                                 preferredStyle:UIAlertControllerStyleAlert];
+        // title font customize
+        NSString *messege = @"선택된 여행이 없습니다!\n\"확인\"을 누르시면 \n여행 경로 화면으로 이동합니다.";
+        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:messege];
+        [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],
+                               NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:13.0]}
+                       range:NSMakeRange(0, messege.length )];
+        [alert setValue:title forKey:@"attributedTitle"];
+        
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * _Nonnull action) {
@@ -535,18 +561,25 @@ static const CGFloat overlayrHeight = 45.0f;
 
 // google 지도에 경로 그리기.
 - (void)travelTrackingDraw:(NSNotification *)noti {
+    // 지도위에 마커와 라인을 지워준다.
+    [self.mapView clear];
+    [self.markers removeAllObjects];
+    
     TravelList *travelList = self.travelActivation.travelList;
     GMSMutablePath *path = [GMSMutablePath path];
     for (ImageData *imageData in travelList.image_datas) {
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        marker.title = @"Hello World";
         [path addCoordinate:position];
         GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-        poly.strokeWidth = 8;
+        poly.strokeWidth = 3;
         poly.map = _mapView;
         marker.map = _mapView;
+        [self.markers addObject:marker];
     }
+    
+    // fit bounds
+    [self didFitBounds];
 }
 
 @end
