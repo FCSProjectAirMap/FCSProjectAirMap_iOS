@@ -114,6 +114,10 @@
 //send Email, and username from facebook to server and get JWT Token
 -(void)sendUserInfoFromFacebook:(NSString*)email : (NSString*)userName {
     
+    KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+    
+    [keychainItem setObject:email forKey:(__bridge id)kSecAttrAccount];
+    
         NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/signup/"];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSDictionary *params = @{@"email":email,

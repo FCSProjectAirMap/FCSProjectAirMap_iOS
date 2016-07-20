@@ -14,6 +14,8 @@
 #import "MapViewController.h"
 #import "ViewController.h"
 #import "TravelActivation.h"
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+
 
 @interface MenuSlideViewController ()
 
@@ -158,13 +160,22 @@
                          style:UIAlertActionStyleDefault
                          handler:^(UIAlertAction * action)
                          {
+                             [self.view removeFromSuperview];
+                             
+                             //Remove ID & Password in Keychain
                              [alert dismissViewControllerAnimated:YES completion:nil];
                              KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
                              [keychainItem resetKeychainItem];
                              
+                             //Make TravelActivation (singleton object) as nil
                              [TravelActivation defaultInstance].travelList = nil;
-                            
                              
+                             //Logout FaceBook
+                             FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+                             [loginManager logOut];
+                             [FBSDKAccessToken setCurrentAccessToken:nil];
+                            
+                             //return to Main Login Page
                              ViewController *loginViewController = [[ViewController alloc]init];
                              loginViewController.modalPresentationStyle = UIModalPresentationPopover;
                              UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginViewController];
