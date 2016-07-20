@@ -109,11 +109,6 @@
     return result;
 }
 
-// Delegate Method (해당 셀을 선택 시 선택 된 셀의 title을 MapView에 념겨준다.)
-- (void)selectTravelTitle:(NSString *) title {
-    [self.delegate selectTravelTitle:title];
-}
-
 - (void)showTravelListAddAlert {
     __weak typeof(self) weakSelf = self;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"제 목"
@@ -201,8 +196,8 @@
     // 선택된 셀
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    // mapview로 타이틀 정보를 넘겨 줌.
-    [self selectTravelTitle:cell.textLabel.text];
+    // Title Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
     TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
@@ -235,8 +230,22 @@
         // Realm Data delete
         __weak typeof(self) weakSelf = self;
         TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:path.row];
-        [[RLMRealm defaultRealm] transactionWithBlock:^{
-            [[RLMRealm defaultRealm] deleteObject:travelList];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm transactionWithBlock:^{
+            // 이미지 데이터를 지워주고.
+            for (ImageData *imageData in travelList.image_datas) {
+                [realm deleteObject:imageData];
+            }
+            // 삭제 시 현재 활성화된 싱글턴 객체와 삭제하려던 여행경로 객체가 같을 경우 처리하는 로직.
+            if ([travelList isEqualToObject:weakSelf.travelActivation.travelList]) {
+                // 싱글턴이 참조하는 객체를 nil로 만들어 준다.
+                weakSelf.travelActivation.travelList = nil;
+                // title Notification을 호출해 빈값을 준다.
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:nil];
+            }
+            
+            // 여행 리스트를 지워준다.
+            [realm deleteObject:travelList];
             [weakSelf.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         }];
         
