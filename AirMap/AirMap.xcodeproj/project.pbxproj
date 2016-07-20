@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		149271153E68F16848807B18 /* libPods-AirMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1830F141CEEF713626E661 /* libPods-AirMap.a */; };
 		E4041519E7E37666D21CD521 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		E421921D1D3F239200152B6C /* logoutButton.png in Resources */ = {isa = PBXBuildFile; fileRef = E421921C1D3F239200152B6C /* logoutButton.png */; };
 		E45989631D374D55007A7BC9 /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E459895C1D374D55007A7BC9 /* SKSTableView.m */; };
 		E45989641D374D55007A7BC9 /* SKSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E459895E1D374D55007A7BC9 /* SKSTableViewCell.m */; };
 		E45989651D374D55007A7BC9 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E45989601D374D55007A7BC9 /* SKSTableViewCellIndicator.m */; };
@@ -73,6 +74,7 @@
 		16028BDC9D099C26AC19ED29 /* Pods-AirMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.release.xcconfig"; sourceTree = "<group>"; };
 		2F1830F141CEEF713626E661 /* libPods-AirMap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirMap.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4253540E246896CD5E2EF7E9 /* Pods-AirMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirMap/Pods-AirMap.debug.xcconfig"; sourceTree = "<group>"; };
+		E421921C1D3F239200152B6C /* logoutButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoutButton.png; sourceTree = "<group>"; };
 		E459895B1D374D55007A7BC9 /* SKSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableView.h; sourceTree = "<group>"; };
 		E459895C1D374D55007A7BC9 /* SKSTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableView.m; sourceTree = "<group>"; };
 		E459895D1D374D55007A7BC9 /* SKSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCell.h; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				EC2F40DE1D34DD7000ABC745 /* addLocation.png */,
+				E421921C1D3F239200152B6C /* logoutButton.png */,
 				E4889F241D3E0CB600B03A31 /* SignupIcon.png */,
 				E4889F201D3DFF5800B03A31 /* FaceBookLoginIcon.png */,
 				E4889F1E1D3DFF5100B03A31 /* EmailLoginIcon.png */,
@@ -424,7 +427,7 @@
 				TargetAttributes = {
 					EC714C6C1D2AB8A000165A58 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = E973CQ3L5R;
+						DevelopmentTeam = PLX34KF3XF;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 0;
@@ -469,6 +472,7 @@
 				EC2F40E41D34DD7000ABC745 /* addLocation.png in Resources */,
 				EC714C7D1D2AB8A000165A58 /* Assets.xcassets in Resources */,
 				ECA085021D2E8C8A00141B29 /* Ryan.png in Resources */,
+				E421921D1D3F239200152B6C /* logoutButton.png in Resources */,
 				EC2F40E71D34DD7000ABC745 /* location.png in Resources */,
 				E4889F1F1D3DFF5100B03A31 /* EmailLoginIcon.png in Resources */,
 				EC2F40E61D34DD7000ABC745 /* close.png in Resources */,
@@ -682,7 +686,7 @@
 				INFOPLIST_FILE = AirMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -705,7 +709,7 @@
 				INFOPLIST_FILE = AirMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
