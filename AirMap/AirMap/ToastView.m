@@ -56,7 +56,8 @@ const CGFloat duration = 4.0f;
     paragraphStyle.lineSpacing = 5.0f;
     paragraphStyle.alignment = NSTextAlignmentCenter;
     
-    NSDictionary *attibute = @{NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:13.0f], NSParagraphStyleAttributeName:paragraphStyle};
+    NSDictionary *attibute = @{NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:12.0f],
+                               NSParagraphStyleAttributeName:paragraphStyle};
     
     // toastView 생성
     ToastView *toast = [[ToastView alloc] initWithFrame:toastFrame];

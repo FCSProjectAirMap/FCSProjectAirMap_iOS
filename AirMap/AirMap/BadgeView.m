@@ -26,7 +26,6 @@
                                                  selector:@selector(UpdateNotification:)
                                                      name:@"UpdateNotification"
                                                    object:nil];
-        self.badgeValue = 1;
     }
     return self;
 }
@@ -43,7 +42,7 @@
         label.textColor = [[UIColor alloc] initWithRed:(CGFloat)60/255 green:(CGFloat)30/255 blue:(CGFloat)30/255 alpha:1.00];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 1;
-        label.font = [UIFont fontWithName:@"NanumGothicOTF" size:14.0f];
+        label.font = [UIFont boldSystemFontOfSize:13.0f];
         label.userInteractionEnabled = NO;
         [self addSubview:label];
         

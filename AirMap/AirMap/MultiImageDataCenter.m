@@ -147,9 +147,22 @@ const CGFloat imageShortLength = 640;
 // metaData추출
 - (void)extractMetadataFromImage {
     
+    // 중복사진 제외처리(기준 : timestamp)
+    RLMArray *result = [TravelActivation defaultInstance].travelList.image_datas;
+    NSInteger count = result.count;
+    NSMutableArray *timestampArray = [[NSMutableArray alloc] initWithCapacity:count];
+    
+    if (result != nil) {
+        for (NSInteger i = 0; i < count; i++) {
+            ImageData *imageData = result[i];
+            [timestampArray addObject:[NSNumber numberWithInteger:imageData.timestamp]];
+            NSLog(@"timestampinrealm:%ld", imageData.timestamp);
+        }
+    }
+    
     for (PHAsset *asset in self.selectedAssets) {
         // 전송할 메타데이터 추출
-        NSNumber *timestamp = [NSNumber numberWithDouble:asset.creationDate.timeIntervalSince1970];
+        NSNumber *timestamp = [NSNumber numberWithInteger:asset.creationDate.timeIntervalSince1970];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
         NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
@@ -164,8 +177,16 @@ const CGFloat imageShortLength = 640;
             [self.selectedMetadatasWithoutGPS addObject:metaData];
             [self.selectedAssetsWithoutGPS addObject:asset];
         } else {
-            [self.selectedMetadatasWithGPS addObject:metaData];
-            [self.selectedAssetsWithGPS addObject:asset];
+            if (result != nil) {
+                if ([timestampArray containsObject:[metaData objectForKey:@"timestamp"]]) {
+                    NSMutableArray *duplicatedAssets = [[NSMutableArray alloc] init];
+                    [duplicatedAssets addObject:asset];
+                    NSLog(@"duple %@", duplicatedAssets);
+                } else {
+                    [self.selectedMetadatasWithGPS addObject:metaData];
+                    [self.selectedAssetsWithGPS addObject:asset];
+                }
+            }
         }
     }
     [self changeAssetToImage];
@@ -200,7 +221,7 @@ const CGFloat imageShortLength = 640;
         imageData.creation_date = [self.selectedMetadatasWithGPS[i] objectForKey:@"creationDate"] ;
         imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
         imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
-        imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] floatValue];
+        imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] integerValue];
         imageData.image = image;
         
         // realm DB에 metadata 저장
