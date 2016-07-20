@@ -111,9 +111,17 @@
 
 - (void)showTravelListAddAlert {
     __weak typeof(self) weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"제 목"
-                                                                   message:@"여행제목을 입력해 주세요!"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
+    // alert font customize
+    NSString *message = @"여행 제목을 입력해 주세요~!";
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:message];
+    [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],
+                           NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:13.0]}
+                   range:NSMakeRange(0, message.length )];
+    [alert setValue:title forKey:@"attributedTitle"];
+    
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {

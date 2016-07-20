@@ -215,7 +215,6 @@ static const CGFloat overlayrHeight = 45.0f;
     self.menuButton = menuButton;
     
     // 구글지도 검색 텍스트 필드
-    // ##SJ x좌표를 settingsButton 가로 길이로 했는데 정확하게 되질 않는다....
     UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(X_MARGIN + menuButton.frame.size.width, menuButton.frame.origin.y, self.mapView.frame.size.width-menuButton.frame.size.width - (X_MARGIN*2), TEXTFIELD_HEIGHT)];
     [searchField addTarget:self
                     action:@selector(searchFieldDidChange:)
@@ -334,8 +333,16 @@ static const CGFloat overlayrHeight = 45.0f;
     if ([TravelActivation defaultInstance].travelList == nil) {
         // Alert를 호출해 알려준다.
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"경 고"
-                                                                       message:@"선택된 여행이 없습니다!\n\"확인\"을 누르시면 \n여행 경로 화면으로 이동합니다."
+                                                                       message:nil
                                                                 preferredStyle:UIAlertControllerStyleAlert];
+        // title font customize
+        NSString *messege = @"선택된 여행이 없습니다!\n\"확인\"을 누르시면 \n여행 경로 화면으로 이동합니다.";
+        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:messege];
+        [title addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],
+                               NSFontAttributeName:[UIFont fontWithName:@"NanumGothicOTF" size:13.0]}
+                       range:NSMakeRange(0, messege.length )];
+        [alert setValue:title forKey:@"attributedTitle"];
+        
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * _Nonnull action) {
