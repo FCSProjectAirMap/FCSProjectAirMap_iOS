@@ -49,7 +49,8 @@
     
     // content Image View
     self.contentImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, imageHeight - 50.0f)];
-    self.contentImageView.contentMode = UIViewContentModeScaleToFill;
+    self.contentImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.contentImageView setClipsToBounds:YES];
     [self.contentView addSubview:self.contentImageView];
     
     // bottom View

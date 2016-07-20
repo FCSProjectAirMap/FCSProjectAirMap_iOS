@@ -17,6 +17,8 @@
 #import "UserInfo.h"
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
+#import "TravelActivation.h"
+#import "AppDelegate.h"
 
 
 @interface ServerConnection()
@@ -89,6 +91,16 @@
             [realm beginWriteTransaction];
             userinfo.user_token = [responseObject objectForKey:@"token"];
             [realm commitWriteTransaction];
+            
+            // Activity가 Yes인 여행 경로를 싱글톤이 참조.
+            for (TravelList *travelList in userinfo.travel_list) {
+                if (travelList.activity) {
+                    [TravelActivation defaultInstance].travelList = travelList;
+                    MapViewController *mapView = (MapViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+                    [mapView selectTravelTitle:travelList.travel_title];
+                    break;
+                }
+            }
         } else {
             // 새로운 데이터
             userinfo = [[UserInfo alloc]init];
