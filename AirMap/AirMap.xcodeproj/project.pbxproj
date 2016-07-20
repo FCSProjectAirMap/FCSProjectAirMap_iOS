@@ -427,7 +427,7 @@
 				TargetAttributes = {
 					EC714C6C1D2AB8A000165A58 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = PLX34KF3XF;
+						DevelopmentTeam = E973CQ3L5R;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 0;
@@ -686,7 +686,7 @@
 				INFOPLIST_FILE = AirMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -709,7 +709,7 @@
 				INFOPLIST_FILE = AirMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TravelMKAir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
