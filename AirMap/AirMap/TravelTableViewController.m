@@ -230,8 +230,14 @@
         // Realm Data delete
         __weak typeof(self) weakSelf = self;
         TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:path.row];
-        [[RLMRealm defaultRealm] transactionWithBlock:^{
-            [[RLMRealm defaultRealm] deleteObject:travelList];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm transactionWithBlock:^{
+            // 이미지 데이터를 지워주고.
+            for (ImageData *imageData in travelList.image_datas) {
+                [realm deleteObject:imageData];
+            }
+            // 여행 리스트를 지워준다.
+            [realm deleteObject:travelList];
             [weakSelf.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
         }];
         
