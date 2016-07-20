@@ -38,7 +38,7 @@
     
     // Check FaceBook Token and decide if LoginViewContoller Open or Close
     if ([FBSDKAccessToken currentAccessToken]) {
-        [self showLoginView];
+//        [self showLoginView];
     } else {
         // display the login page.
         [self showLoginView];

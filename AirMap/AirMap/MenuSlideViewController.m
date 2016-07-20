@@ -12,6 +12,8 @@
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
 #import "MapViewController.h"
+#import "ViewController.h"
+#import "TravelActivation.h"
 
 @interface MenuSlideViewController ()
 
@@ -52,17 +54,15 @@
     //add TapGestureRecognizer to dismiss slideview when touch on another place
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSomeWhereElse:)];
     [self.rightView addGestureRecognizer:tapGesture];
-    
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-//    tap.numberOfTapsRequired = 2;
-//    [self.view addGestureRecognizer:tap];
-//    
-//    [self.parentViewController.view removeGestureRecognizer:tapGesture];
 
     
-    
-    
 }
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@" 메뉴슬라이드 터치 ");
+}
+
 
 #pragma mark - General Method
 - (void)setupUI {
@@ -89,7 +89,7 @@
     self.bottomView = bottomView;
     
     // application Name Label
-    UILabel *applicationNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, topView.frame.size.height/2, topView.frame.size.width, 50.0f)];
+    UILabel *applicationNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, topView.frame.size.height/2, topView.frame.size.width/2, 50.0f)];
     applicationNameLabel.text = @"Travel-MK";
     applicationNameLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:20.0f];
     applicationNameLabel.textColor = [UIColor blackColor];
@@ -107,9 +107,18 @@
     // set ID (from keychain)
     KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
     self.userIDLabel.text = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
+
+    //Logout Button
+    UIButton *logoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [logoutButton addTarget:self action:@selector(clickLogoutButton:) forControlEvents:UIControlEventTouchUpInside];
+    [logoutButton setFrame:CGRectMake(topView.frame.size.width-40.0f, topView.frame.size.height - 38.0f, 25, 25)];
+    [logoutButton setBackgroundImage:[UIImage imageNamed:@"logoutButton"] forState:UIControlStateNormal];
+//    [logoutButton.titleLabel setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
+    [self.topView addSubview:logoutButton];
+    
     
   
-    SKSTableView *sksTableView= [[SKSTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, MENU_VIEW_WIDTH, bottomView.frame.size.height) style:UITableViewStylePlain];
+    SKSTableView *sksTableView= [[SKSTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, MENU_VIEW_WIDTH, bottomView.frame.size.height) style:UITableViewStyleGrouped];
     sksTableView.SKSTableViewDelegate = self;
     [self.bottomView addSubview: sksTableView];
     self.tableView = sksTableView;
@@ -119,6 +128,7 @@
 }
 
 #pragma mark - Action Method
+
 - (void)tapSomeWhereElse:(UITapGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NotiForParentViewTouch" object:self userInfo:nil];
@@ -134,6 +144,51 @@
          }];
     }
 }
+
+- (void)clickLogoutButton:(UIButton *)sender {
+    DLog(@"로그아웃 버튼 클릭");
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"로그아웃 하시겠습니까?"
+                                  message:@""
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                             KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+                             [keychainItem resetKeychainItem];
+                             
+                             [TravelActivation defaultInstance].travelList = nil;
+                            
+                             
+                             ViewController *loginViewController = [[ViewController alloc]init];
+                             loginViewController.modalPresentationStyle = UIModalPresentationPopover;
+                             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginViewController];
+                             [self presentViewController:nav animated:YES completion:nil];
+                             
+                             
+                         }];
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [alert addAction:ok];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+
 
 
 - (void)collapseSubrows
@@ -166,7 +221,7 @@
 
 // Section Height
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40.0f;
+    return CGFLOAT_MIN;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

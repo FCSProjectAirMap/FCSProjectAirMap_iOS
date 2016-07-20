@@ -275,6 +275,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
     NSLog(@"aha");
     return YES;
 }
@@ -293,7 +294,6 @@ CGFloat const kDefaultCellHeight = 44.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"didSelectROW");
-    
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -437,14 +437,14 @@ CGFloat const kDefaultCellHeight = 44.0f;
         return kDefaultCellHeight;
     }
 }
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
-//        [_SKSTableViewDelegate tableView:tableView heightForHeaderInSection:section];
-//
-//    return 0;
-//}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
+        [_SKSTableViewDelegate tableView:tableView heightForHeaderInSection:section];
+
+    return CGFLOAT_MIN;
+}
 //
 //- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 //{

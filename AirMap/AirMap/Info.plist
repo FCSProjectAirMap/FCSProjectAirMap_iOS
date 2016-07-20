@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>NanumGothic.otf</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -59,6 +55,10 @@
 	<string>사용자 위치정보를 항상 사용 합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>사용자 위치정보를 실행 중에만 사용합니다.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>NanumGothic.otf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIPrerenderedIcon</key>
