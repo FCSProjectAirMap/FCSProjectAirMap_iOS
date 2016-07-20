@@ -236,6 +236,14 @@
             for (ImageData *imageData in travelList.image_datas) {
                 [realm deleteObject:imageData];
             }
+            // 삭제 시 현재 활성화된 싱글턴 객체와 삭제하려던 여행경로 객체가 같을 경우 처리하는 로직.
+            if ([travelList isEqualToObject:weakSelf.travelActivation.travelList]) {
+                // 싱글턴이 참조하는 객체를 nil로 만들어 준다.
+                weakSelf.travelActivation.travelList = nil;
+                // title Notification을 호출해 빈값을 준다.
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:nil];
+            }
+            
             // 여행 리스트를 지워준다.
             [realm deleteObject:travelList];
             [weakSelf.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
