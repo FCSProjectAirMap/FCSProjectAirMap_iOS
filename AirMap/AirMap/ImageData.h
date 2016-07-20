@@ -13,7 +13,7 @@
 @property NSString *creation_date;
 @property float latitude;
 @property float longitude;
-@property float timestamp;
+@property NSInteger timestamp;
 @property NSDate *timezone_date;
 @property NSString *country;
 @property NSString *city;
