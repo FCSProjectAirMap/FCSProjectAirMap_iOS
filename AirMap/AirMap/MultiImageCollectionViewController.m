@@ -93,7 +93,7 @@ const CGFloat spacing = 2;
 
 #pragma mark - <UICollectionViewDelegate>
 
-// 10장 이상 선택시 셀 선택 제한
+// 10장 이상 선택시 셀 선택 제한, 총 30장 이상 일시 셀 선택 제한
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSUInteger savedImageNumber = [TravelActivation defaultInstance].travelList.image_datas.count;
@@ -189,12 +189,15 @@ const CGFloat spacing = 2;
     [self.imageDataCenter extractMetadataFromImage];
     NSLog(@"%@",[self.imageDataCenter callSelectedImages]);
     
-    // realm 저장
-    [self.imageDataCenter saveToRealmDB];
-    
-    // 이미지, 메타데이터 업로드
-    [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]];
-    [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages]];
+    // GPS 정보가 없는 사진, 중복된 사진이 없을때 realm, 서버에 저장
+    if ([[self.imageDataCenter callSelectedImages] count] > 0) {
+        // realm 저장
+        [self.imageDataCenter saveToRealmDB];
+        
+        // 이미지, 메타데이터 업로드
+        [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]];
+        [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages]];
+    }
     
     // GPS 정보가 없는 사진이 있을때 사용자에게 알림
     if ([[self.imageDataCenter callSelectedAssetsWithoutGPS] count] > 0) {
