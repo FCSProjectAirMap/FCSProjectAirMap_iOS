@@ -570,10 +570,9 @@ static const CGFloat overlayrHeight = 45.0f;
     for (ImageData *imageData in travelList.image_datas) {
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         GMSMarker *marker = [GMSMarker markerWithPosition:position];
-//        marker.title = @"Hello World";
         [path addCoordinate:position];
         GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-        poly.strokeWidth = 7;
+        poly.strokeWidth = 3;
         poly.map = _mapView;
         marker.map = _mapView;
         [self.markers addObject:marker];
