@@ -58,8 +58,11 @@ static const CGFloat overlayrHeight = 45.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSession:) name:@"NotiForParentViewTouch" object:nil];
     
-    // ##SJ Test
+    // 경로 Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTrackingDraw:) name:@"travelTrackingDraw" object:nil];
+    
+    // Title Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectTravelTitle:) name:@"selectTravelTitle" object:nil];
 }
 
 - (void) getSession:(NSNotification *) notif
@@ -286,26 +289,9 @@ static const CGFloat overlayrHeight = 45.0f;
 
 - (void)travelListViewCall {
     TravelTableViewController *travelTabelViewController = [[TravelTableViewController alloc] init];
-    travelTabelViewController.delegate = self;
     // Nivigation
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
     [self presentViewController:navi animated:YES completion:nil];
-}
-
-// google 지도에 경로 그리기.
-- (void)travelTrackingDraw:(NSNotification *)noti {
-    TravelList *travelList = self.travelActivation.travelList;
-    GMSMutablePath *path = [GMSMutablePath path];
-    for (ImageData *imageData in travelList.image_datas) {
-        CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
-        GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        marker.title = @"Hello World";
-        [path addCoordinate:position];
-        GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-        poly.strokeWidth = 8;
-        poly.map = _mapView;
-        marker.map = _mapView;
-    }
 }
 
 #pragma mark - CLLocationManager Delegate
@@ -561,10 +547,27 @@ static const CGFloat overlayrHeight = 45.0f;
  *                                                                          *
  ****************************************************************************/
 
-#pragma mark - TravelTableViewController Delegate
-- (void)selectTravelTitle:(NSString *)title {
+#pragma mark - Notification
+// OverLayView에 title
+- (void)selectTravelTitle:(NSNotification *)notification {
     self.overlayButton.titleLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0];
-    [self.overlayButton setTitle:title forState:UIControlStateNormal];
+    [self.overlayButton setTitle:notification.object forState:UIControlStateNormal];
+}
+
+// google 지도에 경로 그리기.
+- (void)travelTrackingDraw:(NSNotification *)noti {
+    TravelList *travelList = self.travelActivation.travelList;
+    GMSMutablePath *path = [GMSMutablePath path];
+    for (ImageData *imageData in travelList.image_datas) {
+        CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
+        GMSMarker *marker = [GMSMarker markerWithPosition:position];
+        marker.title = @"Hello World";
+        [path addCoordinate:position];
+        GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
+        poly.strokeWidth = 8;
+        poly.map = _mapView;
+        marker.map = _mapView;
+    }
 }
 
 @end

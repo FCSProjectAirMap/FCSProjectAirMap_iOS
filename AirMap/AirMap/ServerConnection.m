@@ -96,8 +96,8 @@
             for (TravelList *travelList in userinfo.travel_list) {
                 if (travelList.activity) {
                     [TravelActivation defaultInstance].travelList = travelList;
-                    MapViewController *mapView = (MapViewController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-                    [mapView selectTravelTitle:travelList.travel_title];
+                    // title noification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:travelList.travel_title];
                     break;
                 }
             }

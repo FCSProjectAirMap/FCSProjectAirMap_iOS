@@ -14,15 +14,12 @@
 #import "MenuSlideViewController.h"
 #import "AuthorizationControll.h"
 #import "TravelActivation.h"
-#import "CustomIOSAlertView.h"
 
 @import GoogleMaps;
 
 @interface MapViewController : UIViewController
-<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate, TravelTableViewControllerDelegate, CustomIOSAlertViewDelegate>
+<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
 
 @property (nonatomic) BOOL isSlideMenuOpen;
-
-- (void)selectTravelTitle:(NSString *)title;
 
 @end

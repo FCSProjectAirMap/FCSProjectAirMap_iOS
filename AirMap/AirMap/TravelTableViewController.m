@@ -109,11 +109,6 @@
     return result;
 }
 
-// Delegate Method (해당 셀을 선택 시 선택 된 셀의 title을 MapView에 념겨준다.)
-- (void)selectTravelTitle:(NSString *) title {
-    [self.delegate selectTravelTitle:title];
-}
-
 - (void)showTravelListAddAlert {
     __weak typeof(self) weakSelf = self;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"제 목"
@@ -201,8 +196,8 @@
     // 선택된 셀
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    // mapview로 타이틀 정보를 넘겨 줌.
-    [self selectTravelTitle:cell.textLabel.text];
+    // Title Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
     TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];

@@ -15,15 +15,7 @@
 #import "TravelActivation.h"
 #import "KeychainItemWrapper.h"
 
-@protocol TravelTableViewControllerDelegate <NSObject>
-
-- (void)selectTravelTitle:(NSString *)title;
-
-@end
-
 @interface TravelTableViewController : UIViewController
 <UITableViewDelegate, UITableViewDataSource,MGSwipeTableCellDelegate>
-
-@property (nonatomic, strong) id <TravelTableViewControllerDelegate> delegate;
 
 @end
