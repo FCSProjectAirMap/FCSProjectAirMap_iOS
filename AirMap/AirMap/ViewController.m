@@ -145,8 +145,9 @@
     signupButton.backgroundColor = [UIColor clearColor];
     [signupButton setTitle:@"회원가입" forState:UIControlStateNormal];
     [signupButton setTitleColor:[UIColor colorWithRed:60/255.0 green:30/255.0 blue:30/255.0 alpha:0.6f] forState:UIControlStateNormal];
-    [signupButton setFrame:CGRectMake(self.view.frame.size.width-60*screenWidth/375,self.view.frame.size.height-30*screenWidth/375, 40, 10)];
+    [signupButton setFrame:CGRectMake(self.view.frame.size.width-70*screenWidth/375,self.view.frame.size.height-30*screenWidth/375, 60, 20)];
     [signupButton.titleLabel setFont:[UIFont fontWithName:@"NanumGothic.otf" size:fontSize]];
+    signupButton.titleLabel.font =[UIFont systemFontOfSize:14.0f];
     [signupButton addTarget:self action:@selector(clickSignUpButton:) forControlEvents:UIControlEventTouchUpInside];
     signupButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     signupButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
