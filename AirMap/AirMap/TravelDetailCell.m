@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIImageView *contentImageView;
+@property (nonatomic, strong) UIImageView *countryImageView;
 @property (nonatomic, strong) UILabel *timezoneDateLabel;
 @property (nonatomic, strong) UILabel *countryLabel;
 
@@ -48,29 +49,41 @@
     CGFloat imageHeight = [[self.travelDetailInfoDictionary objectForKey:@"imageHeight"] floatValue];
     
     // content Image View
-    self.contentImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, imageHeight - 50.0f)];
+    self.contentImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, imageHeight - 60.0f)];
     self.contentImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentImageView setClipsToBounds:YES];
     [self.contentView addSubview:self.contentImageView];
+//    [self.contentView.layer setBorderWidth:1.0f];
+//    [self.contentView.layer setBorderColor:[UIColor blackColor].CGColor];
     
     // bottom View
     self.bottomView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.contentImageView.bounds.size.height, self.bounds.size.width, self.bounds.size.height - self.contentImageView.bounds.size.height)];
     self.bottomView.backgroundColor = [UIColor whiteColor];
-    [self.contentView addSubview:self.bottomView];
+//    [self.contentView addSubview:self.bottomView];
     
     // timezoneDateLabel
     self.timezoneDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, 20.0f)];
     self.timezoneDateLabel.textColor = [UIColor blackColor];
     self.timezoneDateLabel.backgroundColor = [UIColor yellowColor];
     self.timezoneDateLabel.textAlignment = NSTextAlignmentCenter;
-    [self.bottomView addSubview:self.timezoneDateLabel];
+//    [self.bottomView addSubview:self.timezoneDateLabel];
     
     // country Label
     self.countryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, self.timezoneDateLabel.bounds.size.height, self.bounds.size.width, 20.0f)];
     self.countryLabel.textColor = [UIColor whiteColor];
     self.countryLabel.backgroundColor = [UIColor blackColor];
     self.countryLabel.textAlignment = NSTextAlignmentCenter;
-    [self.bottomView addSubview:self.countryLabel];
+//    [self.bottomView addSubview:self.countryLabel];
+    
+    // country ImageView
+    UIImage *countryImage = [UIImage imageNamed:@"Ryan10"];
+    self.countryImageView = [[UIImageView alloc] initWithImage:countryImage];
+    self.countryImageView.frame = CGRectMake(self.contentImageView.frame.size.width - 60.0f - 20.0f, self.contentImageView.frame.size.height - 30.0f, 60.0f, 60.0f);
+    self.countryImageView.layer.cornerRadius = self.countryImageView.frame.size.width / 2;
+    self.countryImageView.layer.borderWidth = 1.0f;
+    self.countryImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.countryImageView.layer.masksToBounds = YES;
+    [self.contentView addSubview:self.countryImageView];
     
     [self setInfoWithInfodic];
 }
