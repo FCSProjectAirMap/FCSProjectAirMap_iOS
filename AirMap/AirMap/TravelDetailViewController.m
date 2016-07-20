@@ -8,7 +8,7 @@
 
 #import "TravelDetailViewController.h"
 
-const CGFloat ROW_HEIGHT = 300.0f;
+const CGFloat ROW_HEIGHT = 350.0f;
 
 @interface TravelDetailViewController ()
 
@@ -135,6 +135,8 @@ const CGFloat ROW_HEIGHT = 300.0f;
                                                   @"imageHeight":@(ROW_HEIGHT) };
     
     cell.travelDetailInfoDictionary = travelDetailInfoDictionary;
+    cell.layer.borderColor = [UIColor blackColor].CGColor;
+    cell.layer.borderWidth = 0.5f;
     return cell;
 }
 
