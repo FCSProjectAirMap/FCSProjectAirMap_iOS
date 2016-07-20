@@ -26,7 +26,6 @@
                                                  selector:@selector(UpdateNotification:)
                                                      name:@"UpdateNotification"
                                                    object:nil];
-        self.badgeValue = 1;
     }
     return self;
 }
