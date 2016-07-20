@@ -67,8 +67,11 @@
     //Set Keychain, and match ID & Password in Server and decide to present LoginViewController
     if([keychainItem objectForKey: (__bridge id)kSecAttrAccount] && [keychainItem objectForKey:(__bridge id)kSecValueData])
     {
+        NSData *pass =[keychainItem objectForKey:(__bridge id)(kSecValueData)];
+        NSString *passworddecoded = [[NSString alloc] initWithData:pass
+                                                          encoding:NSUTF8StringEncoding];
         ServerConnection *serverConnection = [[ServerConnection alloc]init];
-        [serverConnection authenticateWithUserEmail:[keychainItem objectForKey: (__bridge id)kSecAttrAccount] withUserPassword:[keychainItem objectForKey:(__bridge id)kSecValueData] completion:^(BOOL success) {
+        [serverConnection authenticateWithUserEmail:[keychainItem objectForKey: (__bridge id)kSecAttrAccount] withUserPassword:passworddecoded completion:^(BOOL success) {
             NSLog(@"오토로그인 구동");
             if (success) {
                 NSLog(@"오토로그인 석세스");
