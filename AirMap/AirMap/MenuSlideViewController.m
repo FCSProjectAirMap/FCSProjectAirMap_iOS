@@ -57,6 +57,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSomeWhereElse:)];
     [self.rightView addGestureRecognizer:tapGesture];
 
+    [self.view removeFromSuperview];
     
 }
 
