@@ -205,7 +205,7 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     // Title Notification
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:cell.textLabel.text];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
     TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
@@ -252,7 +252,9 @@
                 // 싱글턴이 참조하는 객체를 nil로 만들어 준다.
                 weakSelf.travelActivation.travelList = nil;
                 // title Notification을 호출해 빈값을 준다.
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:nil];
+                // Polyline, Marker Clear
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingClear" object:nil];
             }
             
             // 여행 리스트를 지워준다.
