@@ -81,7 +81,7 @@
 // Swipe Cell 오른쪽에 나오는 버튼들 생성 메서드
 - (NSArray *)createSwipeRightButtons:(NSInteger) number {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:number];
-    NSArray *titles = @[@"삭 제", @"수 정"];
+    NSArray *titles = @[@"삭제", @"수정"];
     NSArray *colors = @[[UIColor redColor], [UIColor lightGrayColor]];
     for (NSInteger i = 0; i < number; ++i) {
         MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
@@ -89,6 +89,8 @@
             BOOL autoHide = (i != 0);
             return autoHide;
         }];
+        // Button width 설정.
+        button.buttonWidth = 80.0f;
         [result addObject:button];
     }
     return result;
@@ -149,6 +151,8 @@
     [alert addAction:cancelAction];
     [alert addAction:okAction];
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.keyboardType = UIKeyboardTypeDefault;
+        textField.returnKeyType = UIReturnKeyDone;
         [textField setPlaceholder:@"여행 제목을 입력해 주세요!"];
     }];
     [self presentViewController:alert animated:YES completion:nil];
