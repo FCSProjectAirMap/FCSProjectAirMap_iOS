@@ -171,6 +171,11 @@
                              //Make TravelActivation (singleton object) as nil
                              [TravelActivation defaultInstance].travelList = nil;
                              
+                             // Travel Title Change
+                             [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:nil];
+                             // TravelTracking clear
+                             [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingClear" object:nil];
+                             
                              //Logout FaceBook
                              FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
                              [loginManager logOut];

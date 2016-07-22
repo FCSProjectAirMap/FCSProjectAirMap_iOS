@@ -8,13 +8,18 @@
 
 #import "TravelDetailViewController.h"
 
+// 여행 시작 날짜와 여행 끝나는 날짜의 Enum
+typedef NS_ENUM(NSInteger, TravelDateFlag) {
+    TravelDateFlagStart = 0,
+    TravelDateFlagEnd = 1
+};
+
 const CGFloat ROW_HEIGHT = 350.0f;
 
 @interface TravelDetailViewController ()
 
 @property (nonatomic, weak) UITableView *detailTableView;
 @property (nonatomic, strong) TravelList *travelList;
-@property (nonatomic, strong) RLMNotificationToken *notification;
 @property (nonatomic, weak) UIImageView *placeholderImageView;
 
 @end
@@ -36,15 +41,12 @@ const CGFloat ROW_HEIGHT = 350.0f;
     NSLog(@"Travel Detial viewDidLoad");
     [self setupUI];
     
-    __weak typeof(self) weakSelf = self;
-    self.notification = [[RLMRealm defaultRealm] addNotificationBlock:^(NSString * _Nonnull notification, RLMRealm * _Nonnull realm) {
-        NSLog(@"notification : %@", notification);
-        [weakSelf.detailTableView reloadData];
-    }];
 }
 
 #pragma mark - General Method
 - (void)setupUI {
+    
+    const CGFloat HEADER_MARGIN = 10.0f;
     
     // overLayView 선택할 시.
     if (self.overLayFlag) {
@@ -70,6 +72,27 @@ const CGFloat ROW_HEIGHT = 350.0f;
     self.title = self.travelList.travel_title;
     self.detailTableView.delegate = self;
     self.detailTableView.dataSource = self;
+    
+    // TableHeader View
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 100.0f)];
+    
+    // 여행 시작 날짜 Label
+    UILabel *startDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(HEADER_MARGIN, HEADER_MARGIN, headerView.frame.size.width/2 - HEADER_MARGIN, headerView.frame.size.height - HEADER_MARGIN * 2)];
+    startDateLabel.text = [self travelStartToEndDate:TravelDateFlagStart];
+    startDateLabel.numberOfLines = 0;
+    startDateLabel.backgroundColor = [UIColor yellowColor];
+    startDateLabel.textAlignment = NSTextAlignmentCenter;
+    [headerView addSubview:startDateLabel];
+    
+    // 여행 종료 날짜 Label
+    UILabel *endDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(startDateLabel.frame.origin.x + startDateLabel.frame.size.width, HEADER_MARGIN, startDateLabel.frame.size.width, startDateLabel.frame.size.height)];
+    endDateLabel.text = [self travelStartToEndDate:TravelDateFlagEnd];
+    endDateLabel.numberOfLines = 0;
+    endDateLabel.textAlignment = NSTextAlignmentCenter;
+    [headerView addSubview:endDateLabel];
+    
+    // HeaderView를 Custom HeaderView로 변경.
+    self.detailTableView.tableHeaderView = headerView;
 
 //    if (self.travelName == nil) {
 //        
@@ -99,23 +122,36 @@ const CGFloat ROW_HEIGHT = 350.0f;
 //    }
 }
 
+// 여행의 시작일과 마지막일을 설정해주는 메서드.
+- (NSString *)travelStartToEndDate:(TravelDateFlag)dateFlag{
+    NSString *imageCreationDate = @"";
+    // 날짜를 기준으로 내림차순 정렬
+    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    if (dateFlag == TravelDateFlagStart) {
+        // 시작 날짜
+        ImageData *imageData = [result firstObject];
+        imageCreationDate = imageData.creation_date;
+    } else if (dateFlag == TravelDateFlagEnd) {
+        // 마지막 날짜
+        ImageData *imageData = [result lastObject];
+        imageCreationDate = imageData.creation_date;
+    }
+    return imageCreationDate;
+}
+
 #pragma mark - Action Method
+// DetailTableView Close
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - TableViewDelegate, TableViewDataSource
-// section header height
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
 // row 높이
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return ROW_HEIGHT;
 }
 // 여행경로의 사진 리스트 수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    DLog(@"image_metadatas count : %ld", self.travelList.image_datas.count);
     return self.travelList.image_datas.count;
 }
 
@@ -127,11 +163,13 @@ const CGFloat ROW_HEIGHT = 350.0f;
     }
     
     // Realm에 저장된 메타데이터, 이미지 가져오기
-    ImageData *imageMetaData = self.travelList.image_datas[indexPath.row];
+    // 내림차순으로 정렬.
+    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
     NSDictionary *travelDetailInfoDictionary = @{ @"image": image,
-//                                                  @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
-//                                                  @"country": imageMetaData.country,
+                                                  @"creationDate": [NSString stringWithFormat:@"%@", imageMetaData.creation_date],
+                                                  @"country": @"한국",
                                                   @"imageHeight":@(ROW_HEIGHT) };
     
     cell.travelDetailInfoDictionary = travelDetailInfoDictionary;

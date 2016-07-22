@@ -64,6 +64,7 @@
 		ECB520661D376DB00013549B /* TravelList.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB520651D376DB00013549B /* TravelList.m */; };
 		ECB520691D376DD20013549B /* ImageData.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB520681D376DD20013549B /* ImageData.m */; };
 		ECB520901D38007A0013549B /* TravelDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB5208F1D38007A0013549B /* TravelDetailCell.m */; };
+		ECBA6F351D4246BD00A37129 /* South Korea.png in Resources */ = {isa = PBXBuildFile; fileRef = ECBA6F341D4246BD00A37129 /* South Korea.png */; };
 		ECF8552B1D3C933C00EBEE94 /* TravelActivation.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */; };
 		ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F61D32883000EF311B /* MGSwipeButton.m */; };
 		ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F81D32883000EF311B /* MGSwipeTableCell.m */; };
@@ -158,6 +159,7 @@
 		ECB520681D376DD20013549B /* ImageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageData.m; sourceTree = "<group>"; };
 		ECB5208E1D38007A0013549B /* TravelDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailCell.h; sourceTree = "<group>"; };
 		ECB5208F1D38007A0013549B /* TravelDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailCell.m; sourceTree = "<group>"; };
+		ECBA6F341D4246BD00A37129 /* South Korea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "South Korea.png"; sourceTree = "<group>"; };
 		ECF855291D3C933C00EBEE94 /* TravelActivation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelActivation.h; sourceTree = "<group>"; };
 		ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelActivation.m; sourceTree = "<group>"; };
 		ECFC52F51D32883000EF311B /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 		EC750B931D2B9E0300A54374 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				ECBA6F361D4246EC00A37129 /* CountryFlag */,
 				EC2F40DE1D34DD7000ABC745 /* addLocation.png */,
 				E421921C1D3F239200152B6C /* logoutButton.png */,
 				E4889F241D3E0CB600B03A31 /* SignupIcon.png */,
@@ -358,6 +361,14 @@
 				ECB520681D376DD20013549B /* ImageData.m */,
 			);
 			name = Realm;
+			sourceTree = "<group>";
+		};
+		ECBA6F361D4246EC00A37129 /* CountryFlag */ = {
+			isa = PBXGroup;
+			children = (
+				ECBA6F341D4246BD00A37129 /* South Korea.png */,
+			);
+			name = CountryFlag;
 			sourceTree = "<group>";
 		};
 		ECD5C1301D2FA90500A551D8 /* Map */ = {
@@ -477,6 +488,7 @@
 				E4889F1F1D3DFF5100B03A31 /* EmailLoginIcon.png in Resources */,
 				EC2F40E61D34DD7000ABC745 /* close.png in Resources */,
 				E45989671D374D55007A7BC9 /* expandableImage@2x.png in Resources */,
+				ECBA6F351D4246BD00A37129 /* South Korea.png in Resources */,
 				EC50DD811D2CF16E009B6C91 /* Back_icon.png in Resources */,
 				E4889F1D1D3DF0DC00B03A31 /* TravelMakerIcon.png in Resources */,
 				EC2F40E81D34DD7000ABC745 /* plus.png in Resources */,

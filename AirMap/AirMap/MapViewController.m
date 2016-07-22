@@ -67,7 +67,10 @@ static const CGFloat overlayrHeight = 45.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTrackingDraw:) name:@"travelTrackingDraw" object:nil];
     
     // Title Notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectTravelTitle:) name:@"selectTravelTitle" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTitleChange:) name:@"travelTitleChange" object:nil];
+    
+    // Tracking Clear Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTrackingClear:) name:@"travelTrackingClear" object:nil];
 }
 
 - (void) getSession:(NSNotification *) notif
@@ -554,16 +557,15 @@ static const CGFloat overlayrHeight = 45.0f;
 
 #pragma mark - Notification
 // OverLayView에 title
-- (void)selectTravelTitle:(NSNotification *)notification {
+- (void)travelTitleChange:(NSNotification *)notification {
     self.overlayButton.titleLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0];
     [self.overlayButton setTitle:notification.object forState:UIControlStateNormal];
 }
 
 // google 지도에 경로 그리기.
-- (void)travelTrackingDraw:(NSNotification *)noti {
-    // 지도위에 마커와 라인을 지워준다.
-    [self.mapView clear];
-    [self.markers removeAllObjects];
+- (void)travelTrackingDraw:(NSNotification *)notification {
+    // 경로 지우기.
+    [self travelTrackingClear:notification];
     
     TravelList *travelList = self.travelActivation.travelList;
     GMSMutablePath *path = [GMSMutablePath path];
@@ -577,9 +579,14 @@ static const CGFloat overlayrHeight = 45.0f;
         marker.map = _mapView;
         [self.markers addObject:marker];
     }
-    
     // fit bounds
     [self didFitBounds];
+}
+
+- (void)travelTrackingClear:(NSNotification *)notification {
+    // 지도위에 마커와 라인을 지워준다.
+    [self.mapView clear];
+    [self.markers removeAllObjects];
 }
 
 @end

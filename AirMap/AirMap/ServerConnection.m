@@ -97,7 +97,7 @@
                 if (travelList.activity) {
                     [TravelActivation defaultInstance].travelList = travelList;
                     // title noification
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"selectTravelTitle" object:travelList.travel_title];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:travelList.travel_title];
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
                     break;
                 }
