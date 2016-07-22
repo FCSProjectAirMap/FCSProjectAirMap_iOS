@@ -168,8 +168,8 @@ const CGFloat ROW_HEIGHT = 350.0f;
     ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
     NSDictionary *travelDetailInfoDictionary = @{ @"image": image,
-//                                                  @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
-//                                                  @"country": imageMetaData.country,
+                                                  @"creationDate": [NSString stringWithFormat:@"%@", imageMetaData.creation_date],
+                                                  @"country": @"한국",
                                                   @"imageHeight":@(ROW_HEIGHT) };
     
     cell.travelDetailInfoDictionary = travelDetailInfoDictionary;
