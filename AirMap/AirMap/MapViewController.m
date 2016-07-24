@@ -422,8 +422,6 @@ static const CGFloat overlayrHeight = 45.0f;
         
     }];
     
-
-    
     [UIView animateWithDuration:0.4 animations:^{
         [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
         [self.view bringSubviewToFront:menuSlideView.view];
@@ -575,16 +573,24 @@ static const CGFloat overlayrHeight = 45.0f;
     GMSMarker *marker = nil;
     
     for (ImageData *imageData in result) {
+        // Marker
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         marker = [GMSMarker markerWithPosition:position];
         marker.map = _mapView;
         [self.markers addObject:marker];
-        
         [path addCoordinate:position];
     }
     
+    // 점선 설정
+    NSArray *styles = @[[GMSStrokeStyle solidColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]],
+                        [GMSStrokeStyle solidColor:[UIColor clearColor]]];
+    NSArray *lengths = @[@200, @100];
+    
     GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-    poly.strokeWidth = 3;
+    poly.geodesic = YES;
+    poly.strokeWidth = 5.0f;
+    // kGmsLengthGeodesic : 최단거리
+    poly.spans = GMSStyleSpans(poly.path, styles, lengths, kGMSLengthGeodesic);
     poly.map = _mapView;
     
     // fit bounds
