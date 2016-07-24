@@ -59,7 +59,6 @@ static const CGFloat overlayrHeight = 45.0f;
     // view 만들어 주기.
     [self setupUI];
     
-//    self.path = [GMSMutablePath path];
     self.isAnimating = YES;
     
     // 경로 Notification
@@ -553,6 +552,21 @@ static const CGFloat overlayrHeight = 45.0f;
     [self appearanceUI];
 }
 
+// Marker선택시 UIView 보여주는 Delegate Method
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
+//    TravelList *travelList = self.travelActivation.travelList;
+    // ##SJ Test
+    RLMResults *resultArray = [ImageData objectsWhere:@"creation_date == %@", marker.title];
+    if (resultArray.count > 0) {
+        ImageData *imageData = resultArray[0];
+        UIView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData.image]];
+        imageView.frame = CGRectMake(0.0f, 0.0f, 150.0f, 150.0f);
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        return imageView;
+    }
+    return nil;
+}
+
 #pragma mark - Notification
 // OverLayView에 title
 - (void)travelTitleChange:(NSNotification *)notification {
@@ -576,6 +590,7 @@ static const CGFloat overlayrHeight = 45.0f;
         // Marker
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         marker = [GMSMarker markerWithPosition:position];
+        marker.title = imageData.creation_date;
         marker.map = _mapView;
         [self.markers addObject:marker];
         [path addCoordinate:position];
@@ -603,6 +618,7 @@ static const CGFloat overlayrHeight = 45.0f;
     [self.markers removeAllObjects];
     
 }
+
 // 메뉴슬라이드에서 터치 백그라운드 했을때 blur effect뷰의 애니메이션을 노티피케이션 Selector로 받음.
 -(void)touchbackground:(NSNotification *)notification{
     
