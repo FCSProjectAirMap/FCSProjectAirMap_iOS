@@ -111,6 +111,7 @@
     return result;
 }
 
+// 여행 타이틀 추가 AlertView 호출.
 - (void)showTravelListAddAlert {
     __weak typeof(self) weakSelf = self;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
@@ -134,6 +135,10 @@
                                                              // 여행 경로생성~ Realm에 저장.
                                                              TravelList *travelList = [[TravelList alloc] init];
                                                              travelList.travel_title = travelTitle;
+                                                             // 유니크한 값을 주기 위해 생성된 시간을 title뒤에 붙여준다. milliseconds로 계산.
+                                                             NSString *travelTitleTimeStamp = [NSString stringWithFormat:@"%@_%.f", travelTitle, [[NSDate date] timeIntervalSince1970] * 1000];
+                                                             DLog(@"%@", travelTitleTimeStamp);
+                                                             travelList.travel_title_unique = travelTitleTimeStamp;
                                                              travelList.activity = NO;
                                                              
                                                              // Realm 데이터를 추가 및 업데이트 할 경우 Transaction 안에서 적용 해야 한다.
