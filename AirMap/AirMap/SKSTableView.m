@@ -623,8 +623,6 @@ CGFloat const kDefaultCellHeight = 44.0f;
     return totalExpandedSubrows;
 }
 
-#warning 의심이 간다 의심이 가
-
 - (void)expandableButtonTouched:(id)sender event:(id)event
 {
     NSSet *touches = [event allTouches];
