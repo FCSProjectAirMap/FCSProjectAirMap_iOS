@@ -275,26 +275,21 @@ CGFloat const kDefaultCellHeight = 44.0f;
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-    NSLog(@"aha");
     return YES;
 }
 
 -(void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"gad");
+    
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"index Paht");
     return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectROW");
-    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SKSTableViewCell *cell = (SKSTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
