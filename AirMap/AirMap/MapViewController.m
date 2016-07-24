@@ -59,7 +59,6 @@ static const CGFloat overlayrHeight = 45.0f;
     // view 만들어 주기.
     [self setupUI];
     
-//    self.path = [GMSMutablePath path];
     self.isAnimating = YES;
     
     // 경로 Notification
@@ -422,8 +421,6 @@ static const CGFloat overlayrHeight = 45.0f;
         
     }];
     
-
-    
     [UIView animateWithDuration:0.4 animations:^{
         [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
         [self.view bringSubviewToFront:menuSlideView.view];
@@ -555,6 +552,21 @@ static const CGFloat overlayrHeight = 45.0f;
     [self appearanceUI];
 }
 
+// Marker선택시 UIView 보여주는 Delegate Method
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
+//    TravelList *travelList = self.travelActivation.travelList;
+    // ##SJ Test
+    RLMResults *resultArray = [ImageData objectsWhere:@"creation_date == %@", marker.title];
+    if (resultArray.count > 0) {
+        ImageData *imageData = resultArray[0];
+        UIView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData.image]];
+        imageView.frame = CGRectMake(0.0f, 0.0f, 150.0f, 150.0f);
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        return imageView;
+    }
+    return nil;
+}
+
 #pragma mark - Notification
 // OverLayView에 title
 - (void)travelTitleChange:(NSNotification *)notification {
@@ -568,17 +580,34 @@ static const CGFloat overlayrHeight = 45.0f;
     [self travelTrackingClear:notification];
     
     TravelList *travelList = self.travelActivation.travelList;
+    // 시간차순으로 정렬
+    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    
     GMSMutablePath *path = [GMSMutablePath path];
-    for (ImageData *imageData in travelList.image_datas) {
+    GMSMarker *marker = nil;
+    
+    for (ImageData *imageData in result) {
+        // Marker
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
-        GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        [path addCoordinate:position];
-        GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-        poly.strokeWidth = 3;
-        poly.map = _mapView;
+        marker = [GMSMarker markerWithPosition:position];
+        marker.title = imageData.creation_date;
         marker.map = _mapView;
         [self.markers addObject:marker];
+        [path addCoordinate:position];
     }
+    
+    // 점선 설정
+    NSArray *styles = @[[GMSStrokeStyle solidColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]],
+                        [GMSStrokeStyle solidColor:[UIColor clearColor]]];
+    NSArray *lengths = @[@200, @100];
+    
+    GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
+    poly.geodesic = YES;
+    poly.strokeWidth = 5.0f;
+    // kGmsLengthGeodesic : 최단거리
+    poly.spans = GMSStyleSpans(poly.path, styles, lengths, kGMSLengthGeodesic);
+    poly.map = _mapView;
+    
     // fit bounds
     [self didFitBounds];
 }
@@ -589,6 +618,7 @@ static const CGFloat overlayrHeight = 45.0f;
     [self.markers removeAllObjects];
     
 }
+
 // 메뉴슬라이드에서 터치 백그라운드 했을때 blur effect뷰의 애니메이션을 노티피케이션 Selector로 받음.
 -(void)touchbackground:(NSNotification *)notification{
     

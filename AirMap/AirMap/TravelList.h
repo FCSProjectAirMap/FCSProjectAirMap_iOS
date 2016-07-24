@@ -12,6 +12,7 @@
 @interface TravelList : RLMObject
 
 @property NSString *travel_title;
+@property NSString *travel_title_unique;
 @property BOOL activity;
 @property RLMArray<ImageData> *image_datas;
 
