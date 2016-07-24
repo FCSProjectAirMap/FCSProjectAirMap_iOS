@@ -179,6 +179,8 @@ const CGFloat ROW_HEIGHT = 350.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TravelDetailImageScrollViewController *imageScrollViewController = [[TravelDetailImageScrollViewController alloc] initWithImageIndex:indexPath.row];
+    [self.navigationController pushViewController:imageScrollViewController animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

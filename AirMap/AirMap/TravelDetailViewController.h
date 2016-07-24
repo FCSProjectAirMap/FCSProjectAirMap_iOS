@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TravelDetailCell.h"
-#import "UserInfo.h"
+#import "TravelDetailImageScrollViewController.h"
 
 @interface TravelDetailViewController : UIViewController
 <UITableViewDelegate, UITableViewDataSource>
