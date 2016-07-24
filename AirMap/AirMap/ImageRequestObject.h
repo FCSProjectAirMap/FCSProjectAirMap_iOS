@@ -14,7 +14,6 @@
 @interface ImageRequestObject : UIView
 
 + (instancetype)sharedInstance;
-- (void)uploadImages:(NSMutableArray *)selectedImages;
-- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas;
+- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages;
 
 @end

@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSString *JWTToken;
 @property (strong, nonatomic) NSString *travelTitle;
+@property (strong, nonatomic) NSString *idNumber;
 
 @end
 
@@ -20,6 +21,7 @@
 static NSString * const imageRequestURL = @"http://52.78.72.132/create/";
 static NSString * const metadataRequestURL = @"http://52.78.72.132/create/";
 static NSString * const listRequestURL = @"http://52.78.72.132/list/";
+static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
 
 // 이미지 네트워킹 싱글톤 생성
 + (instancetype)sharedInstance {
@@ -67,10 +69,10 @@ static NSString * const listRequestURL = @"http://52.78.72.132/list/";
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
-   
+    
     // 선택된 사진 수만큼 사진 전송
     NSInteger count = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages].count;
-
+    
     for (NSInteger i = 0; i < count; i++) {
         // 이미지 파일
         UIImage *image = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages][i];
@@ -99,10 +101,10 @@ static NSString * const listRequestURL = @"http://52.78.72.132/list/";
 }
 
 // 메타데이터 업로드 리퀘스트
-- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas {
+- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages {
     
     NSLog(@"Start Metadata Upload");
-
+    
     NSDictionary *metadataDic = @{@"travel_title":self.travelTitle, @"image_metadatas":selectedDatas};
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -114,15 +116,15 @@ static NSString * const listRequestURL = @"http://52.78.72.132/list/";
          progress:nil
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
               NSLog(@"Metadata Post success!");
-              
+              [self uploadImages:selectedImages];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
               NSLog(@"Metadata Post error: %@", error);
           }];
     
-//        [self requestMetadatas];
+            [self requestMetadatas];
 }
 
-// 메타데이터 받는 메소드
+// 여행경로 리스트 받는 메소드
 - (void)requestMetadatas {
     
     NSLog(@"Start get metadatas");
@@ -137,9 +139,36 @@ static NSString * const listRequestURL = @"http://52.78.72.132/list/";
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"get list success!");
         NSLog(@"%@", responseObject);
+        self.idNumber = [[responseObject firstObject] objectForKey:@"id"];
+        NSLog(@"%@", self.idNumber);
+        [self requestDetailMetadatas];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"get list Error:%@", error);
+    }];
+    
+}
+
+// 세부 메타데이터 받는 메소드
+- (void)requestDetailMetadatas {
+    
+    NSLog(@"Start get detail metadatas");
+    NSString *numberString = [NSString stringWithFormat:@"%@", self.idNumber];
+    NSString *urlString = [detailRequestURL stringByAppendingString:numberString];
+    NSLog(@"%@",urlString);
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:urlString  parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"get detail success!");
+        NSLog(@"%@", responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"get detail Error:%@", error);
     }];
 }
 
