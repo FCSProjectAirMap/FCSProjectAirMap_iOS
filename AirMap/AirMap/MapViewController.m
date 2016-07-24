@@ -593,6 +593,8 @@ static const CGFloat overlayrHeight = 45.0f;
 -(void)touchbackground:(NSNotification *)notification{
     
     [UIView animateWithDuration:0.4 animations:^{[self.effectView setFrame:CGRectMake(self.view.frame.size.width*1.35, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
+    }completion:^(BOOL finished){
+        [self.effectView removeFromSuperview];
     }];
     
 }

@@ -79,7 +79,7 @@
     
     // top View
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, MENU_VIEW_WIDTH, VIEW_HEIGHT)];
-    topView.backgroundColor = [UIColor colorWithRed:250/225.0f green:225.0/225.0f blue:0.0/225.0f alpha:1.0f];
+    topView.backgroundColor = [UIColor colorWithRed:250/255.0 green:225/255.0 blue:0/255.0 alpha:1.0f];
     [self.view addSubview:topView];
     self.topView = topView;
     
