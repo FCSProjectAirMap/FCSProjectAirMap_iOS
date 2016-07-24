@@ -546,17 +546,25 @@ static const CGFloat overlayrHeight = 45.0f;
     [self travelTrackingClear:notification];
     
     TravelList *travelList = self.travelActivation.travelList;
+    // 시간차순으로 정렬
+    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    
     GMSMutablePath *path = [GMSMutablePath path];
-    for (ImageData *imageData in travelList.image_datas) {
+    GMSMarker *marker = nil;
+    
+    for (ImageData *imageData in result) {
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
-        GMSMarker *marker = [GMSMarker markerWithPosition:position];
-        [path addCoordinate:position];
-        GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-        poly.strokeWidth = 3;
-        poly.map = _mapView;
+        marker = [GMSMarker markerWithPosition:position];
         marker.map = _mapView;
         [self.markers addObject:marker];
+        
+        [path addCoordinate:position];
     }
+    
+    GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
+    poly.strokeWidth = 3;
+    poly.map = _mapView;
+    
     // fit bounds
     [self didFitBounds];
 }

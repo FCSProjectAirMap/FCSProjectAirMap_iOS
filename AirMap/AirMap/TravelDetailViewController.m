@@ -125,7 +125,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
 // 여행의 시작일과 마지막일을 설정해주는 메서드.
 - (NSString *)travelStartToEndDate:(TravelDateFlag)dateFlag{
     NSString *imageCreationDate = @"";
-    // 날짜를 기준으로 내림차순 정렬
+    // 날짜를 시간순으로 정렬
     RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
     if (dateFlag == TravelDateFlagStart) {
         // 시작 날짜
@@ -163,7 +163,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
     }
     
     // Realm에 저장된 메타데이터, 이미지 가져오기
-    // 내림차순으로 정렬.
+    // 날짜를 시간순으로 정렬.
     RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
     ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
