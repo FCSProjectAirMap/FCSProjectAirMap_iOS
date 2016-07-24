@@ -437,7 +437,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 {
     if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
         [_SKSTableViewDelegate tableView:tableView heightForHeaderInSection:section];
-
+    
     return CGFLOAT_MIN;
 }
 //
@@ -754,4 +754,3 @@ static void *SubRowObjectKey;
 }
 
 @end
-
