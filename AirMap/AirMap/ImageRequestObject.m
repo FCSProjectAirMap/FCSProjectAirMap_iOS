@@ -104,13 +104,14 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
 - (void)uploadMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages {
     
     NSLog(@"Start Metadata Upload");
+    __block NSInteger i = 0;
     
     NSDictionary *metadataDic = @{@"travel_title":self.travelTitle, @"image_metadatas":selectedDatas};
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:@"test" forHTTPHeaderField:@"Authorization"];
     
     [manager POST:metadataRequestURL parameters:metadataDic
          progress:nil
@@ -119,9 +120,14 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
               [self uploadImages:selectedImages];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
               NSLog(@"Metadata Post error: %@", error);
+#warning 이거 어케 무한을 막져??
+              if (i < 3) {
+                  [self uploadMetaDatas:selectedDatas withSelectedImages:selectedImages];
+                  i ++;
+              }
           }];
     
-            [self requestMetadatas];
+//            [self requestMetadatas];
 }
 
 // 여행경로 리스트 받는 메소드
@@ -135,7 +141,7 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
     [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
     
     [manager GET:listRequestURL parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        
+#warning     NSLog(@"%@", downloadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"get list success!");
         NSLog(@"%@", responseObject);
@@ -156,13 +162,13 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
     NSString *numberString = [NSString stringWithFormat:@"%@", self.idNumber];
     NSString *urlString = [detailRequestURL stringByAppendingString:numberString];
     NSLog(@"%@",urlString);
+    
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
     
     [manager GET:urlString  parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"get detail success!");
         NSLog(@"%@", responseObject);
