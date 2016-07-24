@@ -15,7 +15,8 @@ static const CGFloat overlayrHeight = 45.0f;
 
 @interface MapViewController ()
 
-@property (nonatomic) GMSMapView *mapView;
+@property (nonatomic) GMSMapView *mapView;;
+
 //@property (nonatomic) GMSMutablePath *path;
 @property (nonnull) NSMutableArray *markers;
 @property (nonatomic) CLLocationManager *locationManager;
@@ -69,7 +70,10 @@ static const CGFloat overlayrHeight = 45.0f;
     
     // Tracking Clear Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTrackingClear:) name:@"travelTrackingClear" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchbackground:) name:@"NotiForParentViewTouch" object:nil];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -404,8 +408,26 @@ static const CGFloat overlayrHeight = 45.0f;
     [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
     [self addChildViewController:menuSlideView];
     [self.view addSubview:menuSlideView.view];
+    
+    // create effect
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    
+    // add effect to an effect view
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
+    [effectView setFrame:CGRectMake(self.view.frame.size.width*1.35, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
+        [self.mapView addSubview:effectView];
+    self.effectView = effectView;
+    
+    [UIView animateWithDuration:0.4 animations:^{ [effectView setFrame:CGRectMake(self.view.frame.size.width*0.65, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
+        
+    }];
+    
+
+    
     [UIView animateWithDuration:0.4 animations:^{
         [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+        [self.view bringSubviewToFront:menuSlideView.view];
+
     }];
 }
 
@@ -573,6 +595,17 @@ static const CGFloat overlayrHeight = 45.0f;
     // 지도위에 마커와 라인을 지워준다.
     [self.mapView clear];
     [self.markers removeAllObjects];
+    
 }
+// 메뉴슬라이드에서 터치 백그라운드 했을때 blur effect뷰의 애니메이션을 노티피케이션 Selector로 받음.
+-(void)touchbackground:(NSNotification *)notification{
+    
+    [UIView animateWithDuration:0.4 animations:^{[self.effectView setFrame:CGRectMake(self.view.frame.size.width*1.35, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
+    }completion:^(BOOL finished){
+        [self.effectView removeFromSuperview];
+    }];
+    
+}
+
 
 @end

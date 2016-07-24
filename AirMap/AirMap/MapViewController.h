@@ -20,4 +20,7 @@
 @interface MapViewController : UIViewController
 <GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
 
+
+@property (nonatomic) UIVisualEffectView *effectView;
+
 @end
