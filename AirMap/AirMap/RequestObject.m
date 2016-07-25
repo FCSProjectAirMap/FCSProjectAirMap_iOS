@@ -18,10 +18,10 @@
 
 @implementation RequestObject
 
-static NSString * const imageRequestURL = @"http://52.78.72.132/create/";
-static NSString * const metadataRequestURL = @"http://52.78.72.132/create/";
-static NSString * const listRequestURL = @"http://52.78.72.132/list/";
-static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
+static NSString * const imageUploadURL = @"https://airmap.travel-mk.com/api/travel/create_image/";
+static NSString * const metadataUploadURL = @"https://airmap.travel-mk.com/api/travel/create/";
+static NSString * const listRequestURL = @"https://airmap.travel-mk.com/api/travel/list";
+static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/travel/detail/";
 
 // 이미지 네트워킹 싱글톤 생성
 + (instancetype)sharedInstance {
@@ -47,9 +47,11 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
         RLMResults *resultArray = [UserInfo objectsWhere:@"user_id == %@", keyChainUser_id];
         UserInfo *userInfo = resultArray[0];
         self.JWTToken = [@"JWT " stringByAppendingString:userInfo.user_token];
+        NSLog(@"%@", self.JWTToken);
         // 현재 사용중인 여행경로 이름 가져오기
         TravelActivation *activatedTravel = [TravelActivation defaultInstance];
-        self.travelTitle = activatedTravel.travelList.travel_title;
+        self.travelTitle = activatedTravel.travelList.travel_title_unique;
+        NSLog(@"%@", self.travelTitle);
     }
     return self;
 }
@@ -82,7 +84,7 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
         
         dispatch_async(uploadQueue, ^{
             // 큐내에서 POST로 이미지 한장씩 비동기로 전달
-            [manager POST:imageRequestURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            [manager POST:imageUploadURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
                                             name:@"image_data"
                                         fileName:fileName
@@ -104,30 +106,31 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
 - (void)uploadMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages {
     
     NSLog(@"Start Metadata Upload");
-    __block NSInteger i = 0;
+    //    __block NSInteger i = 0;
     
     NSDictionary *metadataDic = @{@"travel_title":self.travelTitle, @"image_metadatas":selectedDatas};
     
+    NSLog(@"%@", metadataDic);
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"test" forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
     
-    [manager POST:metadataRequestURL parameters:metadataDic
+    [manager POST:metadataUploadURL parameters:metadataDic
          progress:nil
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
               NSLog(@"Metadata Post success!");
               [self uploadImages:selectedImages];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
               NSLog(@"Metadata Post error: %@", error);
-
-              if (i < 3) {
-                  [self uploadMetaDatas:selectedDatas withSelectedImages:selectedImages];
-                  i ++;
-              }
+              
+              //              if (i < 3) {
+              //                  [self uploadMetaDatas:selectedDatas withSelectedImages:selectedImages];
+              //                  i ++;
+              //              }
           }];
     
-//            [self requestMetadatas];
+    [self requestMetadatas];
 }
 
 
