@@ -13,7 +13,7 @@
  *****************************************************************/
 
 #import "AppDelegate.h"
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import "SignUpViewController.h"
 #import "ServerConnection.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
@@ -25,7 +25,7 @@
 
 
 
-@interface ViewController ()<UITextFieldDelegate>{
+@interface LoginViewController ()<UITextFieldDelegate>{
    
     // information fetched from facebook Login
     NSString *name;
@@ -45,7 +45,7 @@
 
 @end
 
-@implementation ViewController
+@implementation LoginViewController
 
 
 - (void)viewDidLoad {

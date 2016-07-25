@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import <FBSDKCorekit/FBSDKCorekit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "MapViewController.h"
@@ -77,7 +77,7 @@
             } else {
                 NSLog(@"오토로그인 fa일");
                 // Check ID & Password in Keychain, and if autoLogin is failed, Present the LoginViewController
-                ViewController *loginViewController = [[ViewController alloc]init];
+                LoginViewController *loginViewController = [[LoginViewController alloc]init];
                 [self.window makeKeyAndVisible];
                 loginViewController.modalPresentationStyle = UIModalPresentationPopover;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginViewController];
@@ -88,7 +88,7 @@
     }
     else
     {
-        ViewController *loginViewController = [[ViewController alloc]init];
+        LoginViewController *loginViewController = [[LoginViewController alloc]init];
         [self.window makeKeyAndVisible];
         [self.window.rootViewController presentViewController:loginViewController animated:YES completion:NULL];
 

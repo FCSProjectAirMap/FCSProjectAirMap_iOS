@@ -10,7 +10,7 @@
 #import "ServerConnection.h"
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
 #import "MenuSlideViewController.h"

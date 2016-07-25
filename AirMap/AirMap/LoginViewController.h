@@ -11,7 +11,7 @@
 #import <FBSDKCoreKit/FBSDKGraphRequest.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-@interface ViewController : UIViewController
+@interface LoginViewController : UIViewController
 
 
 

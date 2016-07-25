@@ -12,7 +12,7 @@
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
 #import "MapViewController.h"
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import "TravelActivation.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
@@ -181,7 +181,7 @@
                              [FBSDKAccessToken setCurrentAccessToken:nil];
                             
                              //return to Main Login Page
-                             ViewController *loginViewController = [[ViewController alloc]init];
+                             LoginViewController *loginViewController = [[LoginViewController alloc]init];
                              loginViewController.modalPresentationStyle = UIModalPresentationPopover;
                              UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginViewController];
                              [self presentViewController:nav animated:YES completion:nil];

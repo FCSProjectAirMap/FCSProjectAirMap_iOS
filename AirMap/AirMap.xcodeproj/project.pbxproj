@@ -23,10 +23,11 @@
 		E4889F251D3E0CB600B03A31 /* SignupIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E4889F241D3E0CB600B03A31 /* SignupIcon.png */; };
 		E48BCFD51D3892C800DDB722 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48BCFD41D3892C800DDB722 /* Security.framework */; };
 		E48BCFD81D3898E900DDB722 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */; };
+		E4D1729B1D46306800BE97CB /* ViewsInMenuSlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D1729A1D46306800BE97CB /* ViewsInMenuSlideController.m */; };
 		E4D39BCF1D337AF500DE48D9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */; };
 		E4D39BD01D337AF500DE48D9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */; };
 		E4D39BD11D337AF500DE48D9 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */; };
-		E4D39BDB1D337B6E00DE48D9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD41D337B6E00DE48D9 /* ViewController.m */; };
+		E4D39BDB1D337B6E00DE48D9 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD41D337B6E00DE48D9 /* LoginViewController.m */; };
 		E4D39BDC1D337B6E00DE48D9 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD61D337B6E00DE48D9 /* SignUpViewController.m */; };
 		E4D39BDD1D337B6E00DE48D9 /* ServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BD81D337B6E00DE48D9 /* ServerConnection.m */; };
 		E4D39BDE1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D39BDA1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m */; };
@@ -94,11 +95,13 @@
 		E48BCFD41D3892C800DDB722 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E48BCFD61D3898E900DDB722 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
 		E48BCFD71D3898E900DDB722 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
+		E4D172991D46306800BE97CB /* ViewsInMenuSlideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewsInMenuSlideController.h; sourceTree = "<group>"; };
+		E4D1729A1D46306800BE97CB /* ViewsInMenuSlideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewsInMenuSlideController.m; sourceTree = "<group>"; };
 		E4D39BCC1D337AF500DE48D9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = AirMap/etc/facebook/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		E4D39BCD1D337AF500DE48D9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = AirMap/etc/facebook/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		E4D39BCE1D337AF500DE48D9 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = AirMap/etc/facebook/FBSDKShareKit.framework; sourceTree = "<group>"; };
-		E4D39BD31D337B6E00DE48D9 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		E4D39BD41D337B6E00DE48D9 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E4D39BD31D337B6E00DE48D9 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		E4D39BD41D337B6E00DE48D9 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		E4D39BD51D337B6E00DE48D9 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		E4D39BD61D337B6E00DE48D9 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		E4D39BD71D337B6E00DE48D9 /* ServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerConnection.h; sourceTree = "<group>"; };
@@ -231,11 +234,20 @@
 			name = SKSTable;
 			sourceTree = "<group>";
 		};
+		E4D172981D46300900BE97CB /* ViewsInMenuslide */ = {
+			isa = PBXGroup;
+			children = (
+				E4D172991D46306800BE97CB /* ViewsInMenuSlideController.h */,
+				E4D1729A1D46306800BE97CB /* ViewsInMenuSlideController.m */,
+			);
+			name = ViewsInMenuslide;
+			sourceTree = "<group>";
+		};
 		E4D39BD21D337B6200DE48D9 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E4D39BD31D337B6E00DE48D9 /* ViewController.h */,
-				E4D39BD41D337B6E00DE48D9 /* ViewController.m */,
+				E4D39BD31D337B6E00DE48D9 /* LoginViewController.h */,
+				E4D39BD41D337B6E00DE48D9 /* LoginViewController.m */,
 				E4D39BD51D337B6E00DE48D9 /* SignUpViewController.h */,
 				E4D39BD61D337B6E00DE48D9 /* SignUpViewController.m */,
 				E4D39BD71D337B6E00DE48D9 /* ServerConnection.h */,
@@ -300,6 +312,7 @@
 				EC50DD7B1D2C0B25009B6C91 /* MapAPIKey.h */,
 				EC714C731D2AB8A000165A58 /* AppDelegate.h */,
 				EC714C741D2AB8A000165A58 /* AppDelegate.m */,
+				E4D172981D46300900BE97CB /* ViewsInMenuslide */,
 				EC714C7C1D2AB8A000165A58 /* Assets.xcassets */,
 				EC714C7E1D2AB8A000165A58 /* LaunchScreen.storyboard */,
 				EC714C811D2AB8A000165A58 /* Info.plist */,
@@ -553,6 +566,7 @@
 				EC50DD841D2D1299009B6C91 /* PlacesViewController.m in Sources */,
 				E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */,
 				ECB520631D376D990013549B /* UserInfo.m in Sources */,
+				E4D1729B1D46306800BE97CB /* ViewsInMenuSlideController.m in Sources */,
 				E9063C321D2E45DB00F28F69 /* RequestObject.m in Sources */,
 				E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */,
 				E4D39BDD1D337B6E00DE48D9 /* ServerConnection.m in Sources */,
@@ -575,7 +589,7 @@
 				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
 				E45989631D374D55007A7BC9 /* SKSTableView.m in Sources */,
 				E4D39BDC1D337B6E00DE48D9 /* SignUpViewController.m in Sources */,
-				E4D39BDB1D337B6E00DE48D9 /* ViewController.m in Sources */,
+				E4D39BDB1D337B6E00DE48D9 /* LoginViewController.m in Sources */,
 				ECB520661D376DB00013549B /* TravelList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
