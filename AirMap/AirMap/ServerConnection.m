@@ -10,7 +10,7 @@
 #import "ServerConnection.h"
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
 #import "MenuSlideViewController.h"
@@ -68,7 +68,7 @@
                        completion:(void (^)(BOOL success))completionBlock{
     
     
-    NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/login/"];
+    NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/login/"];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSDictionary *params = @{@"email": userEmail,
@@ -120,6 +120,17 @@
         
         NSLog(@"Authentication Failure");
         NSLog(@"Error : %@", error);
+        
+        NSHTTPURLResponse* r = (NSHTTPURLResponse*)operation.response;
+        NSInteger errorMessage =r.statusCode;
+       if(errorMessage == 0)
+       {
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"NotierrorforNetwork" object:self userInfo:nil];
+
+       }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Notierrorlogin" object:self userInfo:nil];
+       }
+        
     }];
     
 }
@@ -131,7 +142,7 @@
     
     [keychainItem setObject:email forKey:(__bridge id)kSecAttrAccount];
     
-        NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/signup/"];
+        NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/signup/"];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSDictionary *params = @{@"email":email,
                                  @"password": userName};
@@ -179,7 +190,7 @@
 //Register New Eamil, and Password in server.
 - (void)registerWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword completion:(void (^)(BOOL success))completionBlock
 {
-    NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/signup/"];
+    NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/signup/"];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSDictionary *params = @{@"email": userEmail,
                              @"password": userPassword};

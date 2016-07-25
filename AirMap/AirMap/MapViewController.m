@@ -9,7 +9,8 @@
 #import "MapViewController.h"
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
-#import "ViewController.h"
+#import "LoginViewController.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 static const CGFloat overlayrHeight = 45.0f;
 
@@ -60,6 +61,9 @@ static const CGFloat overlayrHeight = 45.0f;
     [self setupUI];
     
     self.isAnimating = YES;
+    
+    //로그아웃 Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(DisappearBlurWhenLogout:) name:@"clickLogoutButton" object:nil];
     
     // 경로 Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelTrackingDraw:) name:@"travelTrackingDraw" object:nil];
@@ -299,15 +303,14 @@ static const CGFloat overlayrHeight = 45.0f;
     GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:50.0f];
     [self.mapView moveCamera:update];
 }
-
 #pragma mark - CLLocationManager Delegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     CLLocation *newLocation = [locations lastObject];
-    [CATransaction begin];
-    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
+//    [CATransaction begin];
+//    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
     // change the camera, set the zoom, whatever.  Just make sure to call the animate* method.
-    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude zoom:16.0f];
-    [self.mapView animateToCameraPosition:cameraPosition];
+//    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude zoom:16.0f];
+//    [self.mapView animateToCameraPosition:cameraPosition];
     [CATransaction commit];
     
     DLog(@"latiotude : %f", newLocation.coordinate.latitude);
@@ -379,7 +382,6 @@ static const CGFloat overlayrHeight = 45.0f;
     DLog(@"현재위치 마커 찍기");
     [self plusViewHidden];
 }
-
 // 현재위치로 화면 이동 이벤트
 - (void)locationButtonTouchUpInside:(UIButton *)sender {
     DLog(@"현재 위치로 이동!");
@@ -389,6 +391,76 @@ static const CGFloat overlayrHeight = 45.0f;
         DLog(@"Location When In Use");
         [self.locationManager startUpdatingLocation];
         
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.mapView.myLocationEnabled = YES;
+        });
+    if((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.6)&&(fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.6)){
+            CAMediaTimingFunction *curve =
+            [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            CABasicAnimation *animation1;
+            CABasicAnimation *animation2;
+            CABasicAnimation *animation3;
+            
+            animation1 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraLatitudeKey];
+            animation1.duration = 2.0f;
+            animation1.timingFunction = curve;
+            animation1.toValue = @(self.mapView.myLocation.coordinate.latitude);
+            animation1.removedOnCompletion = NO;
+            animation1.fillMode = kCAFillModeForwards;
+            [_mapView.layer addAnimation:animation1 forKey:kGMSLayerCameraLatitudeKey];
+            
+            animation2 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraLongitudeKey];
+            animation2.duration = 2.0f;
+            animation2.timingFunction = curve;
+            animation2.toValue = @(self.mapView.myLocation.coordinate.longitude);
+            animation2.removedOnCompletion = NO;
+            animation2.fillMode = kCAFillModeForwards;
+            [_mapView.layer addAnimation:animation2 forKey:kGMSLayerCameraLongitudeKey];
+            
+            animation3 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraViewingAngleKey];
+            animation3.duration = 2.0f;
+            animation3.timingFunction = curve;
+            animation3.fromValue = @0.0;
+            animation3.toValue = @40.0;
+            animation3.removedOnCompletion = NO;
+            animation3.fillMode = kCAFillModeForwards;
+            [_mapView.layer addAnimation:animation3 forKey:kGMSLayerCameraViewingAngleKey];
+            
+        CGFloat zoom = _mapView.camera.zoom;
+        NSArray *keyValues = @[@(zoom), @14.5f];
+        CAKeyframeAnimation *keyFrameAnimation =
+        [CAKeyframeAnimation animationWithKeyPath:kGMSLayerCameraZoomLevelKey];
+        keyFrameAnimation.duration = 2.0f;
+        keyFrameAnimation.values = keyValues;
+        keyFrameAnimation.removedOnCompletion =NO;
+        keyFrameAnimation.fillMode = kCAFillModeForwards;
+        [_mapView.layer addAnimation:keyFrameAnimation forKey:kGMSLayerCameraZoomLevelKey];
+        }else{
+            
+                [CATransaction begin];
+                [CATransaction setValue:[NSNumber numberWithFloat: 0.0f] forKey:kCATransactionAnimationDuration];
+                GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14 bearing:0 viewingAngle:40];
+                [self.mapView animateToCameraPosition:cameraPosition];
+                [CATransaction commit];
+            
+
+        }
+        
+   
+//SH Animation Test
+//if((self.mapView.myLocation.coordinate.longitude - _locationManager)
+//        [UIView animateWithDuration:2.0f animations:^() {
+//                
+//                    [CATransaction begin];
+//                    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
+//                        GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14 bearing:0 viewingAngle:40];
+//                           [self.mapView animateToCameraPosition:cameraPosition];
+//                    [CATransaction commit];
+//
+//                
+//            } completion:nil];
+//
+////
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         DLog(@"Location Not Determined");
         [self.locationManager requestWhenInUseAuthorization];
@@ -574,6 +646,10 @@ static const CGFloat overlayrHeight = 45.0f;
     [self.overlayButton setTitle:notification.object forState:UIControlStateNormal];
 }
 
+-(void)DisappearBlurWhenLogout:(NSNotification *)notification{
+    [self.effectView removeFromSuperview];
+}
+
 // google 지도에 경로 그리기.
 - (void)travelTrackingDraw:(NSNotification *)notification {
     // 경로 지우기.
@@ -591,6 +667,9 @@ static const CGFloat overlayrHeight = 45.0f;
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         marker = [GMSMarker markerWithPosition:position];
         marker.title = imageData.creation_date;
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker"]];
+        imageView.frame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
+        marker.iconView = imageView;
         marker.map = _mapView;
         [self.markers addObject:marker];
         [path addCoordinate:position];
@@ -599,7 +678,7 @@ static const CGFloat overlayrHeight = 45.0f;
     // 점선 설정
     NSArray *styles = @[[GMSStrokeStyle solidColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]],
                         [GMSStrokeStyle solidColor:[UIColor clearColor]]];
-    NSArray *lengths = @[@200, @100];
+    NSArray *lengths = @[@1000, @500];
     
     GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
     poly.geodesic = YES;

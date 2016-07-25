@@ -197,11 +197,11 @@
             NSLog(@"register newUser Success");
 //             [self alertStatus:@"회원가입이 완료되었습니다." :@"성공" :1];
             
-//            // Set ID & Password in Keychain for AutoLogin
-//            KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
-//            
-//            [keychainItem setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
-//            [keychainItem setObject:_passWordField.text forKey:(__bridge id)kSecValueData];
+            // Set ID & Password in Keychain for AutoLogin
+            KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+            
+            [keychainItem setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
+            [keychainItem setObject:_passWordField.text forKey:(__bridge id)kSecValueData];
             [self dismissViewControllerAnimated:YES completion:nil];
             
     // check the coincidence of ID and the operation of failure to Register
