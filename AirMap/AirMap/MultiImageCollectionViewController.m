@@ -206,13 +206,13 @@ const CGFloat spacing = 2;
                                                [[self.imageDataCenter callSelectedAssetsWithoutGPS] count]] withFlag:YES];
         return;
     }
-    __weak typeof(self) weakSelf = self;
+//    __weak typeof(self) weakSelf = self;
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
         // 맵화면으로 돌아올때 notification 제거
         [[NSNotificationCenter defaultCenter] removeObserver:self.badgeView name:@"UpdateNotification" object:nil];
         // 선택된 파일 제거
-        [weakSelf.imageDataCenter resetSelectedFiles];
+//        [weakSelf.imageDataCenter resetSelectedFiles];
         
         // ##SJ tracking Notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
@@ -241,11 +241,11 @@ const CGFloat spacing = 2;
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             // GPS정보가 없는 사진 유무에 따라 viewcontroller dismiss 시점 변경
             if (flag) {
-                __weak typeof(self) weakSelf = self;
+//                __weak typeof(self) weakSelf = self;
 
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
                     [[NSNotificationCenter defaultCenter] removeObserver:self.badgeView name:@"UpdateNotification" object:nil];
-                    [weakSelf.imageDataCenter resetSelectedFiles];
+//                    [weakSelf.imageDataCenter resetSelectedFiles];
                    
                     // ##SJ Test
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];

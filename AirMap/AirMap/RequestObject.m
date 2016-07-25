@@ -20,7 +20,7 @@
 
 static NSString * const imageUploadURL = @"https://airmap.travel-mk.com/api/travel/create_image/";
 static NSString * const metadataUploadURL = @"https://airmap.travel-mk.com/api/travel/create/";
-static NSString * const listRequestURL = @"https://airmap.travel-mk.com/api/travel/list";
+static NSString * const listRequestURL = @"https://airmap.travel-mk.com/api/travel/list/";
 static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/travel/detail/";
 
 // 이미지 네트워킹 싱글톤 생성
@@ -65,7 +65,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
     NSDictionary *parameters =  @{@"travel_title":self.travelTitle};
     
     // global queue 생성
-    dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//    dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
     // 네트워킹을 위한 AFHTTPSettion Manager 생성, JWTToken 값으로 접근 권한 설정
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -78,27 +78,31 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
     for (NSInteger i = 0; i < count; i++) {
         // 이미지 파일
         UIImage *image = [[MultiImageDataCenter sharedImageDataCenter] callSelectedImages][i];
-        // 파일 이름을 timestamp.jpeg로 저장
-        NSString *fileName = [NSString stringWithFormat:@"%@.jpeg",
+        // 파일 이름을 travel_title_unique_timestamp.jpeg로 저장
+        NSString *fileName = [NSString stringWithFormat:@"test_%@_%@.jpeg", self.travelTitle,
                               [[MultiImageDataCenter sharedImageDataCenter] callSelectedData][i][@"timestamp"]];
         
-        dispatch_async(uploadQueue, ^{
+//        dispatch_async(uploadQueue, ^{
             // 큐내에서 POST로 이미지 한장씩 비동기로 전달
             [manager POST:imageUploadURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
                                             name:@"image_data"
                                         fileName:fileName
                                         mimeType:@"image/jepg"];
-                
+                NSLog(@"%@", fileName);
+
             } progress:^(NSProgress * _Nonnull uploadProgress) {
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSLog(@"Image Uploade Success");
-                
+                [self requestDetailMetadatas];
+                [[MultiImageDataCenter sharedImageDataCenter] resetSelectedFiles];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSLog(@"Image Upload Error: %@",error);
+                [[MultiImageDataCenter sharedImageDataCenter] resetSelectedFiles];
+
             }];
-        });
+//        });
     };
 }
 
@@ -129,7 +133,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
               //                  i ++;
               //              }
           }];
-    
     [self requestMetadatas];
 }
 
@@ -151,8 +154,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         NSLog(@"%@", responseObject);
         self.idNumber = [[responseObject firstObject] objectForKey:@"id"];
         NSLog(@"%@", self.idNumber);
-        [self requestDetailMetadatas];
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"get list Error:%@", error);
     }];
@@ -163,7 +164,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
 - (void)requestDetailMetadatas {
     
     NSLog(@"Start get detail metadatas");
-    NSString *numberString = [NSString stringWithFormat:@"%@", self.idNumber];
+    NSString *numberString = [NSString stringWithFormat:@"%@/", self.idNumber];
     NSString *urlString = [detailRequestURL stringByAppendingString:numberString];
     NSLog(@"%@",urlString);
     

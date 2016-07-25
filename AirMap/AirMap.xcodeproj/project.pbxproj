@@ -264,6 +264,13 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
+		E90B6F901D4673F9005B69EA /* PhotoScroller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = PhotoScroller;
+			sourceTree = "<group>";
+		};
 		E9FAEB3C1D2BD4D900014449 /* MultiImageSelect */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,6 +393,7 @@
 		ECD5C1301D2FA90500A551D8 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				E90B6F901D4673F9005B69EA /* PhotoScroller */,
 				E45989681D374D5B007A7BC9 /* SKSTable */,
 				EC54E0CF1D2FF1A900B13C85 /* MenuSlideViewController.h */,
 				EC54E0D01D2FF1A900B13C85 /* MenuSlideViewController.m */,

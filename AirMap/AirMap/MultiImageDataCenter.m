@@ -155,7 +155,7 @@ const CGFloat imageShortLength = 640;
     if (result != nil) {
         for (NSInteger i = 0; i < count; i++) {
             ImageData *imageData = result[i];
-            [timestampArray addObject:[NSNumber numberWithInteger:imageData.timestamp]];
+            [timestampArray addObject:[NSString stringWithFormat:@"%ld", imageData.timestamp]];
             NSLog(@"timestampinrealm:%ld", imageData.timestamp);
         }
     }
@@ -166,9 +166,8 @@ const CGFloat imageShortLength = 640;
         NSString *timestampS = [NSString stringWithFormat:@"%@", timestamp];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
-        //        NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
         
-        NSDictionary *metaData = @{@"timestamp":timestamp,
+        NSDictionary *metaData = @{@"timestamp":timestampS,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
         
