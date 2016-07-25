@@ -37,6 +37,8 @@
 		E9063C231D2D7A8100F28F69 /* AuthorizationControll.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C221D2D7A8100F28F69 /* AuthorizationControll.m */; };
 		E9063C321D2E45DB00F28F69 /* RequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C311D2E45DB00F28F69 /* RequestObject.m */; };
 		E9063C351D2E796200F28F69 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C341D2E796200F28F69 /* BadgeView.m */; };
+		E90B6F881D461CE0005B69EA /* icon_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90B6F861D461CE0005B69EA /* icon_2x.png */; };
+		E90B6F891D461CE0005B69EA /* icon_3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90B6F871D461CE0005B69EA /* icon_3x.png */; };
 		E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */; };
 		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
 		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
@@ -114,6 +116,8 @@
 		E9063C311D2E45DB00F28F69 /* RequestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestObject.m; sourceTree = "<group>"; };
 		E9063C331D2E796200F28F69 /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
 		E9063C341D2E796200F28F69 /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
+		E90B6F861D461CE0005B69EA /* icon_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_2x.png; sourceTree = "<group>"; };
+		E90B6F871D461CE0005B69EA /* icon_3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_3x.png; sourceTree = "<group>"; };
 		E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewCell.h; sourceTree = "<group>"; };
 		E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewCell.m; sourceTree = "<group>"; };
 		E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewController.h; sourceTree = "<group>"; };
@@ -317,6 +321,8 @@
 		EC750B931D2B9E0300A54374 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E90B6F861D461CE0005B69EA /* icon_2x.png */,
+				E90B6F871D461CE0005B69EA /* icon_3x.png */,
 				ECBA6F361D4246EC00A37129 /* CountryFlag */,
 				EC2F40DE1D34DD7000ABC745 /* addLocation.png */,
 				E421921C1D3F239200152B6C /* logoutButton.png */,
@@ -469,6 +475,7 @@
 				E4889F211D3DFF5800B03A31 /* FaceBookLoginIcon.png in Resources */,
 				EC714C801D2AB8A000165A58 /* LaunchScreen.storyboard in Resources */,
 				EC2F40E51D34DD7000ABC745 /* album.png in Resources */,
+				E90B6F891D461CE0005B69EA /* icon_3x.png in Resources */,
 				EC50DD7F1D2CE407009B6C91 /* Menu_icon.png in Resources */,
 				E4D39BE11D337C3500DE48D9 /* backbutton10.png in Resources */,
 				E9058ED91D3E149600305A93 /* travelmaker.png in Resources */,
@@ -478,6 +485,7 @@
 				E421921D1D3F239200152B6C /* logoutButton.png in Resources */,
 				EC2F40E71D34DD7000ABC745 /* location.png in Resources */,
 				E4889F1F1D3DFF5100B03A31 /* EmailLoginIcon.png in Resources */,
+				E90B6F881D461CE0005B69EA /* icon_2x.png in Resources */,
 				EC2F40E61D34DD7000ABC745 /* close.png in Resources */,
 				E45989671D374D55007A7BC9 /* expandableImage@2x.png in Resources */,
 				ECBA6F351D4246BD00A37129 /* South Korea.png in Resources */,
