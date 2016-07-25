@@ -1,14 +1,14 @@
 //
-//  ImageRequestObject.m
+//  RequestObject.m
 //  AirMap
 //
 //  Created by Mijeong Jeon on 7/7/16.
 //  Copyright © 2016 FCSProjectAirMap. All rights reserved.
 //
 
-#import "ImageRequestObject.h"
+#import "RequestObject.h"
 
-@interface ImageRequestObject ()
+@interface RequestObject ()
 
 @property (strong, nonatomic) NSString *JWTToken;
 @property (strong, nonatomic) NSString *travelTitle;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation ImageRequestObject
+@implementation RequestObject
 
 static NSString * const imageRequestURL = @"http://52.78.72.132/create/";
 static NSString * const metadataRequestURL = @"http://52.78.72.132/create/";
@@ -26,11 +26,11 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
 // 이미지 네트워킹 싱글톤 생성
 + (instancetype)sharedInstance {
     
-    static ImageRequestObject *object = nil;
+    static RequestObject *object = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        object = [[ImageRequestObject alloc] init];
+        object = [[RequestObject alloc] init];
     });
     
     return object;
@@ -120,7 +120,7 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
               [self uploadImages:selectedImages];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
               NSLog(@"Metadata Post error: %@", error);
-#warning 이거 어케 무한을 막져??
+
               if (i < 3) {
                   [self uploadMetaDatas:selectedDatas withSelectedImages:selectedImages];
                   i ++;
@@ -129,6 +129,30 @@ static NSString * const detailRequestURL = @"http://52.78.72.132/detail/";
     
 //            [self requestMetadatas];
 }
+
+// Travel Title 업로드 리퀘스트
+- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy {
+    
+    NSLog(@"Start TravelTitle Upload");
+    
+    NSDictionary *newTravelTitle = @{@"travel_title":newTitle, @"activity":activiy};
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager POST:metadataRequestURL parameters:metadataDic
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+              NSLog(@"Metadata Post success!");
+              [self uploadImages:selectedImages];
+          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              NSLog(@"Metadata Post error: %@", error);
+              }
+          }];
+}
+
 
 // 여행경로 리스트 받는 메소드
 - (void)requestMetadatas {

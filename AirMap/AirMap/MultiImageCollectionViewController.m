@@ -195,7 +195,7 @@ const CGFloat spacing = 2;
         [self.imageDataCenter saveToRealmDB];
         
         // 메타데이터 업로드(메타데이터 업로드 성공 후 이미지 업로드)
-        [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]
+        [[RequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]
                                           withSelectedImages:[self.imageDataCenter callSelectedImages]];
     }
     
