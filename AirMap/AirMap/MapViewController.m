@@ -599,7 +599,7 @@ static const CGFloat overlayrHeight = 45.0f;
     // 점선 설정
     NSArray *styles = @[[GMSStrokeStyle solidColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]],
                         [GMSStrokeStyle solidColor:[UIColor clearColor]]];
-    NSArray *lengths = @[@200, @100];
+    NSArray *lengths = @[@1000, @500];
     
     GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
     poly.geodesic = YES;
