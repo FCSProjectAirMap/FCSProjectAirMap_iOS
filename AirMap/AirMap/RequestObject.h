@@ -16,7 +16,5 @@
 + (instancetype)sharedInstance;
 // 메타데이터 업로드
 - (void)uploadMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages;
-// 새로생긴 여행 타이틀 업로드
-- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy;
 
 @end
