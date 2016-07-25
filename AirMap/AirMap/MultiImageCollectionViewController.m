@@ -194,9 +194,9 @@ const CGFloat spacing = 2;
         // realm 저장
         [self.imageDataCenter saveToRealmDB];
         
-        // 이미지, 메타데이터 업로드
-        [[ImageRequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]];
-        [[ImageRequestObject sharedInstance] uploadImages:[self.imageDataCenter callSelectedImages]];
+        // 메타데이터 업로드(메타데이터 업로드 성공 후 이미지 업로드)
+        [[RequestObject sharedInstance] uploadMetaDatas:[self.imageDataCenter callSelectedData]
+                                          withSelectedImages:[self.imageDataCenter callSelectedImages]];
     }
     
     // GPS 정보가 없는 사진이 있을때 사용자에게 알림
@@ -206,9 +206,13 @@ const CGFloat spacing = 2;
                                                [[self.imageDataCenter callSelectedAssetsWithoutGPS] count]] withFlag:YES];
         return;
     }
+    __weak typeof(self) weakSelf = self;
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        [self.imageDataCenter resetSelectedFiles];
+        // 맵화면으로 돌아올때 notification 제거
+        [[NSNotificationCenter defaultCenter] removeObserver:self.badgeView name:@"UpdateNotification" object:nil];
+        // 선택된 파일 제거
+        [weakSelf.imageDataCenter resetSelectedFiles];
         
         // ##SJ tracking Notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
@@ -224,7 +228,6 @@ const CGFloat spacing = 2;
 #pragma mark - Show Alert Window
 // 선택된 사진이 10장 이상일때/GPS정보 없을때 alert띄우기
 - (void)showAlertWindow:(BOOL)isShowAlert withMessege:(NSString *)messege withFlag:(BOOL)flag {
-    __weak typeof(self) weakSelf = self;
     
     if (isShowAlert) {
         
@@ -238,8 +241,12 @@ const CGFloat spacing = 2;
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             // GPS정보가 없는 사진 유무에 따라 viewcontroller dismiss 시점 변경
             if (flag) {
+                __weak typeof(self) weakSelf = self;
+
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                    [[NSNotificationCenter defaultCenter] removeObserver:self.badgeView name:@"UpdateNotification" object:nil];
                     [weakSelf.imageDataCenter resetSelectedFiles];
+                   
                     // ##SJ Test
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
                 }];
