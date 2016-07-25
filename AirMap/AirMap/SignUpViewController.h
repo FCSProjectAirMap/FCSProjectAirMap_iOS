@@ -6,7 +6,7 @@
 //  Copyright © 2016년 Tedigom. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "LoginViewController.h"
 
 @interface SignUpViewController : UIViewController
 

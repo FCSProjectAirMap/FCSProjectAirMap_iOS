@@ -9,7 +9,7 @@
 #import "MapViewController.h"
 #import "KeychainItemWrapper.h"
 #import <Security/Security.h>
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
 
 static const CGFloat overlayrHeight = 45.0f;
