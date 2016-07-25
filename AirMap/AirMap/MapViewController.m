@@ -591,6 +591,8 @@ static const CGFloat overlayrHeight = 45.0f;
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         marker = [GMSMarker markerWithPosition:position];
         marker.title = imageData.creation_date;
+        UIView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker"]];
+        marker.iconView = imageView;
         marker.map = _mapView;
         [self.markers addObject:marker];
         [path addCoordinate:position];
