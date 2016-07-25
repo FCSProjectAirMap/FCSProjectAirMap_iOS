@@ -14,7 +14,7 @@
 @interface RequestObject : UIView
 
 + (instancetype)sharedInstance;
-// 메타데이터 업로드
-- (void)uploadMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages;
+
+- (void)uploadSelectedMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages;
 
 @end
