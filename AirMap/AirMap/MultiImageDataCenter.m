@@ -163,12 +163,12 @@ const CGFloat imageShortLength = 640;
     for (PHAsset *asset in self.selectedAssets) {
         // 전송할 메타데이터 추출
         NSNumber *timestamp = [NSNumber numberWithInteger:asset.creationDate.timeIntervalSince1970];
+        NSString *timestampS = [NSString stringWithFormat:@"%@", timestamp];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
-        NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
+        //        NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
         
-        NSDictionary *metaData = @{@"creationDate": creationDate,
-                                   @"timestamp":timestamp,
+        NSDictionary *metaData = @{@"timestamp":timestamp,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
         
