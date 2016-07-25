@@ -267,14 +267,28 @@
                                        
                                    } else {
                                        NSLog(@"fa일");
+
                                        
-                                       [self alertStatus:@"로그인이 실패했습니다. 아이디와 비밀번호를 다시 확인해 주세요" :@"에러" :1];
+                                       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSessionNotiNetwork:) name:@"NotierrorforNetwork" object:nil];
                                        
-                                       
-                                   }
+                                       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSessionNotiLogin:) name:@"Notierrorlogin" object:nil];
+                                                                        }
                                }];
     
 }
+
+- (void) getSessionNotiNetwork:(NSNotification *) notif
+{
+    [self alertStatus:@"지금은 서버 점검중 입니다. 잠시후에 접속해 주세요.":@"에러" :1];
+}
+
+- (void) getSessionNotiLogin:(NSNotification *) notif
+{
+    
+    [self alertStatus:@"로그인이 실패했습니다. 아이디와 비밀번호를 다시 확인해 주세요" :@"에러" :1];
+    
+}
+
 
 #pragma mark TextFieldDelegate
 // TextField Delegate

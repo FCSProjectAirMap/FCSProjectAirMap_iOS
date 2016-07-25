@@ -160,6 +160,7 @@
                          handler:^(UIAlertAction * action)
                          {
                              [self.view removeFromSuperview];
+                             [[NSNotificationCenter defaultCenter] postNotificationName:@"clickLogoutButton" object:nil];
                              
                              //Remove ID & Password in Keychain
                              [alert dismissViewControllerAnimated:YES completion:nil];
