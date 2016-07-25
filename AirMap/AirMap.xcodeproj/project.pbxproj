@@ -41,6 +41,7 @@
 		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
 		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
 		E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB4A1D2CD90100014449 /* ToastView.m */; };
+		EC136C161D45F82B008EF031 /* marker.png in Resources */ = {isa = PBXBuildFile; fileRef = EC136C151D45F82B008EF031 /* marker.png */; };
 		EC2F40E41D34DD7000ABC745 /* addLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = EC2F40DE1D34DD7000ABC745 /* addLocation.png */; };
 		EC2F40E51D34DD7000ABC745 /* album.png in Resources */ = {isa = PBXBuildFile; fileRef = EC2F40DF1D34DD7000ABC745 /* album.png */; };
 		EC2F40E61D34DD7000ABC745 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = EC2F40E01D34DD7000ABC745 /* close.png */; };
@@ -122,6 +123,7 @@
 		E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageDataCenter.m; sourceTree = "<group>"; };
 		E9FAEB491D2CD90100014449 /* ToastView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastView.h; sourceTree = "<group>"; };
 		E9FAEB4A1D2CD90100014449 /* ToastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastView.m; sourceTree = "<group>"; };
+		EC136C151D45F82B008EF031 /* marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker.png; sourceTree = "<group>"; };
 		EC2F40DE1D34DD7000ABC745 /* addLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addLocation.png; sourceTree = "<group>"; };
 		EC2F40DF1D34DD7000ABC745 /* album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = album.png; sourceTree = "<group>"; };
 		EC2F40E01D34DD7000ABC745 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 			children = (
 				ECBA6F361D4246EC00A37129 /* CountryFlag */,
 				EC2F40DE1D34DD7000ABC745 /* addLocation.png */,
+				EC136C151D45F82B008EF031 /* marker.png */,
 				E421921C1D3F239200152B6C /* logoutButton.png */,
 				E4889F241D3E0CB600B03A31 /* SignupIcon.png */,
 				E4889F201D3DFF5800B03A31 /* FaceBookLoginIcon.png */,
@@ -485,6 +488,7 @@
 				E4889F1D1D3DF0DC00B03A31 /* TravelMakerIcon.png in Resources */,
 				EC2F40E81D34DD7000ABC745 /* plus.png in Resources */,
 				EC2F40E91D34DD7000ABC745 /* travel.png in Resources */,
+				EC136C161D45F82B008EF031 /* marker.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

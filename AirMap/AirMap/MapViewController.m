@@ -667,6 +667,9 @@ static const CGFloat overlayrHeight = 45.0f;
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         marker = [GMSMarker markerWithPosition:position];
         marker.title = imageData.creation_date;
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker"]];
+        imageView.frame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
+        marker.iconView = imageView;
         marker.map = _mapView;
         [self.markers addObject:marker];
         [path addCoordinate:position];
@@ -675,7 +678,7 @@ static const CGFloat overlayrHeight = 45.0f;
     // 점선 설정
     NSArray *styles = @[[GMSStrokeStyle solidColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]],
                         [GMSStrokeStyle solidColor:[UIColor clearColor]]];
-    NSArray *lengths = @[@200, @100];
+    NSArray *lengths = @[@1000, @500];
     
     GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
     poly.geodesic = YES;
