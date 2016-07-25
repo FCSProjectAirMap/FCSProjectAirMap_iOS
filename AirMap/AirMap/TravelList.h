@@ -13,6 +13,7 @@
 
 @property NSString *travel_title;
 @property NSString *travel_title_unique;
+@property NSString *id_number;
 @property BOOL activity;
 @property RLMArray<ImageData> *image_datas;
 
