@@ -11,7 +11,7 @@
 @interface RequestObject ()
 
 @property (strong, nonatomic) NSString *JWTToken;
-@property (strong, nonatomic) NSString *idNumber;
+@property (strong, nonatomic) UserInfo *userInfo;
 @property (strong, nonatomic) NSString *user_id;
 @end
 
@@ -44,13 +44,13 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         NSString *keyChainUser_id = [keychainItem objectForKey: (__bridge id)kSecAttrAccount];
         //현재 로그인 중인 회원정보 가져오기
         RLMResults *resultArray = [UserInfo objectsWhere:@"user_id == %@", keyChainUser_id];
-        UserInfo *userInfo = resultArray[0];
+        self.userInfo = resultArray[0];
         // @앞 아이디가져오기
-        NSArray *idArray = [userInfo.user_id componentsSeparatedByString:@"@"];
+        NSArray *idArray = [self.userInfo.user_id componentsSeparatedByString:@"@"];
         self.user_id = [idArray firstObject];
         NSLog(@"%@", self.user_id);
         // 토큰값 가져오기
-        self.JWTToken = [@"JWT " stringByAppendingString:userInfo.user_token];
+        self.JWTToken = [@"JWT " stringByAppendingString:self.userInfo.user_token];
         NSLog(@"%@", self.JWTToken);
     }
     return self;
@@ -143,16 +143,28 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
     [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
     
     [manager GET:listRequestURL parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-#warning     NSLog(@"%@", downloadProgress);
+#warning for test  NSLog(@"%@", downloadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"get list success!");
         NSLog(@"%@", responseObject);
         
-        // 활성화되어있는 여행경로의 id값 가져오기
-//        NSArray *arrayWithTitle = [responseObject valueForKey:@"travel_title"];
-//        NSInteger index = [arrayWithTitle indexOfObject:[TravelActivation defaultInstance].travelList.travel_title_unique];
-//        self.idNumber = [[responseObject objectAtIndex:index] objectForKey:@"id"];
-//        [self requestDetailMetadatasForIdNumber:self.idNumber];
+        NSArray *responseArray = [NSArray arrayWithArray:responseObject];
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        
+        // 로그인되어있는 유저_서버에 저장되어있는 여행리스트-id값 가져와서 내부 Reaml에 저장(but, primary 값 설정이 필요할듯)
+        for (NSInteger i = 0; i < responseArray.count; i++) {
+            
+            TravelList *travelList = [[TravelList alloc] init];
+            travelList.travel_title_unique = [responseArray[i] objectForKey:@"travel_title"];
+            travelList.id_number = [NSString stringWithFormat:@"%@", [responseArray[i] objectForKey:@"id"]];
+            
+            // realm DB에 metadata 저장
+            [realm beginWriteTransaction];
+            [self.userInfo.travel_list addObject:travelList];
+            [realm commitWriteTransaction];
+        }
+
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"get list Error:%@", error);
     }];
