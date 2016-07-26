@@ -414,6 +414,7 @@ static const CGFloat overlayrHeight = 45.0f;
             animation1.toValue = @0.0;
             animation1.removedOnCompletion = NO;
             animation1.fillMode = kCAFillModeForwards;
+
             [_mapView.layer addAnimation:animation1 forKey:kGMSLayerCameraViewingAngleKey];
             
             
@@ -424,7 +425,8 @@ static const CGFloat overlayrHeight = 45.0f;
             CABasicAnimation *animation1;
             CABasicAnimation *animation2;
             CABasicAnimation *animation3;
-            
+            CABasicAnimation *animation4;
+        
             animation1 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraLatitudeKey];
             animation1.duration = 2.0f;
             animation1.timingFunction = curve;
@@ -449,16 +451,20 @@ static const CGFloat overlayrHeight = 45.0f;
             animation3.toValue = @40.0;
             animation3.removedOnCompletion = NO;
             animation3.fillMode = kCAFillModeForwards;
+            animation3.delegate = self;
             [_mapView.layer addAnimation:animation3 forKey:kGMSLayerCameraViewingAngleKey];
+        }else if (_mapView.camera.viewingAngle ==0){
+            animation4 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraViewingAngleKey];
+            animation4.duration = 2.0f;
+            animation4.timingFunction = curve;
+            animation4.fromValue = @0.0;
+            animation4.toValue = @40.0;
+            animation4.removedOnCompletion = NO;
+            animation4.fillMode = kCAFillModeForwards;
+            [_mapView.layer addAnimation:animation4 forKey:kGMSLayerCameraViewingAngleKey];
+            animation4.delegate = self;
         }else{
-            animation3 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraViewingAngleKey];
-            animation3.duration = 2.0f;
-            animation3.timingFunction = curve;
-            animation3.fromValue = @0.0;
-            animation3.toValue = @40.0;
-            animation3.removedOnCompletion = NO;
-            animation3.fillMode = kCAFillModeForwards;
-            [_mapView.layer addAnimation:animation3 forKey:kGMSLayerCameraViewingAngleKey];
+            
         }
         
         CGFloat zoom = _mapView.camera.zoom;
@@ -491,6 +497,15 @@ static const CGFloat overlayrHeight = 45.0f;
         DLog(@"Location Denied");
         [ToastView showToastInView:[[UIApplication sharedApplication] keyWindow] withMessege:@"[설정] > [TravelMaker] > [위치] 접근을 허용해 주세요.\n 이곳을 누르면 설정화면으로 이동합니다."];
     }
+}
+
+- (void)animationDidStart:(CAAnimation *)theAnimation
+{
+    [self.locationButton setUserInteractionEnabled:NO];
+}
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    [self.locationButton setUserInteractionEnabled:YES];
 }
 
 // 메뉴버튼 이벤트
@@ -603,6 +618,10 @@ static const CGFloat overlayrHeight = 45.0f;
                              [self.plusView setAlpha:1.0f];
                              // loaction Button
                              [self.locationButton setAlpha:1.0f];
+                             self.locationButton.layer.shadowColor = [UIColor blackColor].CGColor;
+                             self.locationButton.layer.shadowOffset = CGSizeMake(-1.5, 0);
+                             self.locationButton.layer.shadowOpacity = 0.6;
+                             self.locationButton.layer.shadowRadius = 2.0;
                              // status bar
                              self.isStatusBarHidden = NO;
                              // overlay view
