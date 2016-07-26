@@ -14,7 +14,7 @@
 @property float latitude;
 @property float longitude;
 @property NSInteger timestamp;
-@property NSDate *timezone_date;
+@property NSString *timezone_date;
 @property NSString *country;
 @property NSString *city;
 @property NSString *thumbnail_url;
