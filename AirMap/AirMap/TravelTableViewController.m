@@ -50,6 +50,9 @@
         NSLog(@"notification : %@", notification);
         [weakSelf.travelTableView reloadData];
     }];
+    
+    // 하단 +를 눌렀을 경우 호출 되는 NotificationCenter등록.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelListMake:) name:@"travelListMake" object:nil];
 }
 
 #pragma mark - General Method
@@ -242,6 +245,11 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
         }
     }];
+}
+
+#pragma mark - Noification
+- (void)travelListMake:(NSNotificationCenter *)notification {
+    [self showTravelListAddAlert];
 }
 
 #pragma mark - MGSwipeTableCellDelegate

@@ -205,13 +205,19 @@ static const CGFloat topViewHeight = 74.0f;
     UIButton *travelPreviousButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelPreviousButton.frame = CGRectMake(X_MARGIN, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
     [travelPreviousButton setBackgroundImage:[UIImage imageNamed:@"previous_icon"] forState:UIControlStateNormal];
+    [travelPreviousButton addTarget:self
+                             action:@selector(travelPreviousTouchUpInside:)
+                   forControlEvents:UIControlEventTouchUpInside];
     [self.bottomView addSubview:travelPreviousButton];
     self.travelPreviousButton = travelPreviousButton;
     
     // travel next Button
     UIButton *travelNextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    travelNextButton.frame = CGRectMake(travelPreviousButton.frame.size.width + X_MARGIN*2, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    travelNextButton.frame = CGRectMake(travelPreviousButton.frame.size.width + X_MARGIN*3, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
     [travelNextButton setBackgroundImage:[UIImage imageNamed:@"next_icon"] forState:UIControlStateNormal];
+    [travelNextButton addTarget:self
+                         action:@selector(travelNextTouchUpInside:)
+               forControlEvents:UIControlEventTouchUpInside];
     [self.bottomView addSubview:travelNextButton];
     self.travelNextButton = travelNextButton;
     
@@ -219,13 +225,19 @@ static const CGFloat topViewHeight = 74.0f;
     UIButton *travelAlbumButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelAlbumButton.frame = CGRectMake(bottomView.frame.size.width - BUTTON_SIZE_WIDTH - X_MARGIN, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
     [travelAlbumButton setBackgroundImage:[UIImage imageNamed:@"album_icon"] forState:UIControlStateNormal];
+    [travelAlbumButton addTarget:self
+                          action:@selector(travelAlbumTouchUpInside:)
+                forControlEvents:UIControlEventTouchUpInside];
     [self.bottomView addSubview:travelAlbumButton];
     self.travelAlbumButton = travelAlbumButton;
     
     // travel make Button
     UIButton *travelMakeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelMakeButton.frame = CGRectMake(travelAlbumButton.frame.origin.x - BUTTON_SIZE_WIDTH - X_MARGIN, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    [travelMakeButton setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
+    [travelMakeButton setBackgroundImage:[UIImage imageNamed:@"make_icon"] forState:UIControlStateNormal];
+    [travelMakeButton addTarget:self
+                         action:@selector(travelMakeTouchUpInside:)
+               forControlEvents:UIControlEventTouchUpInside];
     [self.bottomView addSubview:travelMakeButton];
     self.travelMakeButton = travelMakeButton;
     
@@ -283,11 +295,16 @@ static const CGFloat topViewHeight = 74.0f;
     DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
 }
 
-- (void)travelListViewCall {
+- (void)travelListViewCall:(BOOL) alertFlag {
     TravelTableViewController *travelTabelViewController = [[TravelTableViewController alloc] init];
     // Nivigation
-    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
-    [self presentViewController:navi animated:YES completion:nil];
+    UINavigationController *travelTableViewNavi = [[UINavigationController alloc] initWithRootViewController:travelTabelViewController];
+    [self presentViewController:travelTableViewNavi animated:YES completion:^{
+        if (alertFlag) {
+            // 여행경로창이 호출 되고 Alert창을 호출한다.
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"travelListMake" object:nil];
+        }
+    }];
 }
 
 // fit Bounds
@@ -337,10 +354,10 @@ static const CGFloat topViewHeight = 74.0f;
     DLog(@"여행 경로 추가");
     // 상단 여행 제복 버튼 눌렀을 경우.
     if (sender == self.travelTitleButton) {
-        [self travelListViewCall];
+        [self travelListViewCall:NO];
     // 하단 + 버튼 눌렀을 경우.
     } else if (sender == self.travelMakeButton) {
-        
+        [self travelListViewCall:YES];
     }
 }
 
@@ -349,7 +366,7 @@ static const CGFloat topViewHeight = 74.0f;
 }
 
 // 디바이스 앨범 불러오는 Action Method
-- (void)albumTouchUpInside:(UIButton *)sender {
+- (void)travelAlbumTouchUpInside:(UIButton *)sender {
     // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
     if ([TravelActivation defaultInstance].travelList == nil) {
         // Alert를 호출해 알려준다.
@@ -367,7 +384,7 @@ static const CGFloat topViewHeight = 74.0f;
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확 인"
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * _Nonnull action) {
-                                                             [self travelListViewCall];
+                                                             [self travelListViewCall:YES];
                                                          }];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"
                                                                style:UIAlertActionStyleCancel
@@ -524,6 +541,16 @@ static const CGFloat topViewHeight = 74.0f;
     }];
 }
 
+// 이전 여행경로 불러오기
+- (void)travelPreviousTouchUpInside:(UIButton *)sender {
+    
+}
+
+// 다음 여행경로 불러오기
+- (void)travelNextTouchUpInside:(UIButton *)sender {
+    
+}
+
 // 지도를 탭 했을 경우 UI들 숨기기 메서드
 -(void)appearanceUI {
     // endEditing
@@ -594,7 +621,7 @@ static const CGFloat topViewHeight = 74.0f;
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확인"
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * _Nonnull action) {
-                                                            [self travelListViewCall];
+                                                             [self travelListViewCall:YES];
                                                          }];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취소"
                                                                style:UIAlertActionStyleCancel
