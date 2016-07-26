@@ -300,6 +300,10 @@ static const CGFloat overlayrHeight = 45.0f;
         }
         bounds = [bounds includingCoordinate:marker.position];
     }
+    
+    if (bounds == nil)
+        return;
+    
     GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:50.0f];
     [self.mapView moveCamera:update];
 }
@@ -668,7 +672,7 @@ static const CGFloat overlayrHeight = 45.0f;
         marker = [GMSMarker markerWithPosition:position];
         marker.title = imageData.creation_date;
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker"]];
-        imageView.frame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
+        imageView.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
         marker.iconView = imageView;
         marker.map = _mapView;
         [self.markers addObject:marker];
@@ -682,7 +686,7 @@ static const CGFloat overlayrHeight = 45.0f;
     
     GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
     poly.geodesic = YES;
-    poly.strokeWidth = 5.0f;
+    poly.strokeWidth = 2.5f;
     // kGmsLengthGeodesic : 최단거리
     poly.spans = GMSStyleSpans(poly.path, styles, lengths, kGMSLengthGeodesic);
     poly.map = _mapView;
