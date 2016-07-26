@@ -107,7 +107,7 @@ const CGFloat imageShortLength = 640;
 // PHAseet -> UIImage
 - (void)changeAssetToImage {
     
-    NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedMetadatasWithGPS.count];
+    NSMutableArray *selectedImages = [NSMutableArray arrayWithCapacity:self.selectedAssetsWithGPS.count];
     
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.resizeMode = PHImageRequestOptionsResizeModeExact;
@@ -129,6 +129,7 @@ const CGFloat imageShortLength = 640;
                                                        }];
     }
     self.selectedImages = selectedImages;
+    NSLog(@"%@", self.selectedImages);
     [self saveToRealmDB];
     [self.requsetObject uploadSelectedMetaDatas:self.selectedMetadatasWithGPS withSelectedImages:self.selectedImages];
 }
@@ -182,7 +183,7 @@ const CGFloat imageShortLength = 640;
             [self.selectedMetadatasWithoutGPS addObject:metaData];
             [self.selectedAssetsWithoutGPS addObject:asset];
         } else {
-            if (result != nil) {
+            if (result) {
                 if ([timestampArray containsObject:[metaData objectForKey:@"timestamp"]]) {
                     NSMutableArray *duplicatedAssets = [[NSMutableArray alloc] init];
                     [duplicatedAssets addObject:asset];
@@ -197,7 +198,7 @@ const CGFloat imageShortLength = 640;
     NSLog(@"with GPS:%@", self.selectedMetadatasWithGPS);
     NSLog(@"without GPS:%@", self.selectedMetadatasWithoutGPS);
     
-    if (self.selectedAssetsWithGPS) {
+    if (self.selectedAssetsWithGPS.count != 0) {
         [self changeAssetToImage];
     }
 }
