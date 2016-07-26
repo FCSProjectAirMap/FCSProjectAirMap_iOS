@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSMutableArray *selectedMetadatasWithGPS;
 @property (strong, nonatomic) NSMutableArray *selectedMetadatasWithoutGPS;
 
+@property (strong, nonatomic) RequestObject *requsetObject;
+
 @end
 
 @implementation MultiImageDataCenter
@@ -40,6 +42,7 @@ const CGFloat imageShortLength = 640;
     self = [super init];
     if (self) {
         [self loadFetchResult];
+        
         self.selectedAssets = [[NSMutableArray alloc] init];
         
         self.selectedAssetsWithGPS = [[NSMutableArray alloc] init];
@@ -47,6 +50,8 @@ const CGFloat imageShortLength = 640;
         
         self.selectedMetadatasWithGPS = [[NSMutableArray alloc] init];
         self.selectedMetadatasWithoutGPS = [[NSMutableArray alloc] init];
+        
+        self.requsetObject = [[RequestObject alloc] init];
     }
     return self;
 }
@@ -94,9 +99,9 @@ const CGFloat imageShortLength = 640;
     return self.fetchResult;
 }
 
-- (NSMutableArray *)callSelectedAssets {
-    return self.selectedAssets;
-}
+//- (NSMutableArray *)callSelectedAssets {
+//    return self.selectedAssets;
+//}
 
 #pragma mark - AssetToUIImage
 // PHAseet -> UIImage
@@ -123,8 +128,9 @@ const CGFloat imageShortLength = 640;
                                                            [selectedImages addObject:image];
                                                        }];
     }
-    
     self.selectedImages = selectedImages;
+    [self saveToRealmDB];
+    [self.requsetObject uploadSelectedMetaDatas:self.selectedMetadatasWithGPS withSelectedImages:self.selectedImages];
 }
 
 // 이미지 사이즈 변경(짧은 길이를 imageShortLength으로 맞춤, aspect fit)
@@ -139,9 +145,9 @@ const CGFloat imageShortLength = 640;
     }
 }
 
-- (NSMutableArray *)callSelectedImages {
-    return self.selectedImages;
-}
+//- (NSMutableArray *)callSelectedImages {
+//    return self.selectedImages;
+//}
 
 # pragma mark - ExtracMetaData
 // metaData추출
@@ -155,7 +161,7 @@ const CGFloat imageShortLength = 640;
     if (result != nil) {
         for (NSInteger i = 0; i < count; i++) {
             ImageData *imageData = result[i];
-            [timestampArray addObject:[NSNumber numberWithInteger:imageData.timestamp]];
+            [timestampArray addObject:[NSString stringWithFormat:@"%ld", imageData.timestamp]];
             NSLog(@"timestampinrealm:%ld", imageData.timestamp);
         }
     }
@@ -163,12 +169,11 @@ const CGFloat imageShortLength = 640;
     for (PHAsset *asset in self.selectedAssets) {
         // 전송할 메타데이터 추출
         NSNumber *timestamp = [NSNumber numberWithInteger:asset.creationDate.timeIntervalSince1970];
+        NSString *timestampString = [NSString stringWithFormat:@"%@", timestamp];
         NSNumber *latitude = [NSNumber numberWithDouble:asset.location.coordinate.latitude];
         NSNumber *longitude = [NSNumber numberWithDouble:asset.location.coordinate.longitude];
-        NSString *creationDate = [[NSString stringWithFormat:@"%@",asset.creationDate] substringToIndex:19];
         
-        NSDictionary *metaData = @{@"creationDate": creationDate,
-                                   @"timestamp":timestamp,
+        NSDictionary *metaData = @{@"timestamp":timestampString,
                                    @"latitude":latitude,
                                    @"longitude":longitude};
         
@@ -189,14 +194,17 @@ const CGFloat imageShortLength = 640;
             }
         }
     }
-    [self changeAssetToImage];
     NSLog(@"with GPS:%@", self.selectedMetadatasWithGPS);
     NSLog(@"without GPS:%@", self.selectedMetadatasWithoutGPS);
+    
+    if (self.selectedAssetsWithGPS) {
+        [self changeAssetToImage];
+    }
 }
 
-- (NSMutableArray *)callSelectedData {
-    return self.selectedMetadatasWithGPS;
-}
+//- (NSMutableArray *)callSelectedData {
+//    return self.selectedMetadatasWithGPS;
+//}
 
 - (NSMutableArray *)callSelectedAssetsWithoutGPS {
     return self.selectedAssetsWithoutGPS;
@@ -212,18 +220,18 @@ const CGFloat imageShortLength = 640;
     // 현재 active되어있는 객체를 참조
     TravelActivation *travelActivation = [TravelActivation defaultInstance];
     
-    // 선택된 사진의 metadata, image property를 개별로 저장
+    // 선택된 사진의 metadata 저장
     for (NSInteger i = 0; i < self.selectedMetadatasWithGPS.count; i++) {
         
         NSData *image = UIImageJPEGRepresentation(self.selectedImages[i], 0.8);
-        
+
         ImageData *imageData = [[ImageData alloc] init];
         imageData.creation_date = [self.selectedMetadatasWithGPS[i] objectForKey:@"creationDate"] ;
         imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
         imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
         imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] integerValue];
         imageData.image = image;
-        
+
         // realm DB에 metadata 저장
         [realm beginWriteTransaction];
         [travelActivation.travelList.image_datas addObject:imageData];
