@@ -15,6 +15,7 @@
 #import "LoginViewController.h"
 #import "TravelActivation.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "ViewsInMenuSlideController.h"
 
 
 @interface MenuSlideViewController ()
@@ -290,10 +291,20 @@
 {
 
     NSLog(@"didSelectSubRow Section: %ld, Row:%ld, Subrow:%ld", (long)indexPath.section, (long)indexPath.row, (long)indexPath.subRow);
+    
+    [self performSegueWithIdentifier:@"ShowDetail" sender:tableView];
 
 //    NSLog(@"didSelectSubRow Section: %d, Row:%d, Subrow:%d", indexPath.section, indexPath.row, indexPath.subRow);
 
 }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ShowDetail"]) {
+        //Do something
+       ViewsInMenuSlideController *detailController = (ViewsInMenuSlideController *)segue.destinationViewController;
+    }
+}
+
 
 
 

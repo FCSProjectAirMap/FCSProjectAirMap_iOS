@@ -394,10 +394,30 @@ static const CGFloat overlayrHeight = 45.0f;
         status == kCLAuthorizationStatusAuthorizedAlways) {
         DLog(@"Location When In Use");
         [self.locationManager startUpdatingLocation];
-        
+   
+//SH ANIMATION
         dispatch_async(dispatch_get_main_queue(), ^{
             self.mapView.myLocationEnabled = YES;
         });
+        
+        if((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.01)&&(fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.01)&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==40)){
+        
+        
+            CAMediaTimingFunction *curve =
+            [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            CABasicAnimation *animation1;
+            
+            animation1 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraViewingAngleKey];
+            animation1.duration = 2.0f;
+            animation1.timingFunction = curve;
+            animation1.fromValue = @40.0;
+            animation1.toValue = @0.0;
+            animation1.removedOnCompletion = NO;
+            animation1.fillMode = kCAFillModeForwards;
+            [_mapView.layer addAnimation:animation1 forKey:kGMSLayerCameraViewingAngleKey];
+            
+            
+        }else{
     if((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.6)&&(fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.6)){
             CAMediaTimingFunction *curve =
             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -420,7 +440,17 @@ static const CGFloat overlayrHeight = 45.0f;
             animation2.removedOnCompletion = NO;
             animation2.fillMode = kCAFillModeForwards;
             [_mapView.layer addAnimation:animation2 forKey:kGMSLayerCameraLongitudeKey];
-            
+        
+        if(_mapView.camera.viewingAngle ==40){
+            animation3 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraViewingAngleKey];
+            animation3.duration = 2.0f;
+            animation3.timingFunction = curve;
+            animation3.fromValue = @40.0;
+            animation3.toValue = @40.0;
+            animation3.removedOnCompletion = NO;
+            animation3.fillMode = kCAFillModeForwards;
+            [_mapView.layer addAnimation:animation3 forKey:kGMSLayerCameraViewingAngleKey];
+        }else{
             animation3 = [CABasicAnimation animationWithKeyPath:kGMSLayerCameraViewingAngleKey];
             animation3.duration = 2.0f;
             animation3.timingFunction = curve;
@@ -429,7 +459,8 @@ static const CGFloat overlayrHeight = 45.0f;
             animation3.removedOnCompletion = NO;
             animation3.fillMode = kCAFillModeForwards;
             [_mapView.layer addAnimation:animation3 forKey:kGMSLayerCameraViewingAngleKey];
-            
+        }
+        
         CGFloat zoom = _mapView.camera.zoom;
         NSArray *keyValues = @[@(zoom), @14.5f];
         CAKeyframeAnimation *keyFrameAnimation =
@@ -439,32 +470,18 @@ static const CGFloat overlayrHeight = 45.0f;
         keyFrameAnimation.removedOnCompletion =NO;
         keyFrameAnimation.fillMode = kCAFillModeForwards;
         [_mapView.layer addAnimation:keyFrameAnimation forKey:kGMSLayerCameraZoomLevelKey];
-        }else{
-            
-                [CATransaction begin];
-                [CATransaction setValue:[NSNumber numberWithFloat: 0.0f] forKey:kCATransactionAnimationDuration];
-                GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14 bearing:0 viewingAngle:40];
-                [self.mapView animateToCameraPosition:cameraPosition];
-                [CATransaction commit];
-            
-
+    }else{
+        
+        [CATransaction begin];
+        [CATransaction setValue:[NSNumber numberWithFloat: 0.0f] forKey:kCATransactionAnimationDuration];
+        GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14 bearing:0 viewingAngle:40];
+        [self.mapView animateToCameraPosition:cameraPosition];
+        [CATransaction commit];
+        
+        
+    }
         }
         
-   
-//SH Animation Test
-//if((self.mapView.myLocation.coordinate.longitude - _locationManager)
-//        [UIView animateWithDuration:2.0f animations:^() {
-//                
-//                    [CATransaction begin];
-//                    [CATransaction setValue:[NSNumber numberWithFloat: 2.0f] forKey:kCATransactionAnimationDuration];
-//                        GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14 bearing:0 viewingAngle:40];
-//                           [self.mapView animateToCameraPosition:cameraPosition];
-//                    [CATransaction commit];
-//
-//                
-//            } completion:nil];
-//
-////
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         DLog(@"Location Not Determined");
         [self.locationManager requestWhenInUseAuthorization];
@@ -485,15 +502,21 @@ static const CGFloat overlayrHeight = 45.0f;
     [self.view addSubview:menuSlideView.view];
     
     // create effect
-    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+//    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIView *blackScreen = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [blackScreen setAlpha:0];
+    [blackScreen setBackgroundColor:[UIColor blackColor]];
+    [self.mapView addSubview:blackScreen];
+    self.blackScreen = blackScreen;
     
     // add effect to an effect view
-    UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
-    [effectView setFrame:CGRectMake(self.view.frame.size.width*1.35, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
-        [self.mapView addSubview:effectView];
-    self.effectView = effectView;
+//    UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
+//    [effectView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    [self.mapView addSubview:effectView];
+//    [effectView setAlpha:0];
+//    self.effectView = effectView;
     
-    [UIView animateWithDuration:0.4 animations:^{ [effectView setFrame:CGRectMake(self.view.frame.size.width*0.65, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
+    [UIView animateWithDuration:0.4 animations:^{ [blackScreen setAlpha:0.4f];
         
     }];
     
@@ -651,7 +674,7 @@ static const CGFloat overlayrHeight = 45.0f;
 }
 
 -(void)DisappearBlurWhenLogout:(NSNotification *)notification{
-    [self.effectView removeFromSuperview];
+    [self.blackScreen removeFromSuperview];
 }
 
 // google 지도에 경로 그리기.
@@ -705,9 +728,9 @@ static const CGFloat overlayrHeight = 45.0f;
 // 메뉴슬라이드에서 터치 백그라운드 했을때 blur effect뷰의 애니메이션을 노티피케이션 Selector로 받음.
 -(void)touchbackground:(NSNotification *)notification{
     
-    [UIView animateWithDuration:0.4 animations:^{[self.effectView setFrame:CGRectMake(self.view.frame.size.width*1.35, 0, self.view.frame.size.width*0.35, self.view.frame.size.height)];
+    [UIView animateWithDuration:0.4 animations:^{[self.blackScreen setAlpha:0];
     }completion:^(BOOL finished){
-        [self.effectView removeFromSuperview];
+        [self.blackScreen removeFromSuperview];
     }];
     
 }

@@ -48,7 +48,7 @@
     
     // Realm
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    config.schemaVersion = 13;
+    config.schemaVersion = 14;
     [RLMRealmConfiguration setDefaultConfiguration:config];
     
 //    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:loginViewController];

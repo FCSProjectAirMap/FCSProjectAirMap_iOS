@@ -85,7 +85,7 @@
     NSArray *colors = @[[UIColor redColor], [UIColor lightGrayColor]];
     for (NSInteger i = 0; i < number; ++i) {
         MGSwipeButton *button = [MGSwipeButton buttonWithTitle:titles[i] backgroundColor:colors[i] callback:^BOOL(MGSwipeTableCell *sender) {
-            NSLog(@"Convenience callback received (right).");
+            DLog(@"Convenience callback received (right).");
             BOOL autoHide = (i != 0);
             return autoHide;
         }];
@@ -103,7 +103,7 @@
     NSArray *icons = @[[UIImage imageNamed:@""]];
     for (NSInteger i = 0; i < number; ++i) {
         MGSwipeButton * button = [MGSwipeButton buttonWithTitle:@"" icon:icons[i] backgroundColor:colors[i] padding:15 callback:^BOOL(MGSwipeTableCell * sender){
-            NSLog(@"Convenience callback received (left).");
+            DLog(@"Convenience callback received (left).");
             return YES;
         }];
         [result addObject:button];
@@ -136,8 +136,12 @@
                                                              TravelList *travelList = [[TravelList alloc] init];
                                                              travelList.travel_title = travelTitle;
                                                              // 유니크한 값을 주기 위해 생성된 시간을 title뒤에 붙여준다. milliseconds로 계산.
-                                                             NSString *travelTitleTimeStamp = [NSString stringWithFormat:@"%@_%.f", travelTitle, [[NSDate date] timeIntervalSince1970] * 1000];
-                                                             DLog(@"%@", travelTitleTimeStamp);
+                                                             NSInteger creation_titleTitle = [[NSDate date] timeIntervalSince1970] * 1000;
+                                                             NSString *travelTitleTimeStamp = [NSString stringWithFormat:@"%@_%ld", travelTitle, creation_titleTitle];
+                                                             DLog(@"travelTitleTimeStamp : %@", travelTitleTimeStamp);
+                                                             DLog(@"createion_titleTitle : %ld", creation_titleTitle);
+                                                             // ##SJ DetailTableCell 정렬을 위해 생성일을 넣어준다.
+                                                             travelList.creation_travelTitle = creation_titleTitle;
                                                              travelList.travel_title_unique = travelTitleTimeStamp;
                                                              travelList.activity = NO;
                                                              
@@ -197,8 +201,11 @@
         cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
         cell.delegate = self;
     }
+    // ##SJ 최신생성한 기준으로 정렬.
+    RLMResults *sortedResult = [self.travelUserInfo.travel_list sortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+    TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     
-    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
+//    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:25.0f];
     cell.textLabel.text = travelList.travel_title;
     
