@@ -21,6 +21,6 @@
 <GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
 
 
-@property (nonatomic) UIVisualEffectView *effectView;
+@property (nonatomic) UIView *blackScreen;
 
 @end
