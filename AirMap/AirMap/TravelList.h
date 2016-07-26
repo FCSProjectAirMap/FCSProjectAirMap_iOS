@@ -14,6 +14,8 @@
 @property NSString *travel_title;
 @property NSString *travel_title_unique;
 @property NSString *id_number;
+// ##SJ 타이틀 생성일
+@property NSInteger creation_travelTitle;
 @property BOOL activity;
 @property RLMArray<ImageData> *image_datas;
 
