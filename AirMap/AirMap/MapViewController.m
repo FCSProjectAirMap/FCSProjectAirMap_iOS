@@ -185,6 +185,7 @@ static const CGFloat topViewHeight = 74.0f;
     // travel Title Button
     UIButton *travelTitleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelTitleButton.frame = CGRectMake(menuButton.frame.origin.x + BUTTON_SIZE_WIDTH, Y_MARGIN*2, placeSearchButton.frame.origin.x -(menuButton.frame.origin.x + BUTTON_SIZE_WIDTH), BUTTON_SIZE_HEIGHT);
+    [travelTitleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [travelTitleButton addTarget:self
                           action:@selector(travelMakeTouchUpInside:)
                 forControlEvents:UIControlEventTouchUpInside];
@@ -616,7 +617,7 @@ static const CGFloat topViewHeight = 74.0f;
     if ([TravelActivation defaultInstance].travelList == nil) {
         // AlertView로 안내 후 리스트 창을 띄어준다.
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"경 고"
-                                                                       message:@"몰라유"
+                                                                       message:@"현재 활성화된 여행이 없습니다.\n\"확인\"을 누르시면 여행리스트 화면으로 이동합니다."
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확인"
                                                            style:UIAlertActionStyleDefault
