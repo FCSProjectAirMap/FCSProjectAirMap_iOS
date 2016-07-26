@@ -12,7 +12,8 @@
 #import "LoginViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
 
-static const CGFloat overlayrHeight = 45.0f;
+static const CGFloat bottomViewHeight = 54.0f;
+static const CGFloat topViewHeight = 74.0f;
 
 @interface MapViewController ()
 
@@ -22,17 +23,21 @@ static const CGFloat overlayrHeight = 45.0f;
 @property (nonnull) NSMutableArray *markers;
 @property (nonatomic) CLLocationManager *locationManager;
 
-@property (nonatomic, weak) UIButton *plusButton;
-@property (nonatomic, weak) UIButton *albumButton;
-@property (nonatomic, weak) UIButton *locationAddButton;
-@property (nonatomic, weak) UIButton *travelButton;
-@property (nonatomic, weak) UIButton *locationButton;
-@property (nonatomic, weak) UIView *plusView;
-@property (nonatomic, weak) UIView *overlayView;
-@property (nonatomic, weak) UIButton *overlayButton;
-
-@property (nonatomic, weak) UITextField *searchField;
+@property (nonatomic, weak) UIButton *travelPreviousButton;
+@property (nonatomic, weak) UIButton *travelNextButton;
+@property (nonatomic, weak) UIButton *travelMakeButton;
+@property (nonatomic, weak) UIButton *travelAlbumButton;
+@property (nonatomic, weak) UIButton *travelListTopButton;
+@property (nonatomic, weak) UIButton *travelTitleButton;
+@property (nonatomic, weak) UIButton *travelImageListButton;
 @property (nonatomic, weak) UIButton *menuButton;
+@property (nonatomic, weak) UIButton *locationButton;
+@property (nonatomic, weak) UIButton *placeSearchButton;
+
+
+@property (nonatomic, weak) UIView *topView;
+@property (nonatomic, weak) UIView *bottomView;
+
 @property (nonatomic, strong) TravelActivation *travelActivation;
 
 @property (nonatomic, weak) UIButton *logoutButton;
@@ -134,106 +139,106 @@ static const CGFloat overlayrHeight = 45.0f;
     const CGFloat BUTTON_SIZE_HEIGHT = 50.0f;
     const CGFloat X_MARGIN = 10.0f;
     const CGFloat Y_MARGIN = 10.0f;
-    const CGFloat TEXTFIELD_HEIGHT = 45.0f;
     
-    // overlay View
-    UIView *overlayView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.mapView.frame.size.height - overlayrHeight, self.mapView.frame.size.width, overlayrHeight)];
-    overlayView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:0.9f];
-    [self.mapView addSubview:overlayView];
-    self.overlayView = overlayView;
+    // top View
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.mapView.frame.size.width, topViewHeight)];
+    topView.backgroundColor = [UIColor whiteColor];
+    topView.layer.shadowColor = [UIColor blackColor].CGColor;
+    topView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+    topView.layer.shadowOpacity = 0.5f;
+    [self.mapView addSubview:topView];
+    self.topView = topView;
     
-    // overlayTravelTitle Button
-    UIButton *overlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    overlayButton.frame = CGRectMake(0.0f, 0.0f, self.overlayView.frame.size.width, self.overlayView.frame.size.height);
-    overlayButton.titleLabel.textColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f];
-    [overlayButton addTarget:self
-                      action:@selector(overlayButtonTouchUpInside:)
-            forControlEvents:UIControlEventTouchUpInside];
-    [self.overlayView addSubview:overlayButton];
-    self.overlayButton = overlayButton;
+    // menu button
+    UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    menuButton.frame = CGRectMake(X_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    UIImage *menuImage = [UIImage imageNamed:@"menu_icon"];
+    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+    [menuButton addTarget:self
+                   action:@selector(menuTouchUpInside:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [self.topView addSubview:menuButton];
+    self.menuButton = menuButton;
+    
+    // travel Image List Button
+    UIButton *travelImageListButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    travelImageListButton.frame = CGRectMake(topView.frame.size.width - BUTTON_SIZE_WIDTH - Y_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    UIImage *listImage = [UIImage imageNamed:@"list_icon"];
+    [travelImageListButton setBackgroundImage:listImage forState:UIControlStateNormal];
+    [travelImageListButton addTarget:self
+                              action:@selector(travelImageListTouchUpInside:)
+                    forControlEvents:UIControlEventTouchUpInside];
+    [self.topView addSubview:travelImageListButton];
+    self.travelImageListButton = travelImageListButton;
+    
+    // place Search Button
+    UIButton *placeSearchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    placeSearchButton.frame = CGRectMake(travelImageListButton.frame.origin.x - BUTTON_SIZE_WIDTH - Y_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    UIImage *searchImage = [UIImage imageNamed:@"search_icon"];
+    [placeSearchButton setBackgroundImage:searchImage forState:UIControlStateNormal];
+    [placeSearchButton addTarget:self
+                          action:@selector(placeSearchTouchUpInside:)
+                forControlEvents:UIControlEventTouchUpInside];
+    [self.topView addSubview:placeSearchButton];
+    self.placeSearchButton = placeSearchButton;
+    
+    // travel Title Button
+    UIButton *travelTitleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    travelTitleButton.frame = CGRectMake(menuButton.frame.origin.x + BUTTON_SIZE_WIDTH, Y_MARGIN*2, placeSearchButton.frame.origin.x -(menuButton.frame.origin.x + BUTTON_SIZE_WIDTH), BUTTON_SIZE_HEIGHT);
+    [travelTitleButton addTarget:self
+                          action:@selector(travelMakeTouchUpInside:)
+                forControlEvents:UIControlEventTouchUpInside];
+    [self.topView addSubview:travelTitleButton];
+    self.travelTitleButton = travelTitleButton;
+    
+    // bottom View
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.mapView.frame.size.height - bottomViewHeight, self.mapView.frame.size.width, bottomViewHeight)];
+//    bottomView.backgroundColor = [UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:0.9f];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    bottomView.layer.shadowColor = [UIColor blackColor].CGColor;
+    bottomView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+    bottomView.layer.shadowOpacity = 0.5f;
+    [self.mapView addSubview:bottomView];
+    self.bottomView = bottomView;
+    
+    // travel previous Button
+    UIButton *travelPreviousButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    travelPreviousButton.frame = CGRectMake(X_MARGIN, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [travelPreviousButton setBackgroundImage:[UIImage imageNamed:@"previous_icon"] forState:UIControlStateNormal];
+    [self.bottomView addSubview:travelPreviousButton];
+    self.travelPreviousButton = travelPreviousButton;
+    
+    // travel next Button
+    UIButton *travelNextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    travelNextButton.frame = CGRectMake(travelPreviousButton.frame.size.width + X_MARGIN*2, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [travelNextButton setBackgroundImage:[UIImage imageNamed:@"next_icon"] forState:UIControlStateNormal];
+    [self.bottomView addSubview:travelNextButton];
+    self.travelNextButton = travelNextButton;
+    
+    // travel album Button
+    UIButton *travelAlbumButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    travelAlbumButton.frame = CGRectMake(bottomView.frame.size.width - BUTTON_SIZE_WIDTH - X_MARGIN, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [travelAlbumButton setBackgroundImage:[UIImage imageNamed:@"album_icon"] forState:UIControlStateNormal];
+    [self.bottomView addSubview:travelAlbumButton];
+    self.travelAlbumButton = travelAlbumButton;
+    
+    // travel make Button
+    UIButton *travelMakeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    travelMakeButton.frame = CGRectMake(travelAlbumButton.frame.origin.x - BUTTON_SIZE_WIDTH - X_MARGIN, (bottomViewHeight - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    [travelMakeButton setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
+    [self.bottomView addSubview:travelMakeButton];
+    self.travelMakeButton = travelMakeButton;
     
     // location Button
     UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    locationButton.frame = CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT - overlayrHeight, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
+    locationButton.frame = CGRectMake(self.mapView.frame.size.width - X_MARGIN - BUTTON_SIZE_WIDTH, self.mapView.frame.size.height - Y_MARGIN - BUTTON_SIZE_HEIGHT - bottomViewHeight, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
     [locationButton setBackgroundImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
     [locationButton setContentMode:UIViewContentModeScaleAspectFit];
     [locationButton addTarget:self
-                       action:@selector(locationButtonTouchUpInside:)
+                       action:@selector(locationTouchUpInside:)
              forControlEvents:UIControlEventTouchUpInside];
     [self.mapView addSubview:locationButton];
     self.locationButton = locationButton;
-    
-    // plus Button
-    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(self.locationButton.frame.origin.x, self.locationButton.frame.origin.y - Y_MARGIN - BUTTON_SIZE_HEIGHT, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [plusButton setBackgroundImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
-    [plusButton setContentMode:UIViewContentModeScaleAspectFit];
-    [plusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [plusButton addTarget:self
-                   action:@selector(plusButtonTouchUpInside:)
-         forControlEvents:UIControlEventTouchUpInside];
-    [self.mapView addSubview:plusButton];
-    self.plusButton = plusButton;
-    
-    // plus View
-    UIView *plusView = [[UIView alloc] initWithFrame:CGRectMake(plusButton.frame.origin.x, plusButton.frame.origin.y - (BUTTON_SIZE_HEIGHT * 3) - (Y_MARGIN * 3), BUTTON_SIZE_WIDTH, (BUTTON_SIZE_HEIGHT*3) + (Y_MARGIN * 3))];
-    plusView.hidden = YES;
-    [self.mapView addSubview:plusView];
-    self.plusView = plusView;
-
-    // Travel Add Button
-    UIButton *travelButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [travelButton setBackgroundImage:[UIImage imageNamed:@"travel"] forState:UIControlStateNormal];
-    [travelButton setContentMode:UIViewContentModeScaleAspectFit];
-    [travelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [travelButton addTarget:self
-                     action:@selector(travelButtonTouchUpInside:)
-           forControlEvents:UIControlEventTouchUpInside];
-    [self.plusView addSubview:travelButton];
-    self.travelButton = travelButton;
-    
-    // album Button
-    UIButton *albumButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, travelButton.frame.size.height + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [albumButton setBackgroundImage:[UIImage imageNamed:@"album"] forState:UIControlStateNormal];
-    [albumButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [albumButton addTarget:self
-                     action:@selector(albumButtonTouchUpInside:)
-           forControlEvents:UIControlEventTouchUpInside];
-    [self.plusView addSubview:albumButton];
-    self.albumButton = albumButton;
-    
-    // Location Add Button
-    UIButton *locationAddButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, albumButton.frame.origin.y + BUTTON_SIZE_HEIGHT + Y_MARGIN, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT)];
-    [locationAddButton setBackgroundImage:[UIImage imageNamed:@"addLocation"] forState:UIControlStateNormal];
-    [locationAddButton setContentMode:UIViewContentModeScaleAspectFit];
-    [locationAddButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [locationAddButton addTarget:self
-                    action:@selector(locationAddButtonTouchUpInside:)
-          forControlEvents:UIControlEventTouchUpInside];
-    [self.plusView addSubview:locationAddButton];
-    self.locationAddButton = locationAddButton;
-    
-    // 설정 버튼
-    UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(X_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, TEXTFIELD_HEIGHT)];
-    [menuButton addTarget:self
-                       action:@selector(menuButtonTouchUpInside:)
-             forControlEvents:UIControlEventTouchUpInside];
-    menuButton.backgroundColor = [UIColor whiteColor];
-    [menuButton setImage:[UIImage imageNamed:@"Menu_icon"] forState:UIControlStateNormal];
-    [self.mapView addSubview:menuButton];
-    self.menuButton = menuButton;
-    
-    // 구글지도 검색 텍스트 필드
-    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(X_MARGIN + menuButton.frame.size.width, menuButton.frame.origin.y, self.mapView.frame.size.width-menuButton.frame.size.width - (X_MARGIN*2), TEXTFIELD_HEIGHT)];
-    [searchField addTarget:self
-                    action:@selector(searchFieldDidChange:)
-          forControlEvents:UIControlEventEditingDidBegin];
-    searchField.placeholder = @"Google 지도 검색";
-    searchField.borderStyle = UITextBorderStyleNone;
-    searchField.backgroundColor = [UIColor whiteColor];
-    searchField.keyboardType = UIReturnKeyDone;
-    [self.mapView addSubview:searchField];
-    self.searchField = searchField;
-    self.searchField.delegate = self;
 }
 
 // 구글지도 만들어주는 메서드
@@ -249,7 +254,7 @@ static const CGFloat overlayrHeight = 45.0f;
     self.mapView = [GMSMapView mapWithFrame:self.view.frame camera:camera];
     self.mapView.delegate = self;
     self.mapView.myLocationEnabled = YES;
-    self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, overlayrHeight, 0.0f);
+    self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, bottomViewHeight, 0.0f);
     self.view = self.mapView;
 }
 
@@ -276,11 +281,6 @@ static const CGFloat overlayrHeight = 45.0f;
     DLog(@"latitude : %f", self.locationManager.location.coordinate.latitude);
     // 경도
     DLog(@"longitude : %f", self.locationManager.location.coordinate.longitude);
-}
-
-// PlusView Hidden method
-- (void)plusViewHidden {
-    self.plusView.hidden = !self.plusView.hidden;
 }
 
 - (void)travelListViewCall {
@@ -332,22 +332,24 @@ static const CGFloat overlayrHeight = 45.0f;
  *                          Action Method                                   *
  *                                                                          *
  ****************************************************************************/
-// PlusButton 눌렀을때.
-- (void)plusButtonTouchUpInside:(UIButton *)sender {
-    DLog(@"플러스 버튼 눌러!");
-    [self plusViewHidden];
-}
-
-- (void)travelButtonTouchUpInside:(UIButton *)sender {
+// travelMakeButton 눌렀을때.
+- (void)travelMakeTouchUpInside:(UIButton *)sender {
     DLog(@"여행 경로 추가");
-    [self travelListViewCall];
-    [self plusViewHidden];
+    // 상단 여행 제복 버튼 눌렀을 경우.
+    if (sender == self.travelTitleButton) {
+        [self travelListViewCall];
+    // 하단 + 버튼 눌렀을 경우.
+    } else if (sender == self.travelMakeButton) {
+        
+    }
 }
 
-- (void)albumButtonTouchUpInside:(UIButton *)sender {
-    DLog(@"앨범 불러오기.");
-    [self plusViewHidden];
-    
+- (void)placeSearchTouchUpInside:(UIButton *)sender {
+    DLog(@"지역검색 버튼");
+}
+
+// 디바이스 앨범 불러오는 Action Method
+- (void)albumTouchUpInside:(UIButton *)sender {
     // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
     if ([TravelActivation defaultInstance].travelList == nil) {
         // Alert를 호출해 알려준다.
@@ -381,13 +383,8 @@ static const CGFloat overlayrHeight = 45.0f;
     [AuthorizationControll moveToMultiImageSelectFrom:self];
 }
 
-// 현재위치 찍어주는 이벤트
-- (void)locationAddButtonTouchUpInside:(UIButton *)sender {
-    DLog(@"현재위치 마커 찍기");
-    [self plusViewHidden];
-}
 // 현재위치로 화면 이동 이벤트
-- (void)locationButtonTouchUpInside:(UIButton *)sender {
+- (void)locationTouchUpInside:(UIButton *)sender {
     DLog(@"현재 위치로 이동!");
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusAuthorizedWhenInUse ||
@@ -494,7 +491,7 @@ static const CGFloat overlayrHeight = 45.0f;
 }
 
 // 메뉴버튼 이벤트
-- (void)menuButtonTouchUpInside:(UIButton *)sender {
+- (void)menuTouchUpInside:(UIButton *)sender {
     DLog(@"메뉴 버튼 눌렀따!");
     MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
     [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
@@ -527,14 +524,6 @@ static const CGFloat overlayrHeight = 45.0f;
     }];
 }
 
-// search Field Edit
-- (void)searchFieldDidChange:(UITextField *)textField {
-    DLog(@"searchField Edit");
-    PlacesViewController *placesViewController = [[PlacesViewController alloc] init];
-    placesViewController.delegate = self;
-    [self presentViewController:placesViewController animated:NO completion:nil];
-}
-
 // 지도를 탭 했을 경우 UI들 숨기기 메서드
 -(void)appearanceUI {
     // endEditing
@@ -548,30 +537,18 @@ static const CGFloat overlayrHeight = 45.0f;
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              // 애니메이션 진행 로직..
-                             // menu Button
-                             [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
-                                                                  self.menuButton.frame.origin.y - 130.0f,
-                                                                  self.menuButton.frame.size.width,
-                                                                  self.menuButton.frame.size.height)];
-                             // search field
-                             [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
-                                                                   self.searchField.frame.origin.y - 130.0f,
-                                                                   self.searchField.frame.size.width,
-                                                                   self.searchField.frame.size.height)];
-                             // plus Button
-                             [self.plusButton setAlpha:0.0f];
-                             // plus View
-                             [self.plusView setAlpha:0.0f];
+                             // top View
+                             [self.topView setAlpha:0.0f];
                              // loaction Button
                              [self.locationButton setAlpha:0.0f];
                              // status bar
                              self.isStatusBarHidden = YES;
-                             // overlay view
-                             self.mapView.padding = UIEdgeInsetsMake(0.0, 0.0, -overlayrHeight, 0.0);
-                             [self.overlayView setFrame:CGRectMake(self.overlayView.frame.origin.x,
-                                                                   self.overlayView.frame.origin.y + overlayrHeight,
-                                                                   self.overlayView.frame.size.width,
-                                                                   self.overlayView.frame.size.height)];
+                             // bottom view
+                             self.mapView.padding = UIEdgeInsetsMake(0.0, 0.0, -bottomViewHeight, 0.0);
+                             [self.bottomView setFrame:CGRectMake(self.bottomView.frame.origin.x,
+                                                                   self.bottomView.frame.origin.y + bottomViewHeight,
+                                                                   self.bottomView.frame.size.width,
+                                                                   self.bottomView.frame.size.height)];
                              [self setNeedsStatusBarAppearanceUpdate];
                          } completion:^(BOOL finished) {
                              // 애니메이션 완료 로직..
@@ -584,33 +561,18 @@ static const CGFloat overlayrHeight = 45.0f;
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              // 애니메이션 진행 로직..
-                             // menu Button
-                             [self.menuButton setFrame:CGRectMake(self.menuButton.frame.origin.x,
-                                                                  self.menuButton.frame.origin.y + 130.0f,
-                                                                  self.menuButton.frame.size.width,
-                                                                  self.menuButton.frame.size.height)];
-                             // search field
-                             [self.searchField setFrame:CGRectMake(self.searchField.frame.origin.x,
-                                                                   self.searchField.frame.origin.y + 130.0f,
-                                                                   self.searchField.frame.size.width,
-                                                                   self.searchField.frame.size.height)];
-                             // plus Button
-                             [self.plusButton setAlpha:1.0f];
-                             // plus View
-                             if (![self.plusView isHidden]) {
-                                 self.plusView.hidden = !self.plusView.hidden;
-                             }
-                             [self.plusView setAlpha:1.0f];
+                             // top View
+                             [self.topView setAlpha:1.0f];
                              // loaction Button
                              [self.locationButton setAlpha:1.0f];
                              // status bar
                              self.isStatusBarHidden = NO;
                              // overlay view
-                             self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, overlayrHeight, 0.0f);
-                             [self.overlayView setFrame:CGRectMake(self.overlayView.frame.origin.x,
-                                                                   self.overlayView.frame.origin.y - overlayrHeight,
-                                                                   self.overlayView.frame.size.width,
-                                                                   self.overlayView.frame.size.height)];
+                             self.mapView.padding = UIEdgeInsetsMake(0.0f, 0.0f, bottomViewHeight, 0.0f);
+                             [self.bottomView setFrame:CGRectMake(self.bottomView.frame.origin.x,
+                                                                   self.bottomView.frame.origin.y - bottomViewHeight,
+                                                                   self.bottomView.frame.size.width,
+                                                                   self.bottomView.frame.size.height)];
                              
                              [self setNeedsStatusBarAppearanceUpdate];
                          } completion:^(BOOL finished) {
@@ -620,12 +582,28 @@ static const CGFloat overlayrHeight = 45.0f;
     }
 }
 
-// bottom overlay Button 클릭 이벤트
-- (void)overlayButtonTouchUpInside:(UIButton *)sender {
-    DLog(@"overlayButton TouchUp");
+// travel Image List Button 클릭 이벤트
+- (void)travelImageListTouchUpInside:(UIButton *)sender {
+    DLog(@"traveImageListButtonTouchUpInside");
     // 현재 활성화된 여행이 없을 경우 바로 여행리스트 접근.
     if ([TravelActivation defaultInstance].travelList == nil) {
-        [self travelListViewCall];
+        // AlertView로 안내 후 리스트 창을 띄어준다.
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"경 고"
+                                                                       message:@"몰라유"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"확인"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                            [self travelListViewCall];
+                                                         }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취소"
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 
+                                                             }];
+        [alert addAction:okAction];
+        [alert addAction:cancelAction];
+        [self presentViewController:alert animated:YES completion:nil];
         return;
     }
     // Activity되어 있는 여행 리스트를 보여준다.
@@ -669,8 +647,8 @@ static const CGFloat overlayrHeight = 45.0f;
 #pragma mark - Notification
 // OverLayView에 title
 - (void)travelTitleChange:(NSNotification *)notification {
-    self.overlayButton.titleLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0];
-    [self.overlayButton setTitle:notification.object forState:UIControlStateNormal];
+    self.travelTitleButton.titleLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0];
+    [self.travelTitleButton setTitle:notification.object forState:UIControlStateNormal];
 }
 
 -(void)DisappearBlurWhenLogout:(NSNotification *)notification{
