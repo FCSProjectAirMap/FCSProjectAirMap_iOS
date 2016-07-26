@@ -74,7 +74,7 @@
     NSDictionary *params = @{@"email": userEmail,
                              @"password": userPassword};
     [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
+    
         completionBlock(YES);
         
         NSLog(@"Authentication Success");
