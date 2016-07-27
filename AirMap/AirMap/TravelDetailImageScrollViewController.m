@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic) NSInteger imageIndex;
+@property (nonatomic, weak) UIButton *closeButton;
 
 @end
 
@@ -27,12 +28,14 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self setupUI];
     self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)setupUI {
-    
+
+    // Scroll View
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height)];
     scrollView.pagingEnabled = YES;
     scrollView.alwaysBounceVertical = NO;
@@ -51,6 +54,25 @@
     scrollView.contentSize = CGSizeMake(self.view.frame.size.width * travelList.image_datas.count, self.view.frame.size.height);
     [self.view addSubview:scrollView];
     self.scrollView = scrollView;
+    
+    // Close Button
+    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    closeButton.frame = CGRectMake(10.0f, 32.0f, 50.0f, 50.0f);
+    [closeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [closeButton setTitle:@"X" forState:UIControlStateNormal];
+    closeButton.titleLabel.font = [UIFont fontWithName:@"NanumGothic.otf" size:15.0f];
+//    [closeButton setBackgroundImage:[UIImage imageNamed:@"close_icon"] forState:UIControlStateNormal];
+    [closeButton addTarget:self
+                    action:@selector(closeTouchUpInside:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:closeButton];
+    self.closeButton = closeButton;
 }
 
+#pragma mark - UIControlEvent Method
+- (void)closeTouchUpInside:(UIButton *)sender {
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
 @end
