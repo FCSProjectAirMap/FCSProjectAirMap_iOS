@@ -12,7 +12,8 @@
 
 @property (strong, nonatomic) NSString *JWTToken;
 @property (strong, nonatomic) UserInfo *userInfo;
-@property (strong, nonatomic) NSString *user_id;
+@property (strong, nonatomic) NSString *userId;
+
 @end
 
 @implementation RequestObject
@@ -47,8 +48,10 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         self.userInfo = resultArray[0];
         // @앞 아이디가져오기
         NSArray *idArray = [self.userInfo.user_id componentsSeparatedByString:@"@"];
-        self.user_id = [idArray firstObject];
-        NSLog(@"%@", self.user_id);
+        self.userId = [idArray firstObject];
+        // filename Unique 만들기
+        self.fileNameForUnique = [NSString stringWithFormat:@"%@_%@", self.userId, [TravelActivation defaultInstance].travelList.travel_title_unique];
+        NSLog(@"%@", self.fileNameForUnique);
         // 토큰값 가져오기
         self.JWTToken = [@"JWT " stringByAppendingString:self.userInfo.user_token];
         NSLog(@"%@", self.JWTToken);
@@ -79,7 +82,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         // 이미지 파일
         UIImage *image = selectedImages[i];
         // 파일 이름을 uer_id_travel_title_unique_timestamp.jpeg로 저장
-        NSString *fileName = [NSString stringWithFormat:@"%@_%@_%@.jpeg", self.user_id, [TravelActivation defaultInstance].travelList.travel_title_unique, selectedData[i][@"timestamp"]];
+        NSString *fileName = [NSString stringWithFormat:@"%@_%@.jpeg", self.fileNameForUnique, selectedData[i][@"timestamp"]];
         
         //        dispatch_async(uploadQueue, ^{
         // 큐내에서 POST로 이미지 한장씩 비동기로 전달
@@ -94,7 +97,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"Image Uploade Success");
-            [self requestTravelList];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"Image Upload Error: %@",error);
         }];
@@ -120,6 +122,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
               NSLog(@"Metadata Post success!");
               [self uploadSelectedImages:selectedImages withSelectedData:selectedDatas];
+              [self requestTravelList];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
               NSLog(@"Metadata Post error: %@", error);
               
@@ -203,13 +206,13 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
             TravelList *travelList = [[TravelList alloc] init];
             NSArray *subTitleArray = [[responseObject[i] objectForKey:@"travel_title"] componentsSeparatedByString:@"_"];
             travelList.travel_title = [subTitleArray firstObject];
-            travelList.travel_title_unique = [responseArray[i] objectForKey:@"travel_title"];
-            travelList.id_number = [NSString stringWithFormat:@"%@", [responseArray[i] objectForKey:@"id"]];
 
             // realm DB에 metadata 저장
             [realm beginWriteTransaction];
+            travelList.travel_title_unique = [responseArray[i] objectForKey:@"travel_title"];
+            travelList.id_number = [NSString stringWithFormat:@"%@", [responseArray[i] objectForKey:@"id"]];
 //            [realm addOrUpdateObject:travelList];
-            [self.userInfo.travel_list addObject:travelList];
+//            [self.userInfo.travel_list addObject:travelList];
             [realm commitWriteTransaction];
         }
     }
@@ -232,7 +235,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         
         // realm DB에 detatil metadata 저장
         [realm beginWriteTransaction];
-        [[TravelActivation defaultInstance].travelList.image_datas addObject:imageData];
+        [realm addOrUpdateObject:imageData];
         [realm commitWriteTransaction];
     }
 }
