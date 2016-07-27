@@ -364,6 +364,10 @@ static const CGFloat topViewHeight = 74.0f;
 
 - (void)placeSearchTouchUpInside:(UIButton *)sender {
     DLog(@"지역검색 버튼");
+    PlacesViewController *placesViewController = [[PlacesViewController alloc] init];
+    [self presentViewController:placesViewController animated:NO completion:^{
+        
+    }];
 }
 
 // 디바이스 앨범 불러오는 Action Method
