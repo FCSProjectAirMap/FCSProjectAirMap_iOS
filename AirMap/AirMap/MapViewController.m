@@ -419,7 +419,7 @@ static const CGFloat topViewHeight = 74.0f;
             self.mapView.myLocationEnabled = YES;
         });
         
-        if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==40)){
+        if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==40)){
         
         
             CAMediaTimingFunction *curve =
@@ -437,7 +437,7 @@ static const CGFloat topViewHeight = 74.0f;
             [_mapView.layer addAnimation:animation1 forKey:kGMSLayerCameraViewingAngleKey];
             
             
-        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==0)){
+        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==0)){
             
             CAMediaTimingFunction *curve =
             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -453,7 +453,7 @@ static const CGFloat topViewHeight = 74.0f;
                         animation2.fillMode = kCAFillModeForwards;
                         [_mapView.layer addAnimation:animation2 forKey:kGMSLayerCameraViewingAngleKey];
             
-        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&((_mapView.camera.viewingAngle !=0)||(_mapView.camera.viewingAngle !=40))){
+        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&((_mapView.camera.viewingAngle !=0)||(_mapView.camera.viewingAngle !=40))){
             
         }
         else{
