@@ -197,7 +197,30 @@
     [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         completionBlock(YES);
         NSLog(@"Register Success");
-        NSLog(@"JSON: %@",responseObject);
+        NSURL *URL2 = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/login/"];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        NSDictionary *params = @{@"email": userEmail,
+                                 @"password": userPassword};
+        [manager POST:URL2.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+            
+            NSLog(@"Authentication Success");
+            NSLog(@"JSON: %@",responseObject);
+        } failure:^(NSURLSessionTask *operation, NSError *error) {
+            NSLog(@"Authentication Failure");
+            NSLog(@"Error : %@", error);
+            
+            NSHTTPURLResponse* r = (NSHTTPURLResponse*)operation.response;
+            NSInteger errorMessage =r.statusCode;
+            if(errorMessage == 0)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NotierrorforNetwork" object:self userInfo:nil];
+                
+            }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Notierrorlogin" object:self userInfo:nil];
+            }
+            
+        }];
+
     }failure:^(NSURLSessionTask *operation, NSError *error) {
         completionBlock(NO);
         NSLog(@"Register fail");
