@@ -10,6 +10,7 @@
 
 @interface ImageData : RLMObject
 
+@property NSString *image_name_unique;
 @property NSString *creation_date;
 @property float latitude;
 @property float longitude;

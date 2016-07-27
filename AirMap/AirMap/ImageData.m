@@ -12,6 +12,11 @@
 
 // Specify default values for properties
 
+// primary key 생성.
++ (NSString *)primaryKey {
+    return @"image_name_unique";
+}
+
 //+ (NSDictionary *)defaultPropertyValues
 //{
 //    return @{};
