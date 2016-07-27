@@ -34,7 +34,7 @@
     const CGFloat BUTTON_SIZE_WIDTH = 50.0f;
     const CGFloat BUTTON_SIZE_HEIGHT = 50.0f;
     const CGFloat X_MARGIN = 10.0f;
-    const CGFloat Y_MARGIN = 10.0f;
+//    const CGFloat Y_MARGIN = 10.0f;
     
     // travel previous Button
     UIButton *travelPreviousButton = [UIButton buttonWithType:UIButtonTypeCustom];

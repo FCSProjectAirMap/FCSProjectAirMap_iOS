@@ -154,9 +154,10 @@
                                                              [weakSelf.travelUserInfo.travel_list addObject:travelList];
                                                              [realm commitWriteTransaction];
                                                             
-                                                             // 서버에 요청 후 id_number값을 받아온다.
-                                                             RequestObject *requestObject = [[RequestObject alloc] init];
-                                                             [requestObject uploadTravelTitleDatas:travelList.travel_title_unique];
+                                                             // ##MJ 서버에 새로생긴 travleTitle 저장 후 id_number값을 받아온다.
+                                                             [[RequestObject sharedInstance] uploadTravelTitleDatas:travelTitle
+                                                                                                       withActivity:NO
+                                                                                                       inTravelList:travelList];
                                                          }
                                                      }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"

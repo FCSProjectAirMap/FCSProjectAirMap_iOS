@@ -231,7 +231,7 @@ const CGFloat imageShortLength = 640;
         imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
         imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
         imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] integerValue];
-        imageData.image_name_unique = [NSString stringWithFormat:@"%@_%@", [RequestObject sharedInstance].fileNameForUnique, [self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"]];
+        imageData.image_name_unique = [NSString stringWithFormat:@"%@_%@_%@", [RequestObject sharedInstance].userId, [TravelActivation defaultInstance].travelList.travel_title_unique,[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"]];
         imageData.image = image;
 
         // realm DB에 metadata 저장
