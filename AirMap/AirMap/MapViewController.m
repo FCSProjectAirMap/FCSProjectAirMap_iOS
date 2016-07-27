@@ -652,7 +652,7 @@ static const CGFloat topViewHeight = 74.0f;
     
     TravelList *travelList = self.travelActivation.travelList;
     // 시간차순으로 정렬
-    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
     
     GMSMutablePath *path = [GMSMutablePath path];
     GMSMarker *marker = nil;

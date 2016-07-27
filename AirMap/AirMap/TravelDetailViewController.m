@@ -128,15 +128,15 @@ const CGFloat ROW_HEIGHT = 350.0f;
 - (NSString *)travelStartToEndDate:(TravelDateFlag)dateFlag{
     NSString *imageCreationDate = @"";
     // 날짜를 시간순으로 정렬
-    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
     if (dateFlag == TravelDateFlagStart) {
         // 시작 날짜
         ImageData *imageData = [result firstObject];
-        imageCreationDate = imageData.creation_date;
+        imageCreationDate = imageData.timezone_date;
     } else if (dateFlag == TravelDateFlagEnd) {
         // 마지막 날짜
         ImageData *imageData = [result lastObject];
-        imageCreationDate = imageData.creation_date;
+        imageCreationDate = imageData.timezone_date;
     }
     return imageCreationDate;
 }
@@ -197,11 +197,11 @@ const CGFloat ROW_HEIGHT = 350.0f;
     
     // Realm에 저장된 메타데이터, 이미지 가져오기
     // 날짜를 시간순으로 정렬.
-    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
     ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
     NSDictionary *travelDetailInfoDictionary = @{ @"image": image,
-                                                  @"creationDate": [NSString stringWithFormat:@"%@", imageMetaData.creation_date],
+                                                  @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
                                                   @"country": @"한국",
                                                   @"imageHeight":@(ROW_HEIGHT) };
     
