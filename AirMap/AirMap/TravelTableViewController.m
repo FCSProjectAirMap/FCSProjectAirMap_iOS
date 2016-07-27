@@ -170,6 +170,11 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+// TravelList를 소팅해주는 메서드.
+- (RLMResults *)travelListsortedResultsUsingProperty:(NSString *)property ascending:(BOOL)ascending {
+    return [self.travelUserInfo.travel_list sortedResultsUsingProperty:property ascending:ascending];
+}
+
 #pragma mark - Action Method
 // 여행 경로 닫기 버튼 이벤트
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
@@ -205,7 +210,7 @@
         cell.delegate = self;
     }
     // ##SJ 최신생성한 기준으로 정렬.
-    RLMResults *sortedResult = [self.travelUserInfo.travel_list sortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+    RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
     TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     
 //    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
@@ -264,7 +269,10 @@
         
         // Realm Data delete
         __weak typeof(self) weakSelf = self;
-        TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:path.row];
+        // ##SJ 삭제시 정렬된 순서를 가져와 해당 row를 참조하여 삭제.
+        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+        TravelList *travelList = [sortedResult objectAtIndex:path.row];
+
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm transactionWithBlock:^{
             // 이미지 데이터를 지워주고.
@@ -291,7 +299,9 @@
     else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
         DLog(@"modify Touch");
         
-        TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:path.row];
+        // ##SJ 수정할때 정렬된 순서를 가져와서 해당 row를 참조하여 수정.
+        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+        TravelList *travelList = [sortedResult objectAtIndex:path.row];
         // TravelDetail View Controller 호출
         TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
         [self.navigationController pushViewController:travelDetailViewController animated:YES];
