@@ -110,7 +110,7 @@
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [self addChildViewController:self.resultTableViewController];
-    self.resultTableViewController.view.frame = CGRectMake(10.0f, self.backButton.bounds.size.height + self.backButton.bounds.origin.y + 50.0f, self.view.bounds.size.width - (10.f * 2), self.view.bounds.size.height - 44.0f);
+    self.resultTableViewController.view.frame = CGRectMake(10.0f, self.backButton.bounds.size.height + self.backButton.bounds.origin.y + 20.0f, self.view.bounds.size.width - (10.f * 2), self.view.bounds.size.height - 44.0f);
     self.resultTableViewController.view.alpha = 0.0f;
     [self.view addSubview:self.resultTableViewController.view];
     [self.resultTableViewController.tableView reloadData];

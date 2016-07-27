@@ -21,4 +21,6 @@
 // 로그인 성공시 서버에 저장된 모든 여행경로 불러오기(+ id)
 - (void)requestTravelList;
 
+// 새로생긴 여행 타이틀 업로드
+- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy;
 @end

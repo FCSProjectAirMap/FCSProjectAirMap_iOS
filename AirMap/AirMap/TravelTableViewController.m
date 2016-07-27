@@ -50,6 +50,9 @@
         NSLog(@"notification : %@", notification);
         [weakSelf.travelTableView reloadData];
     }];
+    
+    // 하단 +를 눌렀을 경우 호출 되는 NotificationCenter등록.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelListMake:) name:@"travelListMake" object:nil];
 }
 
 #pragma mark - General Method
@@ -150,6 +153,8 @@
                                                              [realm beginWriteTransaction];
                                                              [weakSelf.travelUserInfo.travel_list addObject:travelList];
                                                              [realm commitWriteTransaction];
+                                                            
+                                                             // 서버에 요청 후 id_number값을 받아온다.
                                                          }
                                                      }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"
@@ -165,6 +170,11 @@
         [textField setPlaceholder:@"여행 제목을 입력해 주세요!"];
     }];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+// TravelList를 소팅해주는 메서드.
+- (RLMResults *)travelListsortedResultsUsingProperty:(NSString *)property ascending:(BOOL)ascending {
+    return [self.travelUserInfo.travel_list sortedResultsUsingProperty:property ascending:ascending];
 }
 
 #pragma mark - Action Method
@@ -202,7 +212,7 @@
         cell.delegate = self;
     }
     // ##SJ 최신생성한 기준으로 정렬.
-    RLMResults *sortedResult = [self.travelUserInfo.travel_list sortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+    RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
     TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     
 //    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
@@ -224,7 +234,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
-    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
+    RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+    TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     [self.travelActivation travelListActivation:travelList];
     
     // Modal을 MapViewController (rootViewController)에서 호출해야 하기 때문에 rootView의 instance를 참조 해서 앨범 뷰를 호출한다.
@@ -244,6 +255,11 @@
     }];
 }
 
+#pragma mark - Noification
+- (void)travelListMake:(NSNotificationCenter *)notification {
+    [self showTravelListAddAlert];
+}
+
 #pragma mark - MGSwipeTableCellDelegate
 // Swipe했을 때 실행되는 Delegate
 -(BOOL) swipeTableCell:(MGSwipeTableCell*) cell tappedButtonAtIndex:(NSInteger) index direction:(MGSwipeDirection)direction fromExpansion:(BOOL) fromExpansion {
@@ -256,7 +272,10 @@
         
         // Realm Data delete
         __weak typeof(self) weakSelf = self;
-        TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:path.row];
+        // ##SJ 삭제시 정렬된 순서를 가져와 해당 row를 참조하여 삭제.
+        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+        TravelList *travelList = [sortedResult objectAtIndex:path.row];
+
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm transactionWithBlock:^{
             // 이미지 데이터를 지워주고.
@@ -283,7 +302,9 @@
     else if (direction == MGSwipeDirectionRightToLeft && index == 1) {
         DLog(@"modify Touch");
         
-        TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:path.row];
+        // ##SJ 수정할때 정렬된 순서를 가져와서 해당 row를 참조하여 수정.
+        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+        TravelList *travelList = [sortedResult objectAtIndex:path.row];
         // TravelDetail View Controller 호출
         TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
         [self.navigationController pushViewController:travelDetailViewController animated:YES];
