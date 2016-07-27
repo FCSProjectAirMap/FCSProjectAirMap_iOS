@@ -19,7 +19,9 @@
 - (void)removeSelectedAsset:(PHAsset *)asset;
 - (void)resetSelectedFiles;
 
-- (PHFetchResult *)callFetchResult;
+//- (PHFetchResult *)callFetchResult;
+- (PHFetchResult *)callCollectionResult;
+- (NSMutableArray *)callCollectionAssetResutls;
 //- (NSMutableArray *)callSelectedAssets;
 //- (NSMutableArray *)callSelectedImages;
 //- (NSMutableArray *)callSelectedData;
