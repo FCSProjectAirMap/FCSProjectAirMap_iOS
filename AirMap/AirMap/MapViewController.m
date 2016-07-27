@@ -663,16 +663,27 @@ static const CGFloat topViewHeight = 74.0f;
 
 // Marker선택시 UIView 보여주는 Delegate Method
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
-//    TravelList *travelList = self.travelActivation.travelList;
-    // ##SJ Test
-    RLMResults *resultArray = [ImageData objectsWhere:@"creation_date == %@", marker.title];
-    if (resultArray.count > 0) {
-        ImageData *imageData = resultArray[0];
-        UIView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData.image]];
-        imageView.frame = CGRectMake(0.0f, 0.0f, 150.0f, 150.0f);
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        return imageView;
+
+    // ##SJ 이미지 리스트의 전체 where절을 사용하는것보다 하나의 여행폴더에 이미지의 최대 갯수가 30개라 for문을 돌리는게 더 효율적이라고 생각.
+    // 이미지 timestapm로 매칭.
+    TravelList *travelList = self.travelActivation.travelList;
+    for (ImageData *imageData in travelList.image_datas) {
+        if ([marker.title isEqualToString:[NSString stringWithFormat:@"%ld", imageData.timestamp]]) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData.image]];
+            imageView.frame = CGRectMake(0.0f, 0.0f, 80.0f, 80.0f);
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            return imageView;
+        }
     }
+    
+//    RLMResults *resultArray = [ImageData objectsWhere:@"creation_date == %@", marker.title];
+//    if (resultArray.count > 0) {
+//        ImageData *imageData = resultArray[0];
+//        UIView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData.image]];
+//        imageView.frame = CGRectMake(0.0f, 0.0f, 150.0f, 150.0f);
+//        imageView.contentMode = UIViewContentModeScaleAspectFill;
+//        return imageView;
+//    }
     return nil;
 }
 
@@ -703,7 +714,9 @@ static const CGFloat topViewHeight = 74.0f;
         // Marker
         CLLocationCoordinate2D position = CLLocationCoordinate2DMake(imageData.latitude, imageData.longitude);
         marker = [GMSMarker markerWithPosition:position];
-        marker.title = imageData.creation_date;
+        // ##SJ imageData의 creation_date는 사용하지 않음..!!
+        // marker.title = imageData.creation_date;
+        marker.title = [NSString stringWithFormat:@"%ld", imageData.timestamp];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker"]];
         imageView.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
         marker.iconView = imageView;
@@ -712,16 +725,9 @@ static const CGFloat topViewHeight = 74.0f;
         [path addCoordinate:position];
     }
     
-    // 점선 설정
-    NSArray *styles = @[[GMSStrokeStyle solidColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]],
-                        [GMSStrokeStyle solidColor:[UIColor clearColor]]];
-    NSArray *lengths = @[@1000, @500];
-    
     GMSPolyline *poly = [GMSPolyline polylineWithPath:path];
-    poly.geodesic = YES;
-    poly.strokeWidth = 2.5f;
-    // kGmsLengthGeodesic : 최단거리
-    poly.spans = GMSStyleSpans(poly.path, styles, lengths, kGMSLengthGeodesic);
+    poly.strokeColor = [UIColor brownColor];
+    poly.strokeWidth = 3.0f;
     poly.map = _mapView;
     
     // fit bounds
