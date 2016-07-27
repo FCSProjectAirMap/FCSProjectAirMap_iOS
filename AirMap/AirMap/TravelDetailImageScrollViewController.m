@@ -28,14 +28,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)setupUI {
+    
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height)];
     scrollView.pagingEnabled = YES;
     scrollView.alwaysBounceVertical = NO;
     TravelList *travelList = [TravelActivation defaultInstance].travelList;
-    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timestamp" ascending:YES];
+    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
     NSInteger index = 0;
     for (ImageData *imageData in result) {
         CGFloat xOrigin = index * self.view.frame.size.width;
