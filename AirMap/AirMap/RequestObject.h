@@ -13,6 +13,8 @@
 
 @interface RequestObject : UIView
 
+@property (strong, nonatomic) NSString *fileNameForUnique;
+
 + (instancetype)sharedInstance;
 // 메타데이터, 이미지 전송
 - (void)uploadSelectedMetaDatas:(NSMutableArray *)selectedDatas withSelectedImages:(NSMutableArray *)selectedImages;

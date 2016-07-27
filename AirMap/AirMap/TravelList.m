@@ -10,6 +10,11 @@
 
 @implementation TravelList
 
+// primary key 생성.
++ (NSString *)primaryKey {
+    return @"travel_title_unique";
+}
+
 // Specify default values for properties
 
 //+ (NSDictionary *)defaultPropertyValues

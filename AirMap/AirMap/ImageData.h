@@ -10,11 +10,12 @@
 
 @interface ImageData : RLMObject
 
+@property NSString *image_name_unique;
 @property NSString *creation_date;
 @property float latitude;
 @property float longitude;
 @property NSInteger timestamp;
-@property NSDate *timezone_date;
+@property NSString *timezone_date;
 @property NSString *country;
 @property NSString *city;
 @property NSString *thumbnail_url;

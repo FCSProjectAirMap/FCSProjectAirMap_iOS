@@ -12,7 +12,8 @@
 
 @property (strong, nonatomic) NSString *JWTToken;
 @property (strong, nonatomic) UserInfo *userInfo;
-@property (strong, nonatomic) NSString *user_id;
+@property (strong, nonatomic) NSString *userId;
+
 @end
 
 @implementation RequestObject
@@ -47,8 +48,10 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         self.userInfo = resultArray[0];
         // @앞 아이디가져오기
         NSArray *idArray = [self.userInfo.user_id componentsSeparatedByString:@"@"];
-        self.user_id = [idArray firstObject];
-        NSLog(@"%@", self.user_id);
+        self.userId = [idArray firstObject];
+        // filename Unique 만들기
+        self.fileNameForUnique = [NSString stringWithFormat:@"%@_%@", self.userId, [TravelActivation defaultInstance].travelList.travel_title_unique];
+        NSLog(@"%@", self.fileNameForUnique);
         // 토큰값 가져오기
         self.JWTToken = [@"JWT " stringByAppendingString:self.userInfo.user_token];
         NSLog(@"%@", self.JWTToken);
@@ -65,7 +68,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
     NSDictionary *parameters =  @{@"travel_title":[TravelActivation defaultInstance].travelList.travel_title_unique};
     
     // global queue 생성
-//    dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //    dispatch_queue_t uploadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
     // 네트워킹을 위한 AFHTTPSettion Manager 생성, JWTToken 값으로 접근 권한 설정
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -79,28 +82,26 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         // 이미지 파일
         UIImage *image = selectedImages[i];
         // 파일 이름을 uer_id_travel_title_unique_timestamp.jpeg로 저장
-        NSString *fileName = [NSString stringWithFormat:@"%@_%@_%@.jpeg", self.user_id, [TravelActivation defaultInstance].travelList.travel_title_unique, selectedData[i][@"timestamp"]];
+        NSString *fileName = [NSString stringWithFormat:@"%@_%@.jpeg", self.fileNameForUnique, selectedData[i][@"timestamp"]];
         
-//        dispatch_async(uploadQueue, ^{
-            // 큐내에서 POST로 이미지 한장씩 비동기로 전달
-            [manager POST:imageUploadURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
-                                            name:@"image_data"
-                                        fileName:fileName
-                                        mimeType:@"image/jepg"];
-                NSLog(@"%@", fileName);
-
-            } progress:^(NSProgress * _Nonnull uploadProgress) {
-                
-            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"Image Uploade Success");
-                [self requestTravelList];
-//                [[MultiImageDataCenter sharedImageDataCenter] resetSelectedFiles];
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                NSLog(@"Image Upload Error: %@",error);
-//                [[MultiImageDataCenter sharedImageDataCenter] resetSelectedFiles];
-            }];
-//        });
+        //        dispatch_async(uploadQueue, ^{
+        // 큐내에서 POST로 이미지 한장씩 비동기로 전달
+        [manager POST:imageUploadURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8)
+                                        name:@"image_data"
+                                    fileName:fileName
+                                    mimeType:@"image/jepg"];
+            NSLog(@"%@", fileName);
+            
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"Image Uploade Success");
+            [self requestDetailMetadatas];
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"Image Upload Error: %@",error);
+        }];
+        //        });
     };
 }
 
@@ -122,6 +123,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
               NSLog(@"Metadata Post success!");
               [self uploadSelectedImages:selectedImages withSelectedData:selectedDatas];
+              [self requestTravelList];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
               NSLog(@"Metadata Post error: %@", error);
               
@@ -132,7 +134,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
           }];
 }
 
-// 여행경로 리스트 받는 메소드
+// 여행경로 리스트 받기
 - (void)requestTravelList {
     
     NSLog(@"Start get metadatas");
@@ -143,37 +145,21 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
     [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
     
     [manager GET:listRequestURL parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-#warning for test  NSLog(@"%@", downloadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"get list success!");
         NSLog(@"%@", responseObject);
-        
-        NSArray *responseArray = [NSArray arrayWithArray:responseObject];
-        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        
-        // 로그인되어있는 유저_서버에 저장되어있는 여행리스트-id값 가져와서 내부 Reaml에 저장(but, primary 값 설정이 필요할듯)
-        for (NSInteger i = 0; i < responseArray.count; i++) {
-            
-            TravelList *travelList = [[TravelList alloc] init];
-            travelList.travel_title_unique = [responseArray[i] objectForKey:@"travel_title"];
-            travelList.id_number = [NSString stringWithFormat:@"%@", [responseArray[i] objectForKey:@"id"]];
-            
-            // realm DB에 metadata 저장
-            [realm beginWriteTransaction];
-            [self.userInfo.travel_list addObject:travelList];
-            [realm commitWriteTransaction];
-        }
-
+        [self saveTitleListWithResponseObject:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"get list Error:%@", error);
     }];
 }
 
-// 특정 세부 메타데이터 받는 메소드
-- (void)requestDetailMetadatasForIdNumber:(NSString *)idNumber {
+// 특정 id에 저장된 세부 메타데이터 받기
+- (void)requestDetailMetadatas {
     
     NSLog(@"Start get detail metadatas");
+    
+    NSString *idNumber = [TravelActivation defaultInstance].travelList.id_number;
     NSString *numberString = [NSString stringWithFormat:@"%@/", idNumber];
     NSString *urlString = [detailRequestURL stringByAppendingString:numberString];
     NSLog(@"%@",urlString);
@@ -188,9 +174,75 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         NSLog(@"get detail success!");
         NSLog(@"%@", responseObject);
         
+        [self saveDetailDataWithResponseObject:responseObject];
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"get detail Error:%@", error);
     }];
+}
+
+- (void)saveTitleListWithResponseObject:(id)responseObject {
+    
+    NSArray *responseArray = [NSArray arrayWithArray:responseObject];
+    
+    // Realm에 기존에 저장되어있는 값 가져오기
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    NSInteger count = self.userInfo.travel_list.count;
+    NSMutableArray *travelArray = [[NSMutableArray alloc] initWithCapacity:count];
+    
+    if (count != 0) {
+        for (NSInteger i = 0; i < count; i++) {
+            TravelList *travelList = self.userInfo.travel_list[i];
+            [travelArray addObject:[NSString stringWithFormat:@"%@", travelList.id_number]];
+        }
+    }
+    NSLog(@"travelListinrealm:%@", travelArray);
+    
+    // Realm에 저장되어있는 id값 비교해서 서버에있는 새로운내용만 Reaml에 저장
+    TravelList *travelList = [TravelActivation defaultInstance].travelList;
+
+    for (NSInteger i = 0; i < responseArray.count; i++) {
+        
+        NSString *idNumber = [NSString stringWithFormat:@"%@",[responseArray[i] objectForKey:@"id"]];
+        if (![travelArray containsObject:idNumber]) {
+            
+            NSArray *subTitleArray = [[responseObject[i] objectForKey:@"travel_title"] componentsSeparatedByString:@"_"];
+
+            // realm DB에 metadata 저장
+            [realm beginWriteTransaction];
+//            travelList.travel_title_unique = [responseArray[i] objectForKey:@"travel_title"];
+            travelList.travel_title = [subTitleArray firstObject];
+            travelList.id_number = [NSString stringWithFormat:@"%@", [responseArray[i] objectForKey:@"id"]];
+            [realm commitWriteTransaction];
+        }
+    }
+}
+
+- (void)saveDetailDataWithResponseObject:(id)responseObject {
+    
+    NSArray *responseArray = [NSArray arrayWithArray:responseObject];
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMArray *imageDatas = [TravelActivation defaultInstance].travelList.image_datas;
+
+    for (NSInteger i = 0; i < responseArray.count; i++) {
+        
+        ImageData *imageData = imageDatas[i];
+        
+        // realm DB에 detatil metadata 저장
+        [realm beginWriteTransaction];
+        
+        imageData.timezone_date = [responseArray[i] objectForKey:@"created_date"];
+        imageData.country = [responseObject[i] objectForKey:@"country"];
+        imageData.city = [responseObject[i] objectForKey:@"city"];
+        imageData.country = [responseObject[i] objectForKey:@"country"];
+        if ([responseObject[i] objectForKey:@"travel_image"] != nil) {
+            imageData.image_url = [responseObject[i] objectForKey:@"travel_image"];
+        }
+
+//        [realm addOrUpdateObject:imageData];
+        [realm commitWriteTransaction];
+    }
 }
 
 // Travel Title 업로드 리퀘스트
