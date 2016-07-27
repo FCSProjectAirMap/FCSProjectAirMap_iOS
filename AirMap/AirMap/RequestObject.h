@@ -13,7 +13,7 @@
 
 @interface RequestObject : UIView
 
-@property (strong, nonatomic) NSString *fileNameForUnique;
+@property (strong, nonatomic) NSString *userId;
 
 + (instancetype)sharedInstance;
 // 메타데이터, 이미지 전송
@@ -22,5 +22,5 @@
 - (void)requestTravelList;
 
 // 새로생긴 여행 타이틀 업로드
-- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy;
+- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy inTravelList:(TravelList *)travelList;
 @end
