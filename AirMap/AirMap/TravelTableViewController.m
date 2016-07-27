@@ -153,6 +153,8 @@
                                                              [realm beginWriteTransaction];
                                                              [weakSelf.travelUserInfo.travel_list addObject:travelList];
                                                              [realm commitWriteTransaction];
+                                                            
+                                                             // 서버에 요청 후 id_number값을 받아온다.
                                                          }
                                                      }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"
@@ -232,7 +234,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
-    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
+    RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+    TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     [self.travelActivation travelListActivation:travelList];
     
     // Modal을 MapViewController (rootViewController)에서 호출해야 하기 때문에 rootView의 instance를 참조 해서 앨범 뷰를 호출한다.
