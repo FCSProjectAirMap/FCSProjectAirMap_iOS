@@ -39,7 +39,7 @@
 
 - (void)setInfoWithInfodic {
     self.contentImageView.image = _travelDetailInfoDictionary[@"image"];
-    self.creationDate.text = _travelDetailInfoDictionary[@"creationDate"];
+    self.creationDate.text = _travelDetailInfoDictionary[@"timezone_date"];
     self.countryLabel.text = _travelDetailInfoDictionary[@"country"];
 }
 

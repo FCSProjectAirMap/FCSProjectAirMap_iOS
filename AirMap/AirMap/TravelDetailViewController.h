@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TravelDetailCell.h"
 #import "TravelDetailImageScrollViewController.h"
+#import "TravelTopView.h"
+#import "TravelBottomView.h"
+#import "rootViewControllerObject.h"
 
 @interface TravelDetailViewController : UIViewController
-<UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic) BOOL overLayFlag;
+<UITableViewDelegate, UITableViewDataSource, TravelTopViewDelegate, TravelBottomViewDelegate>
 
 - (instancetype)initWithTravelList:(TravelList *)travelList;
 

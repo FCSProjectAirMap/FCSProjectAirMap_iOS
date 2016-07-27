@@ -14,11 +14,14 @@
 #import "MenuSlideViewController.h"
 #import "AuthorizationControll.h"
 #import "TravelActivation.h"
+#import "TravelTopView.h"
+#import "TravelBottomView.h"
+#import "rootViewControllerObject.h"
 
 @import GoogleMaps;
 
 @interface MapViewController : UIViewController
-<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate>
+<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate, TravelTopViewDelegate, TravelBottomViewDelegate>
 
 
 @property (nonatomic) UIView *blackScreen;
