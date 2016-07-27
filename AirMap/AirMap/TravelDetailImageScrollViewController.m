@@ -28,9 +28,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)setupUI {
+    
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height)];
     scrollView.pagingEnabled = YES;
     scrollView.alwaysBounceVertical = NO;

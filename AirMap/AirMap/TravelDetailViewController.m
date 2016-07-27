@@ -22,6 +22,9 @@ const CGFloat ROW_HEIGHT = 350.0f;
 @property (nonatomic, strong) TravelList *travelList;
 @property (nonatomic, weak) UIImageView *placeholderImageView;
 
+@property (nonatomic, strong) TravelTopView *travelTopView;
+@property (nonatomic, strong) TravelBottomView *travelBottomView;
+
 @end
 
 @implementation TravelDetailViewController
@@ -41,32 +44,58 @@ const CGFloat ROW_HEIGHT = 350.0f;
     NSLog(@"Travel Detial viewDidLoad");
     [self setupUI];
     
+    if ([TravelActivation defaultInstance].travelList != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:[TravelActivation defaultInstance].travelList.travel_title];
+    }
+    
 }
 
 #pragma mark - General Method
 - (void)setupUI {
     
     const CGFloat HEADER_MARGIN = 10.0f;
-    
-    // overLayView 선택할 시.
-    if (self.overLayFlag) {
-        // Navigation Bar TitleText Color
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
-        // Navigation Bar Color
-        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
-        // Navigation left Button
-        UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(travelTableViewCloseTouchUpInside:)];
-        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
-        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
-    }
+    const CGFloat bottomViewHeight = 54.0f;
+    const CGFloat topViewHeight = 74.0f;
+
+    // ##SJ Test
+    // 필요 없을 수도...
+//    // overLayView 선택할 시.
+//    if (self.overLayFlag) {
+//        // Navigation Bar TitleText Color
+//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
+//        // Navigation Bar Color
+//        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
+//        // Navigation left Button
+//        UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+//                                                                                          target:self
+//                                                                                          action:@selector(travelTableViewCloseTouchUpInside:)];
+//        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+//        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
+//    }
     
     // view
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
+    // travel Top View
+    self.travelTopView = [[TravelTopView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, topViewHeight)];
+    self.travelTopView.delegate = self;
+    self.travelTopView.backgroundColor = [UIColor whiteColor];
+    self.travelTopView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.travelTopView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+    self.travelTopView.layer.shadowOpacity = 0.5f;
+    [self.view addSubview:self.travelTopView];
+    
+    // travel Bottom View
+    self.travelBottomView = [[TravelBottomView alloc] initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - bottomViewHeight, self.view.frame.size.width, bottomViewHeight)];
+    self.travelBottomView.delegate = self;
+    self.travelBottomView.backgroundColor = [UIColor whiteColor];
+    self.travelBottomView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.travelBottomView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+    self.travelBottomView.layer.shadowOpacity = 0.5f;
+    [self.view addSubview:self.travelBottomView];
+    
     // TableView
-    UITableView *detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
+    UITableView *detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, topViewHeight, self.view.frame.size.width, self.view.frame.size.height - bottomViewHeight - topViewHeight) style:UITableViewStyleGrouped];
     [self.view addSubview:detailTableView];
     self.detailTableView = detailTableView;
     self.title = self.travelList.travel_title;
@@ -93,33 +122,6 @@ const CGFloat ROW_HEIGHT = 350.0f;
     
     // HeaderView를 Custom HeaderView로 변경.
     self.detailTableView.tableHeaderView = headerView;
-
-//    if (self.travelName == nil) {
-//        
-//        // placeholder ImageView
-//        UIImageView *placeholderImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, topView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - topView.frame.size.height)];
-//        UIImage *image = [UIImage imageNamed:@"Ryan"];
-//        placeholderImageView.image = image;
-//        placeholderImageView.contentMode = UIViewContentModeScaleAspectFit;
-//        [self.view addSubview:placeholderImageView];
-//        self.placeholderImageView = placeholderImageView;
-//        
-//        // bottom View
-//        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 50.0f, self.view.frame.size.width, 50.0f)];
-//        [bottomView setBackgroundColor:[UIColor yellowColor]];
-//        [self.view addSubview:bottomView];
-//        self.bottomView = bottomView;
-//        
-//        // bottom Label
-//        UILabel *bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, bottomView.frame.size.width, bottomView.frame.size.height)];
-//        bottomLabel.textColor = [UIColor blackColor];
-//        bottomLabel.textAlignment = NSTextAlignmentCenter;
-//        bottomLabel.text = @"설정된 여행 경로가 없습니다!";
-//        [self.bottomView addSubview:bottomLabel];
-//        self.bottomLabel = bottomLabel;
-//        
-//    } else {
-//    }
 }
 
 // 여행의 시작일과 마지막일을 설정해주는 메서드.
@@ -137,6 +139,37 @@ const CGFloat ROW_HEIGHT = 350.0f;
         imageCreationDate = imageData.creation_date;
     }
     return imageCreationDate;
+}
+
+#pragma mark - Travel Top View Delegate
+- (void)didSelectMenuSlideButton:(UIButton *) sender {
+    DLog(@"menu Slide");
+}
+- (void)didSelectTravelTitleButton:(UIButton *) sender {
+    DLog(@"travelTitle");
+}
+- (void)didSelectPlaceSearchButton:(UIButton *) sender {
+    DLog(@"PlaceSearch");
+}
+- (void)didSelectTravelImageListButton:(UIButton *) sender {
+    DLog(@"travelImageList");
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
+    [[[UIApplication sharedApplication] delegate] window].rootViewController = [rootViewControllerObject defaultInstance].rootViewController;
+    [rootViewControllerObject defaultInstance].rootViewController = rootViewController;
+}
+
+#pragma mark - Travel Bottom View Delegate
+- (void)didSelectTravelPreviousButton:(UIButton *) sender {
+    DLog(@"travelPrevious");
+}
+- (void)didSelectTravelNextButton:(UIButton *) sender {
+    DLog(@"travelNext");
+}
+- (void)didSelectTravelMakeButton:(UIButton *) sender {
+    DLog(@"travelMake");
+}
+- (void)didSelectTravelAlbumButton:(UIButton *) sender {
+    DLog(@"travelAlbum");
 }
 
 #pragma mark - Action Method

@@ -305,11 +305,30 @@ static const CGFloat topViewHeight = 74.0f;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
-    // Activity되어 있는 여행 리스트를 보여준다.
-    TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
-    travelDetailViewController.overLayFlag = YES;
-    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
-    [self presentViewController:navi animated:YES completion:nil];
+    // ##SJ Test
+    // 싱글톤 객체가 이전 rootView객체를 참조하고 있다가 바뀔때마다 교체해준다.
+    if ([rootViewControllerObject defaultInstance].rootViewController == nil) {
+        
+        // Root View를 맵 뷰에서 여행경로 디테일 뷰로 변경.
+        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
+        // 기존에 메모리에 생성되어있던 MapViewController는 다른곳에서 참조 하고 있는다.
+        UIViewController *rootViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
+        [rootViewControllerObject defaultInstance].rootViewController = rootViewController;
+        
+        // root View를 디테일 뷰로 교체.
+        [[[UIApplication sharedApplication] delegate] window].rootViewController =  travelDetailViewController;
+    } else {
+        
+        UIViewController *rootViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
+        [[[UIApplication sharedApplication] delegate] window].rootViewController = [rootViewControllerObject defaultInstance].rootViewController;
+        [rootViewControllerObject defaultInstance].rootViewController = rootViewController;
+    }
+    
+//    // Activity되어 있는 여행 리스트를 보여준다.
+//    TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
+//    travelDetailViewController.overLayFlag = YES;
+//    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
+//    [self presentViewController:navi animated:YES completion:nil];
 }
 
 #pragma mark - Travel Bottom View Delegate

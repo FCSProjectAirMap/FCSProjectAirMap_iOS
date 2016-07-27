@@ -16,6 +16,7 @@
 #import "TravelActivation.h"
 #import "TravelTopView.h"
 #import "TravelBottomView.h"
+#import "rootViewControllerObject.h"
 
 @import GoogleMaps;
 
