@@ -125,6 +125,11 @@
     [self.bottomView addSubview: sksTableView];
     self.tableView = sksTableView;
     
+    [self.view.layer setShadowColor: [UIColor blackColor].CGColor];
+    [self.view.layer setShadowOpacity:0.8];
+    [self.view.layer setShadowRadius:10.0];
+    [self.view.layer setShadowOffset:CGSizeMake(3.0, 3.0)];
+    
 
     
 }
