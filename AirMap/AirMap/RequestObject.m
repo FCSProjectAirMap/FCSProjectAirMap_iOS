@@ -193,4 +193,29 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
     }];
 }
 
+// Travel Title 업로드 리퀘스트
+- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy {
+    NSLog(@"Start TravelTitle Upload");
+    
+    NSDictionary *newTravelTitle = @{@"travel_title":newTitle, @"activity":@(activiy)};
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager POST:metadataUploadURL parameters:newTravelTitle
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+              NSLog(@"Metadata Post success!");
+              // 받아온 id_number를 업데이트 해준다.
+              NSLog(@"Travel title id_number : %@", responseObject);
+              
+          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              NSLog(@"Metadata Post error: %@", error);
+          }];
+}
+
+- (void)travelTitleIdNumberUpdate {
+    
+}
+
 @end
