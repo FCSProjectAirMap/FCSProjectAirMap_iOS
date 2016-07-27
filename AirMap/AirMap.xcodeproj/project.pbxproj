@@ -72,6 +72,8 @@
 		ECB520901D38007A0013549B /* TravelDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB5208F1D38007A0013549B /* TravelDetailCell.m */; };
 		ECBA6F351D4246BD00A37129 /* South Korea.png in Resources */ = {isa = PBXBuildFile; fileRef = ECBA6F341D4246BD00A37129 /* South Korea.png */; };
 		ECBA6F391D424D1800A37129 /* TravelDetailImageScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBA6F381D424D1800A37129 /* TravelDetailImageScrollViewController.m */; };
+		ECC8AFE61D48B52500A91C73 /* TravelTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC8AFE51D48B52500A91C73 /* TravelTopView.m */; };
+		ECC8AFEC1D48C02100A91C73 /* TravelBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC8AFEB1D48C02100A91C73 /* TravelBottomView.m */; };
 		ECF8552B1D3C933C00EBEE94 /* TravelActivation.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */; };
 		ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F61D32883000EF311B /* MGSwipeButton.m */; };
 		ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F81D32883000EF311B /* MGSwipeTableCell.m */; };
@@ -175,6 +177,10 @@
 		ECBA6F341D4246BD00A37129 /* South Korea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "South Korea.png"; sourceTree = "<group>"; };
 		ECBA6F371D424D1800A37129 /* TravelDetailImageScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailImageScrollViewController.h; sourceTree = "<group>"; };
 		ECBA6F381D424D1800A37129 /* TravelDetailImageScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailImageScrollViewController.m; sourceTree = "<group>"; };
+		ECC8AFE41D48B52500A91C73 /* TravelTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTopView.h; sourceTree = "<group>"; };
+		ECC8AFE51D48B52500A91C73 /* TravelTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelTopView.m; sourceTree = "<group>"; };
+		ECC8AFEA1D48C02100A91C73 /* TravelBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelBottomView.h; sourceTree = "<group>"; };
+		ECC8AFEB1D48C02100A91C73 /* TravelBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelBottomView.m; sourceTree = "<group>"; };
 		ECF855291D3C933C00EBEE94 /* TravelActivation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelActivation.h; sourceTree = "<group>"; };
 		ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelActivation.m; sourceTree = "<group>"; };
 		ECFC52F51D32883000EF311B /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
@@ -420,6 +426,10 @@
 				ECB5208F1D38007A0013549B /* TravelDetailCell.m */,
 				ECF855291D3C933C00EBEE94 /* TravelActivation.h */,
 				ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */,
+				ECC8AFE41D48B52500A91C73 /* TravelTopView.h */,
+				ECC8AFE51D48B52500A91C73 /* TravelTopView.m */,
+				ECC8AFEA1D48C02100A91C73 /* TravelBottomView.h */,
+				ECC8AFEB1D48C02100A91C73 /* TravelBottomView.m */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -588,6 +598,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECC8AFEC1D48C02100A91C73 /* TravelBottomView.m in Sources */,
 				E45989651D374D55007A7BC9 /* SKSTableViewCellIndicator.m in Sources */,
 				E4D39BDE1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m in Sources */,
 				ECB520691D376DD20013549B /* ImageData.m in Sources */,
@@ -608,6 +619,7 @@
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				EC54E0D11D2FF1A900B13C85 /* MenuSlideViewController.m in Sources */,
 				ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */,
+				ECC8AFE61D48B52500A91C73 /* TravelTopView.m in Sources */,
 				E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */,
 				E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */,
 				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
