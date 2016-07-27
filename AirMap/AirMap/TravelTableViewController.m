@@ -155,6 +155,8 @@
                                                              [realm commitWriteTransaction];
                                                             
                                                              // 서버에 요청 후 id_number값을 받아온다.
+                                                             RequestObject *requestObject = [[RequestObject alloc] init];
+                                                             [requestObject uploadTravelTitleDatas:travelList.travel_title_unique];
                                                          }
                                                      }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"취 소"

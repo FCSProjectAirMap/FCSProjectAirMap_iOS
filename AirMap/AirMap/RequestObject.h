@@ -20,5 +20,5 @@
 - (void)requestTravelList;
 
 // 새로생긴 여행 타이틀 업로드
-- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy;
+- (void)uploadTravelTitleDatas:(NSString *)newTitle;
 @end

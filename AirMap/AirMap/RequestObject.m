@@ -194,10 +194,10 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
 }
 
 // Travel Title 업로드 리퀘스트
-- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy {
+- (void)uploadTravelTitleDatas:(NSString *)newTitle {
     NSLog(@"Start TravelTitle Upload");
     
-    NSDictionary *newTravelTitle = @{@"travel_title":newTitle, @"activity":@(activiy)};
+    NSDictionary *newTravelTitle = @{@"travel_title":newTitle};
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];

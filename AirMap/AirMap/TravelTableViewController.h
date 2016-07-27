@@ -14,6 +14,7 @@
 #import "UserInfo.h"
 #import "TravelActivation.h"
 #import "KeychainItemWrapper.h"
+#import "RequestObject.h"
 
 @interface TravelTableViewController : UIViewController
 <UITableViewDelegate, UITableViewDataSource,MGSwipeTableCellDelegate>
