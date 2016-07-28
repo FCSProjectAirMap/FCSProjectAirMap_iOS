@@ -18,6 +18,7 @@
 @implementation RequestObject
 
 static NSString * const tokenRefreshURL  = @"https://airmap.travel-mk.com/refresh/";
+static NSString * const travleTitleDeleteURL = @"https://airmap.travel-mk.com/travel/delete/";
 
 static NSString * const travelTitleUploadURL = @"https://airmap.travel-mk.com/travel/create_title/";
 static NSString * const imageUploadURL = @"https://airmap.travel-mk.com/travel/create_image/";
@@ -62,7 +63,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     return self;
 }
 
-#pragma - mark <Upload Requst>
+#pragma - mark <Refresh Requst>
 
 // Token Refersh 리퀘스트
 - (void)requestTokenRefresh {
@@ -84,6 +85,8 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
           }];
 
 }
+
+#pragma - mark <Upload Requst>
 
 // 이미지 업로드 리퀘스트
 - (void)uploadSelectedImages:(NSMutableArray *)selectedImages withSelectedData:(NSMutableArray *)selectedData {
@@ -174,6 +177,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
          progress:nil
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
               NSLog(@"TravelTitle upload success: %@", responseObject);
+              [self requestTravelList];
               // 받아온 id_number를 업데이트
               [self saveTravelTitleWithResponseObject:responseObject inTravelList:travelList];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -196,7 +200,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     [manager GET:listRequestURL parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"Get list success: %@", responseObject);
-        [self saveTitleListWithResponseObject:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Get list error: %@", error);
     }];
@@ -223,6 +226,29 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
         [self saveDetailDataWithResponseObject:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Get detail Error: %@", error);
+    }];
+}
+
+#pragma - mark <Delete Requst>
+
+// Travel_Title(+ 내부 정보) 삭제 요청
+- (void)requsetDeleteOfTravleId:(NSString *)travel_id {
+    
+    NSLog(@"Start delete travel title");
+    
+    NSString *urlString = [travleTitleDeleteURL stringByAppendingString:travel_id];
+    NSLog(@"%@",urlString);
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager DELETE:urlString parameters:nil
+            success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"Delete travel title success: %@", responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Delete travel title Error: %@", error);
     }];
 }
 

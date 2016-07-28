@@ -24,4 +24,7 @@
 - (void)requestTokenRefresh;
 // 새로생긴 여행 타이틀 업로드
 - (void)uploadTravelTitleDatas:(NSString *)newTitle inTravelList:(TravelList *)travelList;
+// 여행 타이틀 삭제요청
+- (void)requsetDeleteOfTravleId:(NSString *)travel_id;
+
 @end
