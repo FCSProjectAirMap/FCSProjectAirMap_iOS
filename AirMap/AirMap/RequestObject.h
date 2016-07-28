@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MultiImageDataCenter.h"
 #import "AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "KeychainItemWrapper.h"
 
 @interface RequestObject : UIView
