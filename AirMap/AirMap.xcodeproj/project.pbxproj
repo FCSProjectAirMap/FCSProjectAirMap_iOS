@@ -39,6 +39,7 @@
 		E9063C351D2E796200F28F69 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9063C341D2E796200F28F69 /* BadgeView.m */; };
 		E90B6F881D461CE0005B69EA /* icon_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90B6F861D461CE0005B69EA /* icon_2x.png */; };
 		E90B6F891D461CE0005B69EA /* icon_3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E90B6F871D461CE0005B69EA /* icon_3x.png */; };
+		E90B6FC81D4938C2005B69EA /* MultiImageCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E90B6FC71D4938C2005B69EA /* MultiImageCollectionReusableView.m */; };
 		E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */; };
 		E9FAEB441D2BD51A00014449 /* MultiImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */; };
 		E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FAEB421D2BD51A00014449 /* MultiImageDataCenter.m */; };
@@ -72,6 +73,9 @@
 		ECB520901D38007A0013549B /* TravelDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB5208F1D38007A0013549B /* TravelDetailCell.m */; };
 		ECBA6F351D4246BD00A37129 /* South Korea.png in Resources */ = {isa = PBXBuildFile; fileRef = ECBA6F341D4246BD00A37129 /* South Korea.png */; };
 		ECBA6F391D424D1800A37129 /* TravelDetailImageScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBA6F381D424D1800A37129 /* TravelDetailImageScrollViewController.m */; };
+		ECBE0B7B1D4904B5006A9C88 /* rootViewControllerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBE0B7A1D4904B5006A9C88 /* rootViewControllerObject.m */; };
+		ECC8AFE61D48B52500A91C73 /* TravelTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC8AFE51D48B52500A91C73 /* TravelTopView.m */; };
+		ECC8AFEC1D48C02100A91C73 /* TravelBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC8AFEB1D48C02100A91C73 /* TravelBottomView.m */; };
 		ECF8552B1D3C933C00EBEE94 /* TravelActivation.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */; };
 		ECFC530B1D32883000EF311B /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F61D32883000EF311B /* MGSwipeButton.m */; };
 		ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECFC52F81D32883000EF311B /* MGSwipeTableCell.m */; };
@@ -124,6 +128,8 @@
 		E9063C341D2E796200F28F69 /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
 		E90B6F861D461CE0005B69EA /* icon_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_2x.png; sourceTree = "<group>"; };
 		E90B6F871D461CE0005B69EA /* icon_3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_3x.png; sourceTree = "<group>"; };
+		E90B6FC61D4938C2005B69EA /* MultiImageCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionReusableView.h; sourceTree = "<group>"; };
+		E90B6FC71D4938C2005B69EA /* MultiImageCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionReusableView.m; sourceTree = "<group>"; };
 		E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewCell.h; sourceTree = "<group>"; };
 		E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiImageCollectionViewCell.m; sourceTree = "<group>"; };
 		E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiImageCollectionViewController.h; sourceTree = "<group>"; };
@@ -175,6 +181,12 @@
 		ECBA6F341D4246BD00A37129 /* South Korea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "South Korea.png"; sourceTree = "<group>"; };
 		ECBA6F371D424D1800A37129 /* TravelDetailImageScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailImageScrollViewController.h; sourceTree = "<group>"; };
 		ECBA6F381D424D1800A37129 /* TravelDetailImageScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailImageScrollViewController.m; sourceTree = "<group>"; };
+		ECBE0B791D4904B5006A9C88 /* rootViewControllerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rootViewControllerObject.h; sourceTree = "<group>"; };
+		ECBE0B7A1D4904B5006A9C88 /* rootViewControllerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rootViewControllerObject.m; sourceTree = "<group>"; };
+		ECC8AFE41D48B52500A91C73 /* TravelTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTopView.h; sourceTree = "<group>"; };
+		ECC8AFE51D48B52500A91C73 /* TravelTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelTopView.m; sourceTree = "<group>"; };
+		ECC8AFEA1D48C02100A91C73 /* TravelBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelBottomView.h; sourceTree = "<group>"; };
+		ECC8AFEB1D48C02100A91C73 /* TravelBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelBottomView.m; sourceTree = "<group>"; };
 		ECF855291D3C933C00EBEE94 /* TravelActivation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelActivation.h; sourceTree = "<group>"; };
 		ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelActivation.m; sourceTree = "<group>"; };
 		ECFC52F51D32883000EF311B /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
@@ -282,6 +294,8 @@
 			children = (
 				E9FAEB3F1D2BD51A00014449 /* MultiImageCollectionViewController.h */,
 				E9FAEB401D2BD51A00014449 /* MultiImageCollectionViewController.m */,
+				E90B6FC61D4938C2005B69EA /* MultiImageCollectionReusableView.h */,
+				E90B6FC71D4938C2005B69EA /* MultiImageCollectionReusableView.m */,
 				E9FAEB3D1D2BD51A00014449 /* MultiImageCollectionViewCell.h */,
 				E9FAEB3E1D2BD51A00014449 /* MultiImageCollectionViewCell.m */,
 				E9FAEB411D2BD51A00014449 /* MultiImageDataCenter.h */,
@@ -420,6 +434,12 @@
 				ECB5208F1D38007A0013549B /* TravelDetailCell.m */,
 				ECF855291D3C933C00EBEE94 /* TravelActivation.h */,
 				ECF8552A1D3C933C00EBEE94 /* TravelActivation.m */,
+				ECBE0B791D4904B5006A9C88 /* rootViewControllerObject.h */,
+				ECBE0B7A1D4904B5006A9C88 /* rootViewControllerObject.m */,
+				ECC8AFE41D48B52500A91C73 /* TravelTopView.h */,
+				ECC8AFE51D48B52500A91C73 /* TravelTopView.m */,
+				ECC8AFEA1D48C02100A91C73 /* TravelBottomView.h */,
+				ECC8AFEB1D48C02100A91C73 /* TravelBottomView.m */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -588,6 +608,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECC8AFEC1D48C02100A91C73 /* TravelBottomView.m in Sources */,
 				E45989651D374D55007A7BC9 /* SKSTableViewCellIndicator.m in Sources */,
 				E4D39BDE1D337B6E00DE48D9 /* NSString+NSString___emailValidation.m in Sources */,
 				ECB520691D376DD20013549B /* ImageData.m in Sources */,
@@ -608,11 +629,14 @@
 				EC714C751D2AB8A000165A58 /* AppDelegate.m in Sources */,
 				EC54E0D11D2FF1A900B13C85 /* MenuSlideViewController.m in Sources */,
 				ECFC530C1D32883000EF311B /* MGSwipeTableCell.m in Sources */,
+				ECC8AFE61D48B52500A91C73 /* TravelTopView.m in Sources */,
 				E9FAEB431D2BD51A00014449 /* MultiImageCollectionViewCell.m in Sources */,
 				E9FAEB4B1D2CD90100014449 /* ToastView.m in Sources */,
 				E9FAEB451D2BD51A00014449 /* MultiImageDataCenter.m in Sources */,
 				E9063C351D2E796200F28F69 /* BadgeView.m in Sources */,
 				ECBA6F391D424D1800A37129 /* TravelDetailImageScrollViewController.m in Sources */,
+				E90B6FC81D4938C2005B69EA /* MultiImageCollectionReusableView.m in Sources */,
+				ECBE0B7B1D4904B5006A9C88 /* rootViewControllerObject.m in Sources */,
 				EC714C721D2AB8A000165A58 /* main.m in Sources */,
 				ECFC53171D328C0700EF311B /* TravelDetailViewController.m in Sources */,
 				E45989631D374D55007A7BC9 /* SKSTableView.m in Sources */,

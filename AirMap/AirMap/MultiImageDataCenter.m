@@ -9,7 +9,10 @@
 #import "MultiImageDataCenter.h"
 @interface MultiImageDataCenter()
 
-@property (strong, nonatomic) PHFetchResult *fetchResult;
+@property (strong, nonatomic) PHFetchResult *collectionResult;
+@property (strong, nonatomic) NSMutableArray *collectionAssetResults;
+
+//@property (strong, nonatomic) PHFetchResult *fetchResult;
 @property (strong, nonatomic) NSMutableArray *selectedAssets;
 @property (strong, nonatomic) NSMutableArray *selectedImages;
 
@@ -44,13 +47,6 @@ const CGFloat imageShortLength = 640;
         [self loadFetchResult];
         
         self.selectedAssets = [[NSMutableArray alloc] init];
-        
-        self.selectedAssetsWithGPS = [[NSMutableArray alloc] init];
-        self.selectedAssetsWithoutGPS = [[NSMutableArray alloc] init];
-        
-        self.selectedMetadatasWithGPS = [[NSMutableArray alloc] init];
-        self.selectedMetadatasWithoutGPS = [[NSMutableArray alloc] init];
-        
         self.requsetObject = [[RequestObject alloc] init];
     }
     return self;
@@ -59,6 +55,8 @@ const CGFloat imageShortLength = 640;
 #pragma mark - ImageAssets
 // 이미지 가져오기
 - (void)loadFetchResult {
+    
+    /* 카메라롤 버전
     // 이미지 날짜역순으로 정렬
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];
@@ -66,6 +64,21 @@ const CGFloat imageShortLength = 640;
     
     self.fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage
                                                  options:fetchOptions];
+     */
+    
+    // 이미지 날짜역순으로 정렬
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:NO]];
+    // 특별한 순간 가져오기
+    self.collectionResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeMoment subtype:PHAssetCollectionSubtypeAny options:options];
+    
+    self.collectionAssetResults = [[NSMutableArray alloc] initWithCapacity:self.collectionResult.count];
+    
+    for (PHAssetCollection *collection in self.collectionResult) {
+        PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+        [self.collectionAssetResults insertObject:result atIndex:[self.collectionResult indexOfObject:collection]];
+    }
+    
 }
 
 // 선택된 사진 더하기
@@ -95,8 +108,16 @@ const CGFloat imageShortLength = 640;
     [self.selectedMetadatasWithoutGPS removeAllObjects];
 }
 
-- (PHFetchResult *)callFetchResult {
-    return self.fetchResult;
+//- (PHFetchResult *)callFetchResult {
+//    return self.fetchResult;
+//}
+
+- (PHFetchResult *)callCollectionResult {
+    return self.collectionResult;
+}
+
+- (NSMutableArray *)callCollectionAssetResutls {
+    return self.collectionAssetResults;
 }
 
 //- (NSMutableArray *)callSelectedAssets {
@@ -154,6 +175,12 @@ const CGFloat imageShortLength = 640;
 // metaData추출
 - (void)extractMetadataFromImage {
     
+    self.selectedMetadatasWithGPS = [[NSMutableArray alloc] init];
+    self.selectedMetadatasWithoutGPS = [[NSMutableArray alloc] init];
+
+    self.selectedAssetsWithGPS = [[NSMutableArray alloc] init];
+    self.selectedAssetsWithoutGPS = [[NSMutableArray alloc] init];
+    
     // 중복사진 제외처리(기준 : timestamp)
     RLMArray *result = [TravelActivation defaultInstance].travelList.image_datas;
     NSInteger count = result.count;
@@ -180,8 +207,10 @@ const CGFloat imageShortLength = 640;
         
         // 위도, 경도 0, 0인 데이터 예외처리
         if ([[metaData objectForKey:@"latitude"] doubleValue] == 0.0 && [[metaData objectForKey:@"longitude"] doubleValue] == 0.0) {
+            
             [self.selectedMetadatasWithoutGPS addObject:metaData];
             [self.selectedAssetsWithoutGPS addObject:asset];
+            
         } else {
             if (result) {
                 if ([timestampArray containsObject:[metaData objectForKey:@"timestamp"]]) {
@@ -231,7 +260,7 @@ const CGFloat imageShortLength = 640;
         imageData.latitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"latitude"] floatValue] ;
         imageData.longitude = [[self.selectedMetadatasWithGPS[i] objectForKey:@"longitude"] floatValue];
         imageData.timestamp = [[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"] integerValue];
-        imageData.image_name_unique = [NSString stringWithFormat:@"%@_%@", [RequestObject sharedInstance].fileNameForUnique, [self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"]];
+        imageData.image_name_unique = [NSString stringWithFormat:@"%@_%@_%@", [RequestObject sharedInstance].userId, [TravelActivation defaultInstance].travelList.travel_title_unique,[self.selectedMetadatasWithGPS[i] objectForKey:@"timestamp"]];
         imageData.image = image;
 
         // realm DB에 metadata 저장
