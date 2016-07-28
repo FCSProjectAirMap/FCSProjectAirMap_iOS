@@ -154,7 +154,7 @@ const CGFloat imageShortLength = 640;
     // 이미지 추출 후 realm에 저장
     [self saveToRealmDB];
     // 서버에 보내기 전 token refresh요청
-    [self.requsetObject requestTokenRefresh];
+//    [self.requsetObject requestTokenRefresh];
     // 서버에 전송
     [self.requsetObject uploadSelectedMetaDatas:self.selectedMetadatasWithGPS withSelectedImages:self.selectedImages];
 }
