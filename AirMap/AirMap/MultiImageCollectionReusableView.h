@@ -10,6 +10,7 @@
 
 @interface MultiImageCollectionReusableView : UICollectionReusableView
 
+@property (strong, nonatomic) UILabel *detailPlaceLabel;
 @property (strong, nonatomic) UILabel *placeLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
 

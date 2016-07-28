@@ -59,7 +59,7 @@
     // travel album Button
     UIButton *travelAlbumButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelAlbumButton.frame = CGRectMake(self.frame.size.width - BUTTON_SIZE_WIDTH - X_MARGIN, (self.frame.size.height - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    [travelAlbumButton setBackgroundImage:[UIImage imageNamed:@"album_icon"] forState:UIControlStateNormal];
+    [travelAlbumButton setBackgroundImage:[UIImage imageNamed:@"Picture_icon"] forState:UIControlStateNormal];
     [travelAlbumButton addTarget:self
                           action:@selector(travelAlbumTouchUpInside:)
                 forControlEvents:UIControlEventTouchUpInside];
@@ -69,7 +69,7 @@
     // travel make Button
     UIButton *travelMakeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelMakeButton.frame = CGRectMake(travelAlbumButton.frame.origin.x - BUTTON_SIZE_WIDTH - X_MARGIN, (self.frame.size.height - BUTTON_SIZE_HEIGHT)/2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    [travelMakeButton setBackgroundImage:[UIImage imageNamed:@"make_icon"] forState:UIControlStateNormal];
+    [travelMakeButton setBackgroundImage:[UIImage imageNamed:@"Make_icon"] forState:UIControlStateNormal];
     [travelMakeButton addTarget:self
                          action:@selector(travelMakeTouchUpInside:)
                forControlEvents:UIControlEventTouchUpInside];

@@ -17,9 +17,13 @@
 
 @implementation RequestObject
 
-static NSString * const travelTitleURL = @"https://airmap.travel-mk.com/travel/create_title/";
+static NSString * const tokenRefreshURL  = @"https://airmap.travel-mk.com/refresh/";
+static NSString * const travleTitleDeleteURL = @"https://airmap.travel-mk.com/travel/delete/";
+
+static NSString * const travelTitleUploadURL = @"https://airmap.travel-mk.com/travel/create_title/";
 static NSString * const imageUploadURL = @"https://airmap.travel-mk.com/travel/create_image/";
 static NSString * const metadataUploadURL = @"https://airmap.travel-mk.com/travel/create_data/";
+
 static NSString * const listRequestURL = @"https://airmap.travel-mk.com/travel/list/";
 static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel/detail/";
 
@@ -58,6 +62,31 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     }
     return self;
 }
+
+#pragma - mark <Refresh Requst>
+
+// Token Refersh 리퀘스트
+- (void)requestTokenRefresh {
+    
+    NSLog(@"Start token refesh");
+    
+    NSDictionary *tokenToRefesh = @{@"token":self.userInfo.user_token};
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    [manager POST:tokenRefreshURL parameters:tokenToRefesh
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+              NSLog(@"Token refesh success: %@", responseObject);
+          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              NSLog(@"Token refesh error: %@", error);
+          }];
+
+}
+
+#pragma - mark <Upload Requst>
 
 // 이미지 업로드 리퀘스트
 - (void)uploadSelectedImages:(NSMutableArray *)selectedImages withSelectedData:(NSMutableArray *)selectedData {
@@ -122,10 +151,10 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     [manager POST:metadataUploadURL parameters:metadataDic
          progress:nil
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-              NSLog(@"Metadata post success: %@", responseObject);
+              NSLog(@"Metadata upload success: %@", responseObject);
               [self uploadSelectedImages:selectedImages withSelectedData:selectedDatas];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-              NSLog(@"Metadata post error: %@", error);
+              NSLog(@"Metadata upload error: %@", error);
               
               //              if (i < 3) {
               //                  [self uploadMetaDatas:selectedDatas withSelectedImages:selectedImages];
@@ -133,6 +162,30 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
               //              }
           }];
 }
+
+// Travel Title 업로드 리퀘스트
+- (void)uploadTravelTitleDatas:(NSString *)newTitle inTravelList:(TravelList *)travelList {
+    NSLog(@"Start TravelTitle Upload");
+    
+    NSDictionary *newTravelTitle = @{@"travel_title":newTitle};
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager POST:travelTitleUploadURL parameters:newTravelTitle
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+              NSLog(@"TravelTitle upload success: %@", responseObject);
+              [self requestTravelList];
+              // 받아온 id_number를 업데이트
+              [self saveTravelTitleWithResponseObject:responseObject inTravelList:travelList];
+          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              NSLog(@"TravelTitle upload error: %@", error);
+          }];
+}
+
+#pragma - mark <Download Requst>
 
 // 여행경로 리스트 받기
 - (void)requestTravelList {
@@ -147,7 +200,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     [manager GET:listRequestURL parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"Get list success: %@", responseObject);
-        [self saveTitleListWithResponseObject:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Get list error: %@", error);
     }];
@@ -177,6 +229,30 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     }];
 }
 
+#pragma - mark <Delete Requst>
+
+// Travel_Title(+ 내부 정보) 삭제 요청
+- (void)requsetDeleteOfTravleId:(NSString *)travel_id {
+    
+    NSLog(@"Start delete travel title");
+    
+    NSString *urlString = [travleTitleDeleteURL stringByAppendingString:travel_id];
+    NSLog(@"%@",urlString);
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager DELETE:urlString parameters:nil
+            success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"Delete travel title success: %@", responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Delete travel title Error: %@", error);
+    }];
+}
+
+#pragma - mark <Save RequsetObject to Realm>
 
 // 전체 여행 리스트 저장
 - (void)saveTitleListWithResponseObject:(id)responseObject {
@@ -242,26 +318,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     }
 }
 
-// Travel Title 업로드 리퀘스트
-- (void)uploadTravelTitleDatas:(NSString *)newTitle inTravelList:(TravelList *)travelList {
-    NSLog(@"Start TravelTitle Upload");
-    
-    NSDictionary *newTravelTitle = @{@"travel_title":newTitle};
-    
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:self.JWTToken forHTTPHeaderField:@"Authorization"];
-    
-    [manager POST:travelTitleURL parameters:newTravelTitle
-         progress:nil
-          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-              NSLog(@"TravelTitle post success: %@", responseObject);
-              // 받아온 id_number를 업데이트
-              [self saveTravelTitleWithResponseObject:responseObject inTravelList:travelList];
-          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-              NSLog(@"TravelTitle post error: %@", error);
-          }];
-}
 
 // realm에 travel_title에 맞는 id값 저장
 - (void)saveTravelTitleWithResponseObject:(id)responseObject inTravelList:(TravelList *)travelList{
