@@ -180,7 +180,26 @@
     return [self.travelUserInfo.travel_list sortedResultsUsingProperty:property ascending:ascending];
 }
 
-#pragma mark - Action Method
+- (NSString *)firstDateAndLastDateInTravelList:(TravelList *)travelList {
+    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
+    ImageData *firstImageData = [result firstObject];
+    ImageData *lastImageData = [result lastObject];
+    
+    NSLog(@"firstImageData : %@", firstImageData.timezone_date);
+    NSLog(@"lastImageData : %@", lastImageData.timezone_date);
+    if (firstImageData.timezone_date == nil ||
+        lastImageData.timezone_date == nil) {
+        return @"여러분의 추억을 공유해 주세요~!";
+    }
+    
+    NSString *firstDate = firstImageData.timezone_date;
+    NSString *lastDate = lastImageData.timezone_date;
+    NSArray *firstDateArray = [firstDate componentsSeparatedByString:@" "];
+    NSArray *lastDateArray = [lastDate componentsSeparatedByString:@" "];
+    return [NSString stringWithFormat:@"%@ ~ %@", firstDateArray[0], lastDateArray[0]];
+}
+
+#pragma mark - UIControl Event Method
 // 여행 경로 닫기 버튼 이벤트
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -217,10 +236,21 @@
     // ##SJ 최신생성한 기준으로 정렬.
     RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
     TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
+    NSInteger imageCount = travelList.image_datas.count;
     
-//    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:25.0f];
-    cell.textLabel.text = travelList.travel_title;
+    // 제목 (이미지 수)
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld)", travelList.travel_title, imageCount];
+    // Detail Text
+    cell.detailTextLabel.text = [self firstDateAndLastDateInTravelList:travelList];
+    // accessory View
+    if (imageCount > 0) {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"map_accessory"]];
+        cell.accessoryView.frame = CGRectMake(0.0f, 0.0f, 24.0f, 24.0f);
+    } else {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_accessory"]];
+        cell.accessoryView.frame = CGRectMake(0.0f, 0.0f, 24.0f, 24.0f);
+    }
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
     cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
