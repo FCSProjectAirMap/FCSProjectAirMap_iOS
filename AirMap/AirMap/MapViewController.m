@@ -156,7 +156,7 @@ static const CGFloat topViewHeight = 74.0f;
     [self.mapView addSubview:locationButton];
     self.locationButton = locationButton;
     
-   // SHTEST EDGE SWIPE
+   // SH TEST EDGE SWIPE
 //    // menuSlide Pangesture
 //    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self
 //                                                                                              action:@selector(handlePan:)];
@@ -165,7 +165,7 @@ static const CGFloat topViewHeight = 74.0f;
 //    [self.mapView addGestureRecognizer:pan];
 
 }
-   // SHTEST EDGE SWIPE
+   // SH TEST EDGE SWIPE
 //-(void)handlePan:(UIScreenEdgePanGestureRecognizer *)sender
 //{
 //    // create effect
@@ -468,6 +468,9 @@ static const CGFloat topViewHeight = 74.0f;
 // 현재위치로 화면 이동 이벤트
 - (void)locationTouchUpInside:(UIButton *)sender {
     DLog(@"현재 위치로 이동!");
+    [self runSpinAnimationOnView:sender duration:1.0 rotations:0.5 repeat:0];
+   
+    
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusAuthorizedWhenInUse ||
         status == kCLAuthorizationStatusAuthorizedAlways) {
@@ -480,7 +483,6 @@ static const CGFloat topViewHeight = 74.0f;
         });
         
         if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==40)){
-        
         
             CAMediaTimingFunction *curve =
             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -496,6 +498,7 @@ static const CGFloat topViewHeight = 74.0f;
 
             [_mapView.layer addAnimation:animation1 forKey:kGMSLayerCameraViewingAngleKey];
             
+            [self runSpinAnimationOnView:sender duration:1.0 rotations:-0.03 repeat:0];
             
         }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==0)){
             
@@ -590,9 +593,27 @@ static const CGFloat topViewHeight = 74.0f;
     }
 }
 
+//SH LocationButton Animation Test
+- (void) runSpinAnimationOnView:(UIButton*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat
+{
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.fromValue =[[view.layer presentationLayer]valueForKeyPath:@"transform.rotation.z"] ;
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 1.0 * rotations * duration ];
+    rotationAnimation.duration = duration;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = repeat;
+    rotationAnimation.removedOnCompletion = NO;
+    rotationAnimation.fillMode = kCAFillModeForwards;
+
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
 - (void)animationDidStart:(CAAnimation *)theAnimation
 {
     [self.locationButton setUserInteractionEnabled:NO];
+    
 }
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
