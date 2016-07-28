@@ -155,7 +155,9 @@
                                                              [realm commitWriteTransaction];
                                                             
                                                              // ##MJ 서버에 새로생긴 travleTitle 저장 후 id_number값을 받아온다.
-                                                             [[RequestObject sharedInstance] uploadTravelTitleDatas:travelTitle
+                                                             RequestObject *requestObject = [RequestObject sharedInstance];
+                                                             [requestObject requestTokenRefresh];
+                                                             [requestObject uploadTravelTitleDatas:travelTitle
                                                                                                        inTravelList:travelList];
                                                          }
                                                      }];
