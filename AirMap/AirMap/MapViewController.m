@@ -289,7 +289,7 @@ static const CGFloat topViewHeight = 74.0f;
     if (bounds == nil)
         return;
     
-    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:70.0f];
+    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:150.0f];
     [self.mapView moveCamera:update];
 }
 
