@@ -141,7 +141,7 @@
     return NO;
 }
 
-#pragma mark - Action Method
+#pragma mark - UIControl Event Method
 // 뒤로가기 버튼 눌렀을 때 메서드
 - (void)backButtonTouchUpInside:(UIButton *)sender {
     [self dismissViewControllerAnimated:NO completion:nil];

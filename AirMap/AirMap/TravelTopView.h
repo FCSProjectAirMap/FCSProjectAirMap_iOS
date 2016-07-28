@@ -19,6 +19,8 @@
 
 @interface TravelTopView : UIView
 
+- (void)travelImageListButtonIconImage:(nullable UIImage *)iconImage;
+
 @property (nonatomic, weak, nullable) id <TravelTopViewDelegate> delegate;
 
 @end
