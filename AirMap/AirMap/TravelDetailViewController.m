@@ -206,9 +206,10 @@ const CGFloat ROW_HEIGHT = 350.0f;
     RLMResults *result = [self.travelActivation.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
     ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
+    NSString *imageCountry = imageMetaData.country;
     NSDictionary *travelDetailInfoDictionary = @{ @"image": image,
                                                   @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
-                                                  @"country": @"한국",
+                                                  @"country": imageCountry,
                                                   @"imageHeight":@(ROW_HEIGHT) };
     
     cell.travelDetailInfoDictionary = travelDetailInfoDictionary;
