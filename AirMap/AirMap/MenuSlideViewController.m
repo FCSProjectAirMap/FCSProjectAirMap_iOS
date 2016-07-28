@@ -60,12 +60,6 @@
     
 }
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    NSLog(@" 메뉴슬라이드 터치 ");
-}
-
-
 #pragma mark - General Method
 - (void)setupUI {
     const CGFloat VIEW_HEIGHT = 250.0f;
@@ -139,7 +133,7 @@
 - (void)tapSomeWhereElse:(UITapGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NotiForParentViewTouch" object:self userInfo:nil];
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NotiForSenderON" object:self];
         [UIView animateWithDuration:0.4 animations:^{
             [self.view setFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
         }completion:^(BOOL finished)
