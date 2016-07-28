@@ -85,6 +85,10 @@
     self.travelTitleButton = travelTitleButton;
 }
 
+- (void)travelImageListButtonIconImage:(UIImage *)iconImage {
+    [self.travelImageListButton setBackgroundImage:iconImage forState:UIControlStateNormal];
+}
+
 #pragma mark - Notification Method
 - (void)travelTitleChange:(NSNotification *)notification {
     self.travelTitleButton.titleLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:15.0];

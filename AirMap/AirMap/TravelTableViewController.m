@@ -189,8 +189,6 @@
     ImageData *firstImageData = [result firstObject];
     ImageData *lastImageData = [result lastObject];
     
-    NSLog(@"firstImageData : %@", firstImageData.timezone_date);
-    NSLog(@"lastImageData : %@", lastImageData.timezone_date);
     if (firstImageData.timezone_date == nil ||
         lastImageData.timezone_date == nil) {
         return @"지도위에 당산의 발자취를 남겨주세요!";

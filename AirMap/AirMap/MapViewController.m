@@ -289,7 +289,7 @@ static const CGFloat topViewHeight = 74.0f;
     if (bounds == nil)
         return;
     
-    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:70.0f];
+    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:150.0f];
     [self.mapView moveCamera:update];
 }
 
@@ -373,7 +373,7 @@ static const CGFloat topViewHeight = 74.0f;
     if ([rootViewControllerObject defaultInstance].rootViewController == nil) {
         
         // Root View를 맵 뷰에서 여행경로 디테일 뷰로 변경.
-        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
+        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] init];
         // 기존에 메모리에 생성되어있던 MapViewController는 다른곳에서 참조 하고 있는다.
         UIViewController *rootViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
         [rootViewControllerObject defaultInstance].rootViewController = rootViewController;
@@ -386,6 +386,9 @@ static const CGFloat topViewHeight = 74.0f;
         [[[UIApplication sharedApplication] delegate] window].rootViewController = [rootViewControllerObject defaultInstance].rootViewController;
         [rootViewControllerObject defaultInstance].rootViewController = rootViewController;
     }
+    
+    // 이미지 리스트 뷰를 업데이트 시킨다.
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelDetailViewReload" object:nil];
 }
 
 #pragma mark - Travel Bottom View Delegate
