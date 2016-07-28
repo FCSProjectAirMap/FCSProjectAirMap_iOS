@@ -179,7 +179,26 @@
     return [self.travelUserInfo.travel_list sortedResultsUsingProperty:property ascending:ascending];
 }
 
-#pragma mark - Action Method
+- (NSString *)firstDateAndLastDateInTravelList:(TravelList *)travelList {
+    RLMResults *result = [travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
+    ImageData *firstImageData = [result firstObject];
+    ImageData *lastImageData = [result lastObject];
+    
+    NSLog(@"firstImageData : %@", firstImageData.timezone_date);
+    NSLog(@"lastImageData : %@", lastImageData.timezone_date);
+    if (firstImageData.timezone_date == nil ||
+        lastImageData.timezone_date == nil) {
+        return @"지도위에 당산의 발자취를 남겨주세요!";
+    }
+    
+    NSString *firstDate = firstImageData.timezone_date;
+    NSString *lastDate = lastImageData.timezone_date;
+    NSArray *firstDateArray = [firstDate componentsSeparatedByString:@" "];
+    NSArray *lastDateArray = [lastDate componentsSeparatedByString:@" "];
+    return [NSString stringWithFormat:@"%@ ~ %@", firstDateArray[0], lastDateArray[0]];
+}
+
+#pragma mark - UIControl Event Method
 // 여행 경로 닫기 버튼 이벤트
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -216,10 +235,21 @@
     // ##SJ 최신생성한 기준으로 정렬.
     RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
     TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
+    NSInteger imageCount = travelList.image_datas.count;
     
-//    TravelList *travelList = [self.travelUserInfo.travel_list objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"NanumGothicOTF" size:25.0f];
-    cell.textLabel.text = travelList.travel_title;
+    // 제목 (이미지 수)
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld)", travelList.travel_title, imageCount];
+    // Detail Text
+    cell.detailTextLabel.text = [self firstDateAndLastDateInTravelList:travelList];
+    // accessory View
+    if (imageCount > 0) {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"map_accessory"]];
+        cell.accessoryView.frame = CGRectMake(0.0f, 0.0f, 24.0f, 24.0f);
+    } else {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"album_accessory"]];
+        cell.accessoryView.frame = CGRectMake(0.0f, 0.0f, 24.0f, 24.0f);
+    }
     
     cell.rightSwipeSettings.transition = MGSwipeTransitionClipCenter;
     cell.leftSwipeSettings.transition = MGSwipeTransitionClipCenter;
@@ -229,16 +259,14 @@
 
 // Cell 선택 되었을 때
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // 선택된 셀
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    // Title Notification
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
     RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
     TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     [self.travelActivation travelListActivation:travelList];
+    
+    // Title Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:travelList.travel_title];
     
     // Modal을 MapViewController (rootViewController)에서 호출해야 하기 때문에 rootView의 instance를 참조 해서 앨범 뷰를 호출한다.
     __weak typeof(UIViewController *) weakSelf = [UIApplication sharedApplication].keyWindow.rootViewController;
@@ -305,11 +333,11 @@
         DLog(@"modify Touch");
         
         // ##SJ 수정할때 정렬된 순서를 가져와서 해당 row를 참조하여 수정.
-        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
-        TravelList *travelList = [sortedResult objectAtIndex:path.row];
-        // TravelDetail View Controller 호출
-        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
-        [self.navigationController pushViewController:travelDetailViewController animated:YES];
+//        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+//        TravelList *travelList = [sortedResult objectAtIndex:path.row];
+//        // TravelDetail View Controller 호출
+//        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
+//        [self.navigationController pushViewController:travelDetailViewController animated:YES];
     }
     
     return YES;
