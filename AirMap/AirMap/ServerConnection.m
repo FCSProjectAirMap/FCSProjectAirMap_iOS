@@ -30,45 +30,12 @@
 
 @implementation ServerConnection
 
-
-//- (void)authenticatewhenAutoLoginEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
-//                       completion:(void (^)(BOOL success))completionBlock
-//{
-//    
-//    NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/login/"];
-//    
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    NSDictionary *params = @{@"email": userEmail,
-//                             @"password": userPassword};
-//    [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//        
-//        //        if (completionBlock) {
-//        completionBlock(YES);
-//        //        }
-//        
-//        NSLog(@"Authentication Success");
-//        NSLog(@"JSON: %@",responseObject);
-//        
-//        
-//        
-//    } failure:^(NSURLSessionTask *operation, NSError *error) {
-//        //        if (completionBlock) {
-//        completionBlock(NO);
-//        //        }
-//        
-//        NSLog(@"Authentication Failure");
-//        NSLog(@"Error : %@", error);
-//    }];
-//
-//    
-//}
-
 //Authenticate ( Login ) server Connection Method
 - (void)authenticateWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword
                        completion:(void (^)(BOOL success))completionBlock{
     
     
-    NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/login/"];
+    NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/login/"];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSDictionary *params = @{@"email": userEmail,
@@ -142,7 +109,7 @@
     
     [keychainItem setObject:email forKey:(__bridge id)kSecAttrAccount];
     
-        NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/signup/"];
+        NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/signup/"];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSDictionary *params = @{@"email":email,
                                  @"password": userName};
@@ -159,7 +126,7 @@
             
             NSLog(@"facebook Info send Failure in first");
             NSLog(@"Error : %@", error);
-            NSURL *URL = [NSURL URLWithString:@"http://52.78.72.132/login/"];
+            NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/login/"];
             
             AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
             NSDictionary *params = @{@"email":email,
@@ -190,14 +157,14 @@
 //Register New Eamil, and Password in server.
 - (void)registerWithUserEmail:(NSString *)userEmail withUserPassword:(NSString *)userPassword completion:(void (^)(BOOL success))completionBlock
 {
-    NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/signup/"];
+    NSURL *URL = [NSURL URLWithString:@"https://airmap.travel-mk.com/signup/"];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSDictionary *params = @{@"email": userEmail,
                              @"password": userPassword};
     [manager POST:URL.absoluteString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         completionBlock(YES);
         NSLog(@"Register Success");
-        NSURL *URL2 = [NSURL URLWithString:@"https://airmap.travel-mk.com/api/login/"];
+        NSURL *URL2 = [NSURL URLWithString:@"https://airmap.travel-mk.com/login/"];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSDictionary *params = @{@"email": userEmail,
                                  @"password": userPassword};

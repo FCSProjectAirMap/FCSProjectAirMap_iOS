@@ -252,7 +252,70 @@ static const CGFloat topViewHeight = 74.0f;
              forControlEvents:UIControlEventTouchUpInside];
     [self.mapView addSubview:locationButton];
     self.locationButton = locationButton;
+    
+   // SHTEST EDGE SWIPE
+//    // menuSlide Pangesture
+//    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self
+//                                                                                              action:@selector(handlePan:)];
+//    [pan setEdges:UIRectEdgeLeft];
+//    [pan setDelegate:self];
+//    [self.mapView addGestureRecognizer:pan];
+
 }
+   // SHTEST EDGE SWIPE
+//-(void)handlePan:(UIScreenEdgePanGestureRecognizer *)sender
+//{
+//    // create effect
+//    
+//    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
+//    [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+//    [self addChildViewController:menuSlideView];
+//    [self.view addSubview:menuSlideView.view];
+//    
+//    UIView *blackScreen = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    [blackScreen setAlpha:0];
+//    [blackScreen setBackgroundColor:[UIColor blackColor]];
+//    [self.mapView addSubview:blackScreen];
+//    self.blackScreen = blackScreen;
+//    
+//    if (sender.state == UIGestureRecognizerStateBegan)
+//    {
+//        DLog(@"시작");
+//        
+//    } else if (sender.state == UIGestureRecognizerStateChanged)
+//    {
+//        if(menuSlideView.view.frame.origin.x >0 )
+//        {
+//            [sender setEnabled:NO];
+//        }
+//    }
+//    else if (sender.state == UIGestureRecognizerStateEnded || sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateFailed)
+//    {
+//        
+//        [UIView animateWithDuration:0.4 animations:^{ [blackScreen setAlpha:0.4f];
+//            }];
+//
+//        
+//        [UIView animateWithDuration:0.4 animations:^{
+//            [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+//            [self.view bringSubviewToFront:menuSlideView.view];
+//            
+//        }];
+//        [sender setEnabled:NO];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchBackgroundSender:) name:@"NotiForSenderON" object:nil];
+//        
+//    }
+//}
+//
+//-(void)touchBackgroundSender : (NSNotification *)notification
+//{
+//    
+//}
+//
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+//    
+//    return YES;
+//}
 
 // 구글지도 만들어주는 메서드
 - (void)createGoogleMapView {
