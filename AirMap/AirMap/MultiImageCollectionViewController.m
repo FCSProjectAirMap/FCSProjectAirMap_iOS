@@ -54,15 +54,27 @@ const CGFloat spacing = 2;
     // 메인 뷰에 collectionView 올리기
     [self.view addSubview:self.imageCollectionView];
     
-    // 셀 클래스 등록(MultiImageCollectionViewCell)
-    [self.imageCollectionView registerClass:[MultiImageCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    // cell, reusableView 클래스 등록
+    [self.imageCollectionView registerClass:[MultiImageCollectionViewCell class]
+                 forCellWithReuseIdentifier:reuseIdentifier];
+    [self.imageCollectionView registerClass:[MultiImageCollectionReusableView class]
+                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                        withReuseIdentifier:@"HeaderView"];
 }
 
 #pragma mark - <UICollectionViewDataSource>
+// 섹션 수 설정
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return [self.imageDataCenter callCollectionResult].count;
+}
+
 // 셀 개수 설정
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.imageDataCenter callFetchResult].count;
+    //    return [self.imageDataCenter callFetchResult].count;
+    PHFetchResult *result = [(PHFetchResult *)[self.imageDataCenter callCollectionAssetResutls] objectAtIndex:section];
+    return result.count;
 }
+
 // 셀 내용 설정
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // custom cell 생성
@@ -73,23 +85,66 @@ const CGFloat spacing = 2;
         cell = [[MultiImageCollectionViewCell alloc] init];
     }
     
-    // 이미지 asset 생성
-    PHAsset *imageAsset = [self.imageDataCenter callFetchResult][indexPath.row];
+    //    // 이미지 asset 생성
+    //    PHAsset *imageAsset = [self.imageDataCenter callFetchResult][indexPath.row];
+    //
+    //    // 이미지 매니저를 통한 이미지 가져오기
+    //    cell.tag = indexPath.row;
+    //    [[PHCachingImageManager defaultManager] requestImageForAsset:imageAsset
+    //                                                      targetSize:CGSizeMake(150,150)
+    //                                                     contentMode:PHImageContentModeAspectFill
+    //                                                         options:nil
+    //                                                   resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    //
+    //                                                       if (cell.tag == indexPath.row) {
+    //                                                           cell.imageViewInCell.image = result;
+    //                                                       }
+    //                                                   }];
+    // 이미지 컬렉션에서 asset생성
+    PHAssetCollection *momentCollection = [self.imageDataCenter callCollectionResult][indexPath.section];
+    PHFetchResult *momentAssets = [PHAsset fetchAssetsInAssetCollection:momentCollection options:nil];
     
-    // 이미지 매니저를 통한 이미지 가져오기(
+    PHAsset *momentAsset = momentAssets[indexPath.row];
+    
     cell.tag = indexPath.row;
-    [[PHCachingImageManager defaultManager] requestImageForAsset:imageAsset
-                                                      targetSize:CGSizeMake(150,150)
-                                                     contentMode:PHImageContentModeAspectFill
-                                                         options:nil
-                                                   resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                                                       
-                                                       if (cell.tag == indexPath.row) {
-                                                           cell.imageViewInCell.image = result;
-                                                       }
-                                                   }];
+    // 이미지 매니저를 통한 이미지 가져오기
+    [[PHCachingImageManager defaultManager] requestImageForAsset:momentAsset targetSize:CGSizeMake(150, 150) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        
+        cell.imageViewInCell.image = result;
+    }];
     
     return cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    
+    UICollectionReusableView *reusableView = nil;
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        MultiImageCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
+        
+        if (headerView == nil) {
+            headerView = [[MultiImageCollectionReusableView alloc] init];
+        }
+        
+        // headerView에 들어갈 장소, 날짜 텍스트 설정
+        PHAssetCollection *moment = [[self.imageDataCenter callCollectionResult] objectAtIndex:indexPath.section];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        
+        if (!moment.localizedTitle) {
+            [headerView.placeLabel setText:[dateFormatter stringFromDate:moment.startDate]];
+            [headerView.dateLabel setText:nil];
+            reusableView = headerView;
+        } else {
+            [headerView.dateLabel setText:[dateFormatter stringFromDate:moment.startDate]];
+            [headerView.placeLabel setText:moment.localizedTitle];
+            
+            reusableView = headerView;
+        }
+    }
+    return reusableView;
 }
 
 #pragma mark - <UICollectionViewDelegate>
@@ -121,8 +176,12 @@ const CGFloat spacing = 2;
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
     if ([self.badgeView badgeNumber] < 10) {
-        PHAsset *selectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
-        [self.imageDataCenter addSelectedAsset:selectedAsset];
+        //        PHAsset *selectedAsset = [self.imageDataCenter call][indexPath.row];
+        PHAssetCollection *momentCollection = [self.imageDataCenter callCollectionResult][indexPath.section];
+        PHFetchResult *momentAssets = [PHAsset fetchAssetsInAssetCollection:momentCollection options:nil];
+        PHAsset *momentAsset = momentAssets[indexPath.row];
+        
+        [self.imageDataCenter addSelectedAsset:momentAsset];
         [cell setSelected:YES];
     } else {
         [cell setSelected:NO];
@@ -133,8 +192,12 @@ const CGFloat spacing = 2;
 // 재선택된 사진 빼기
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"deseleted");
-    PHAsset *deSelectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
-    [self.imageDataCenter removeSelectedAsset:deSelectedAsset];
+    //    PHAsset *deSelectedAsset = [self.imageDataCenter callFetchResult][indexPath.row];
+    PHAssetCollection *momentCollection = [self.imageDataCenter callCollectionResult][indexPath.section];
+    PHFetchResult *momentAssets = [PHAsset fetchAssetsInAssetCollection:momentCollection options:nil];
+    PHAsset *momentAsset = momentAssets[indexPath.row];
+    
+    [self.imageDataCenter removeSelectedAsset:momentAsset];
 }
 
 
@@ -157,12 +220,22 @@ const CGFloat spacing = 2;
     return spacing;
 }
 
+// header 크기 설정
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(30, 50);
+}
+
+// edge 크기 설정
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+//    UIEdgeInsets insets=UIEdgeInsetsMake(0, 0, 10, 10);
+//    return insets;
+//}
 
 #pragma mark - <UINavigationController>
 // 네비게이션 컨트롤러 바 설정
 - (void)navigationControllerSetUp {
     
-    self.navigationItem.title = @"Camera Roll";
+    self.navigationItem.title = @"특별한 순간";
     [self updateNavigationBarButtonItem];
 }
 
@@ -197,13 +270,13 @@ const CGFloat spacing = 2;
         return;
     }
     
-//    __weak typeof(self) weakSelf = self;
+    //    __weak typeof(self) weakSelf = self;
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
         // 맵화면으로 돌아올때 notification 제거
         [[NSNotificationCenter defaultCenter] removeObserver:self.badgeView name:@"UpdateNotification" object:nil];
         // 선택된 파일 제거
-//        [weakSelf.imageDataCenter resetSelectedFiles];
+        //        [weakSelf.imageDataCenter resetSelectedFiles];
         
         // ##SJ tracking Notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
@@ -232,12 +305,12 @@ const CGFloat spacing = 2;
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             // GPS정보가 없는 사진 유무에 따라 viewcontroller dismiss 시점 변경
             if (flag) {
-//                __weak typeof(self) weakSelf = self;
-
+                //                __weak typeof(self) weakSelf = self;
+                
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
                     [[NSNotificationCenter defaultCenter] removeObserver:self.badgeView name:@"UpdateNotification" object:nil];
-//                    [weakSelf.imageDataCenter resetSelectedFiles];
-                   
+                    //                    [weakSelf.imageDataCenter resetSelectedFiles];
+                    
                     // ##SJ Test
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingDraw" object:nil];
                 }];

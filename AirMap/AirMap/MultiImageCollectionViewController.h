@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MultiImageCollectionReusableView.h"
 #import "MultiImageCollectionViewCell.h"
 #import "MultiImageDataCenter.h"
-//#import "RequestObject.h"
 #import "BadgeView.h"
 #import "UserInfo.h"
 
