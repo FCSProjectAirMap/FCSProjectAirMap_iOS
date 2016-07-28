@@ -177,7 +177,6 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
          progress:nil
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
               NSLog(@"TravelTitle upload success: %@", responseObject);
-              [self requestTravelList];
               // 받아온 id_number를 업데이트
               [self saveTravelTitleWithResponseObject:responseObject inTravelList:travelList];
           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -229,6 +228,14 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     }];
 }
 
+// 이미지 다운받기
+- (void)requestDetailImages {
+    
+    NSLog(@"Strat get images");
+    
+    
+}
+
 #pragma - mark <Delete Requst>
 
 // Travel_Title(+ 내부 정보) 삭제 요청
@@ -236,7 +243,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     
     NSLog(@"Start delete travel title");
     
-    NSString *urlString = [travleTitleDeleteURL stringByAppendingString:travel_id];
+    NSString *urlString = [NSString stringWithFormat:@"%@%@/", travleTitleDeleteURL, travel_id];
     NSLog(@"%@",urlString);
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];

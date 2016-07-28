@@ -26,4 +26,6 @@
 
 @property (nonatomic) UIView *blackScreen;
 
+- (void) runSpinAnimationOnView:(UIButton*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
+
 @end
