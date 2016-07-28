@@ -57,7 +57,7 @@
     
     // Close Button
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    closeButton.frame = CGRectMake(10.0f, 32.0f, 50.0f, 50.0f);
+    closeButton.frame = CGRectMake(10.0f, 22.0f, 25.0f, 25.0f);
     [closeButton setBackgroundImage:[UIImage imageNamed:@"Close_icon"] forState:UIControlStateNormal];
     closeButton.titleLabel.font = [UIFont fontWithName:@"NanumGothic.otf" size:15.0f];
     [closeButton addTarget:self
