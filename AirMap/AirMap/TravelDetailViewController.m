@@ -19,7 +19,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
 @interface TravelDetailViewController ()
 
 @property (nonatomic, weak) UITableView *detailTableView;
-@property (nonatomic, strong) TravelList *travelList;
+@property (nonatomic, strong) TravelActivation *travelActivation;
 @property (nonatomic, weak) UIImageView *placeholderImageView;
 
 @property (nonatomic, strong) TravelTopView *travelTopView;
@@ -29,20 +29,16 @@ const CGFloat ROW_HEIGHT = 350.0f;
 
 @implementation TravelDetailViewController
 
-- (instancetype)initWithTravelList:(TravelList *)travelList
-{
-    self = [super init];
-    if (self) {
-        _travelList = travelList;
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     NSLog(@"Travel Detial viewDidLoad");
     [self setupUI];
+    
+    self.travelActivation = [TravelActivation defaultInstance];
+    
+    // 경로 Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelDetailViewReload:) name:@"travelDetailViewReload" object:nil];
     
     if ([TravelActivation defaultInstance].travelList != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:[TravelActivation defaultInstance].travelList.travel_title];
@@ -53,7 +49,6 @@ const CGFloat ROW_HEIGHT = 350.0f;
 #pragma mark - General Method
 - (void)setupUI {
     
-    const CGFloat HEADER_MARGIN = 10.0f;
     const CGFloat bottomViewHeight = 54.0f;
     const CGFloat topViewHeight = 74.0f;
     
@@ -67,6 +62,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
     self.travelTopView.layer.shadowColor = [UIColor blackColor].CGColor;
     self.travelTopView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
     self.travelTopView.layer.shadowOpacity = 0.5f;
+    [self.travelTopView travelImageListButtonIconImage:[UIImage imageNamed:@"MapView_icon"]];
     [self.view addSubview:self.travelTopView];
     
     // travel Bottom View
@@ -82,9 +78,17 @@ const CGFloat ROW_HEIGHT = 350.0f;
     UITableView *detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, topViewHeight, self.view.frame.size.width, self.view.frame.size.height - bottomViewHeight - topViewHeight) style:UITableViewStyleGrouped];
     [self.view addSubview:detailTableView];
     self.detailTableView = detailTableView;
-    self.title = self.travelList.travel_title;
+    self.title = self.travelActivation.travelList.travel_title;
     self.detailTableView.delegate = self;
     self.detailTableView.dataSource = self;
+    
+    // HeaderView를 Custom HeaderView로 변경.
+    self.detailTableView.tableHeaderView = [self tableViewHeader];
+}
+
+- (UIView *)tableViewHeader {
+    
+    const CGFloat HEADER_MARGIN = 10.0f;
     
     // TableHeader View
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 100.0f)];
@@ -93,7 +97,6 @@ const CGFloat ROW_HEIGHT = 350.0f;
     UILabel *startDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(HEADER_MARGIN, HEADER_MARGIN, headerView.frame.size.width/2 - HEADER_MARGIN, headerView.frame.size.height - HEADER_MARGIN * 2)];
     startDateLabel.text = [self travelStartToEndDate:TravelDateFlagStart];
     startDateLabel.numberOfLines = 0;
-    startDateLabel.backgroundColor = [UIColor yellowColor];
     startDateLabel.textAlignment = NSTextAlignmentCenter;
     [headerView addSubview:startDateLabel];
     
@@ -104,24 +107,36 @@ const CGFloat ROW_HEIGHT = 350.0f;
     endDateLabel.textAlignment = NSTextAlignmentCenter;
     [headerView addSubview:endDateLabel];
     
-    // HeaderView를 Custom HeaderView로 변경.
-    self.detailTableView.tableHeaderView = headerView;
+    return headerView;
 }
 
 // 여행의 시작일과 마지막일을 설정해주는 메서드.
 - (NSString *)travelStartToEndDate:(TravelDateFlag)dateFlag{
     NSString *imageCreationDate = @"";
+
     // 날짜를 시간순으로 정렬
-    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
+    RLMResults *result = [self.travelActivation.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
+    ImageData *firstImageData = [result firstObject];
+    ImageData *lastImageData = [result lastObject];
+    
+    if (firstImageData.timezone_date == nil ||
+        lastImageData.timezone_date == nil) {
+        return @"날짜가 없어요!!";
+    }
+    
+    NSString *firstDate = firstImageData.timezone_date;
+    NSString *lastDate = lastImageData.timezone_date;
+    NSArray *firstDateArray = [firstDate componentsSeparatedByString:@" "];
+    NSArray *lastDateArray = [lastDate componentsSeparatedByString:@" "];
+    
     if (dateFlag == TravelDateFlagStart) {
         // 시작 날짜
-        ImageData *imageData = [result firstObject];
-        imageCreationDate = imageData.timezone_date;
+        imageCreationDate = firstDateArray[0];
     } else if (dateFlag == TravelDateFlagEnd) {
         // 마지막 날짜
-        ImageData *imageData = [result lastObject];
-        imageCreationDate = imageData.timezone_date;
+        imageCreationDate = lastDateArray[0];
     }
+
     return imageCreationDate;
 }
 
@@ -156,10 +171,17 @@ const CGFloat ROW_HEIGHT = 350.0f;
     DLog(@"travelAlbum");
 }
 
-#pragma mark - Action Method
+#pragma mark - UIControl Event Method
 // DetailTableView Close
 - (void)travelTableViewCloseTouchUpInside:(UIBarButtonItem *)barButtonItem {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Notification
+- (void)travelDetailViewReload:(NSNotification *)notification {
+    NSLog(@"DetailView Reload");
+    [self.detailTableView reloadData];
+    self.detailTableView.tableHeaderView = [self tableViewHeader];
 }
 
 #pragma mark - TableViewDelegate, TableViewDataSource
@@ -169,7 +191,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
 }
 // 여행경로의 사진 리스트 수
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.travelList.image_datas.count;
+    return self.travelActivation.travelList.image_datas.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -181,7 +203,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
     
     // Realm에 저장된 메타데이터, 이미지 가져오기
     // 날짜를 시간순으로 정렬.
-    RLMResults *result = [self.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
+    RLMResults *result = [self.travelActivation.travelList.image_datas sortedResultsUsingProperty:@"timezone_date" ascending:YES];
     ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
     NSDictionary *travelDetailInfoDictionary = @{ @"image": image,

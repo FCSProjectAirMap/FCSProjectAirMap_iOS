@@ -16,6 +16,6 @@
 @interface TravelDetailViewController : UIViewController
 <UITableViewDelegate, UITableViewDataSource, TravelTopViewDelegate, TravelBottomViewDelegate>
 
-- (instancetype)initWithTravelList:(TravelList *)travelList;
+//- (instancetype)initWithTravelList:(TravelList *)travelList;
 
 @end
