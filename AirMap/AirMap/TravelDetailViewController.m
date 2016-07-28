@@ -56,22 +56,6 @@ const CGFloat ROW_HEIGHT = 350.0f;
     const CGFloat HEADER_MARGIN = 10.0f;
     const CGFloat bottomViewHeight = 54.0f;
     const CGFloat topViewHeight = 74.0f;
-
-    // ##SJ Test
-    // 필요 없을 수도...
-//    // overLayView 선택할 시.
-//    if (self.overLayFlag) {
-//        // Navigation Bar TitleText Color
-//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f]}];
-//        // Navigation Bar Color
-//        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:60.0/255.0f green:30.0/255.0f blue:30.0/255.0f alpha:1.0f]];
-//        // Navigation left Button
-//        UIBarButtonItem *leftBarButtonItem =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-//                                                                                          target:self
-//                                                                                          action:@selector(travelTableViewCloseTouchUpInside:)];
-//        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
-//        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:220.0/225.0f green:215.0/225.0f blue:215.0/225.0f alpha:1.0f];
-//    }
     
     // view
     [self.view setBackgroundColor:[UIColor whiteColor]];

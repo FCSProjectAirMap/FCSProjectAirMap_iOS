@@ -188,7 +188,7 @@
     NSLog(@"lastImageData : %@", lastImageData.timezone_date);
     if (firstImageData.timezone_date == nil ||
         lastImageData.timezone_date == nil) {
-        return @"여러분의 추억을 공유해 주세요~!";
+        return @"지도위에 당산의 발자취를 남겨주세요!";
     }
     
     NSString *firstDate = firstImageData.timezone_date;
@@ -259,16 +259,14 @@
 
 // Cell 선택 되었을 때
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // 선택된 셀
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    // Title Notification
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:cell.textLabel.text];
     
     // 선택된 여행을 활성화 시켜준다.
     RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
     TravelList *travelList = [sortedResult objectAtIndex:indexPath.row];
     [self.travelActivation travelListActivation:travelList];
+    
+    // Title Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTitleChange" object:travelList.travel_title];
     
     // Modal을 MapViewController (rootViewController)에서 호출해야 하기 때문에 rootView의 instance를 참조 해서 앨범 뷰를 호출한다.
     __weak typeof(UIViewController *) weakSelf = [UIApplication sharedApplication].keyWindow.rootViewController;
@@ -335,11 +333,11 @@
         DLog(@"modify Touch");
         
         // ##SJ 수정할때 정렬된 순서를 가져와서 해당 row를 참조하여 수정.
-        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
-        TravelList *travelList = [sortedResult objectAtIndex:path.row];
-        // TravelDetail View Controller 호출
-        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
-        [self.navigationController pushViewController:travelDetailViewController animated:YES];
+//        RLMResults *sortedResult = [self travelListsortedResultsUsingProperty:@"creation_travelTitle" ascending:NO];
+//        TravelList *travelList = [sortedResult objectAtIndex:path.row];
+//        // TravelDetail View Controller 호출
+//        TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:travelList];
+//        [self.navigationController pushViewController:travelDetailViewController animated:YES];
     }
     
     return YES;
