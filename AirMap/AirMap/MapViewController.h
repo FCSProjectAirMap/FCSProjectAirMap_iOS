@@ -21,7 +21,7 @@
 @import GoogleMaps;
 
 @interface MapViewController : UIViewController
-<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate, TravelTopViewDelegate, TravelBottomViewDelegate>
+<GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PlacesViewControllerDelegate, TravelTopViewDelegate, TravelBottomViewDelegate,UIGestureRecognizerDelegate>
 
 
 @property (nonatomic) UIView *blackScreen;

@@ -155,7 +155,70 @@ static const CGFloat topViewHeight = 74.0f;
              forControlEvents:UIControlEventTouchUpInside];
     [self.mapView addSubview:locationButton];
     self.locationButton = locationButton;
+    
+   // SHTEST EDGE SWIPE
+//    // menuSlide Pangesture
+//    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self
+//                                                                                              action:@selector(handlePan:)];
+//    [pan setEdges:UIRectEdgeLeft];
+//    [pan setDelegate:self];
+//    [self.mapView addGestureRecognizer:pan];
+
 }
+   // SHTEST EDGE SWIPE
+//-(void)handlePan:(UIScreenEdgePanGestureRecognizer *)sender
+//{
+//    // create effect
+//    
+//    MenuSlideViewController *menuSlideView = [[MenuSlideViewController alloc] init];
+//    [menuSlideView.view setFrame:CGRectMake(-self.view.frame.size.width, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+//    [self addChildViewController:menuSlideView];
+//    [self.view addSubview:menuSlideView.view];
+//    
+//    UIView *blackScreen = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    [blackScreen setAlpha:0];
+//    [blackScreen setBackgroundColor:[UIColor blackColor]];
+//    [self.mapView addSubview:blackScreen];
+//    self.blackScreen = blackScreen;
+//    
+//    if (sender.state == UIGestureRecognizerStateBegan)
+//    {
+//        DLog(@"시작");
+//        
+//    } else if (sender.state == UIGestureRecognizerStateChanged)
+//    {
+//        if(menuSlideView.view.frame.origin.x >0 )
+//        {
+//            [sender setEnabled:NO];
+//        }
+//    }
+//    else if (sender.state == UIGestureRecognizerStateEnded || sender.state == UIGestureRecognizerStateCancelled || sender.state == UIGestureRecognizerStateFailed)
+//    {
+//        
+//        [UIView animateWithDuration:0.4 animations:^{ [blackScreen setAlpha:0.4f];
+//            }];
+//
+//        
+//        [UIView animateWithDuration:0.4 animations:^{
+//            [menuSlideView.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+//            [self.view bringSubviewToFront:menuSlideView.view];
+//            
+//        }];
+//        [sender setEnabled:NO];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchBackgroundSender:) name:@"NotiForSenderON" object:nil];
+//        
+//    }
+//}
+//
+//-(void)touchBackgroundSender : (NSNotification *)notification
+//{
+//    
+//}
+//
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+//    
+//    return YES;
+//}
 
 // 구글지도 만들어주는 메서드
 - (void)createGoogleMapView {
@@ -422,7 +485,7 @@ static const CGFloat topViewHeight = 74.0f;
             self.mapView.myLocationEnabled = YES;
         });
         
-        if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==40)){
+        if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==40)){
         
         
             CAMediaTimingFunction *curve =
@@ -440,7 +503,7 @@ static const CGFloat topViewHeight = 74.0f;
             [_mapView.layer addAnimation:animation1 forKey:kGMSLayerCameraViewingAngleKey];
             
             
-        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==0)){
+        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&(_mapView.camera.viewingAngle ==0)){
             
             CAMediaTimingFunction *curve =
             [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -456,7 +519,7 @@ static const CGFloat topViewHeight = 74.0f;
                         animation2.fillMode = kCAFillModeForwards;
                         [_mapView.layer addAnimation:animation2 forKey:kGMSLayerCameraViewingAngleKey];
             
-        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>0.0001))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&((_mapView.camera.viewingAngle !=0)||(_mapView.camera.viewingAngle !=40))){
+        }else if(((fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&((fabs(_mapView.camera.target.latitude - self.mapView.myLocation.coordinate.latitude)<=0.001)&&(fabs(_mapView.camera.target.longitude - self.mapView.myLocation.coordinate.longitude)>=0))&&(_mapView.camera.zoom == 14.5)&&(_mapView.camera.bearing ==0) &&((_mapView.camera.viewingAngle !=0)||(_mapView.camera.viewingAngle !=40))){
             
         }
         else{

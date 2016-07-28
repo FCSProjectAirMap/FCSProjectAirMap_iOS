@@ -200,6 +200,7 @@
             // Set ID & Password in Keychain for AutoLogin
             KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
             
+            [keychainItem setObject:@"AppLogin" forKey:(id)kSecAttrService];
             [keychainItem setObject:_emailField.text forKey:(__bridge id)kSecAttrAccount];
             [keychainItem setObject:_passWordField.text forKey:(__bridge id)kSecValueData];
             [self dismissViewControllerAnimated:YES completion:nil];

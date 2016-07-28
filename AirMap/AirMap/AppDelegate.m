@@ -90,6 +90,7 @@
 - (void)showLoginView
 {
     KeychainItemWrapper *keychainItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"AppLogin" accessGroup:nil];
+    [keychainItem setObject:@"AppLogin" forKey:(id)kSecAttrService];
     
     //Set Keychain, and match ID & Password in Server and decide to present LoginViewController
     if([keychainItem objectForKey: (__bridge id)kSecAttrAccount] && [keychainItem objectForKey:(__bridge id)kSecValueData])
