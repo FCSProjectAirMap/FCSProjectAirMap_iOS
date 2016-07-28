@@ -55,7 +55,7 @@
     // travel Image List Button
     UIButton *travelImageListButton = [UIButton buttonWithType:UIButtonTypeCustom];
     travelImageListButton.frame = CGRectMake(self.frame.size.width - BUTTON_SIZE_WIDTH - Y_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    UIImage *listImage = [UIImage imageNamed:@"list_icon"];
+    UIImage *listImage = [UIImage imageNamed:@"ListView_icon"];
     [travelImageListButton setBackgroundImage:listImage forState:UIControlStateNormal];
     [travelImageListButton addTarget:self
                               action:@selector(travelImageListTouchUpInside:)
@@ -66,7 +66,7 @@
     // place Search Button
     UIButton *placeSearchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     placeSearchButton.frame = CGRectMake(travelImageListButton.frame.origin.x - BUTTON_SIZE_WIDTH - Y_MARGIN, Y_MARGIN*2, BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT);
-    UIImage *searchImage = [UIImage imageNamed:@"search_icon"];
+    UIImage *searchImage = [UIImage imageNamed:@"Search_icon"];
     [placeSearchButton setBackgroundImage:searchImage forState:UIControlStateNormal];
     [placeSearchButton addTarget:self
                           action:@selector(placeSearchTouchUpInside:)

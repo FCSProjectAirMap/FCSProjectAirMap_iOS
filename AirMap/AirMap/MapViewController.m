@@ -289,7 +289,7 @@ static const CGFloat topViewHeight = 74.0f;
     if (bounds == nil)
         return;
     
-    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:50.0f];
+    GMSCameraUpdate *update = [GMSCameraUpdate fitBounds:bounds withPadding:70.0f];
     [self.mapView moveCamera:update];
 }
 
@@ -368,7 +368,7 @@ static const CGFloat topViewHeight = 74.0f;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
-    // ##SJ Test
+    
     // 싱글톤 객체가 이전 rootView객체를 참조하고 있다가 바뀔때마다 교체해준다.
     if ([rootViewControllerObject defaultInstance].rootViewController == nil) {
         
@@ -386,12 +386,6 @@ static const CGFloat topViewHeight = 74.0f;
         [[[UIApplication sharedApplication] delegate] window].rootViewController = [rootViewControllerObject defaultInstance].rootViewController;
         [rootViewControllerObject defaultInstance].rootViewController = rootViewController;
     }
-    
-//    // Activity되어 있는 여행 리스트를 보여준다.
-//    TravelDetailViewController *travelDetailViewController = [[TravelDetailViewController alloc] initWithTravelList:[TravelActivation defaultInstance].travelList];
-//    travelDetailViewController.overLayFlag = YES;
-//    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:travelDetailViewController];
-//    [self presentViewController:navi animated:YES completion:nil];
 }
 
 #pragma mark - Travel Bottom View Delegate
@@ -467,9 +461,9 @@ static const CGFloat topViewHeight = 74.0f;
     DLog(@"LocationManager Error : %@", error);
 }
 
-#pragma mark - Action Method
+#pragma mark - UIContorl Event Method
 /****************************************************************************
- *                          Action Method                                   *
+ *                        UIContorl Event Method                            *
  ****************************************************************************/
 // 현재위치로 화면 이동 이벤트
 - (void)locationTouchUpInside:(UIButton *)sender {
@@ -695,7 +689,7 @@ static const CGFloat topViewHeight = 74.0f;
     for (ImageData *imageData in travelList.image_datas) {
         if ([marker.title isEqualToString:[NSString stringWithFormat:@"%ld", imageData.timestamp]]) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData.image]];
-            imageView.frame = CGRectMake(0.0f, 0.0f, 80.0f, 80.0f);
+            imageView.frame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             return imageView;
         }
@@ -744,8 +738,8 @@ static const CGFloat topViewHeight = 74.0f;
     [self didFitBounds];
 }
 
+// 지도위에 마커와 라인을 지워준다.
 - (void)travelTrackingClear:(NSNotification *)notification {
-    // 지도위에 마커와 라인을 지워준다.
     [self.mapView clear];
     [self.markers removeAllObjects];
     
