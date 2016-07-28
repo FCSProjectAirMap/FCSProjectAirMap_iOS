@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UserInfo *travelUserInfo;
 @property (nonatomic, strong) RLMNotificationToken *notification;
 @property (nonatomic, strong) TravelActivation *travelActivation;
+@property (nonatomic, strong) RequestObject *requestObject;
 
 @end
 
@@ -53,6 +54,9 @@
     
     // 하단 +를 눌렀을 경우 호출 되는 NotificationCenter등록.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(travelListMake:) name:@"travelListMake" object:nil];
+    
+    //##MJ 서버연동을 위한 requestObject 생성
+    self.requestObject = [RequestObject sharedInstance];
 }
 
 #pragma mark - General Method
@@ -155,7 +159,8 @@
                                                              [realm commitWriteTransaction];
                                                             
                                                              // ##MJ 서버에 새로생긴 travleTitle 저장 후 id_number값을 받아온다.
-                                                             [[RequestObject sharedInstance] uploadTravelTitleDatas:travelTitle
+//                                                             [self.requestObject requestTokenRefresh];
+                                                             [self.requestObject uploadTravelTitleDatas:travelTitle
                                                                                                        inTravelList:travelList];
                                                          }
                                                      }];
@@ -322,6 +327,9 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"travelTrackingClear" object:nil];
             }
             
+            //##MJ 서버에 데이터 삭제 요청
+            [self.requestObject requsetDeleteOfTravleId:travelList.id_number];
+
             // 여행 리스트를 지워준다.
             [realm deleteObject:travelList];
             [weakSelf.travelTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];

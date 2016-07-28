@@ -135,12 +135,13 @@ const CGFloat spacing = 2;
         
         if (!moment.localizedTitle) {
             [headerView.placeLabel setText:[dateFormatter stringFromDate:moment.startDate]];
+            [headerView.detailPlaceLabel setText:nil];
             [headerView.dateLabel setText:nil];
             reusableView = headerView;
         } else {
             [headerView.dateLabel setText:[dateFormatter stringFromDate:moment.startDate]];
-            [headerView.placeLabel setText:moment.localizedTitle];
-            
+            [headerView.detailPlaceLabel setText:moment.localizedTitle];
+            [headerView.placeLabel setText:[moment.localizedLocationNames firstObject]];
             reusableView = headerView;
         }
     }
@@ -222,7 +223,7 @@ const CGFloat spacing = 2;
 
 // header 크기 설정
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(30, 50);
+    return CGSizeMake(30, 55);
 }
 
 // edge 크기 설정
