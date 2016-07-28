@@ -17,11 +17,11 @@
 
 @implementation RequestObject
 
-static NSString * const travelTitleURL = @"https://airmap.travel-mk.com/api/travel/create_travel/";
-static NSString * const imageUploadURL = @"https://airmap.travel-mk.com/api/travel/create_image/";
-static NSString * const metadataUploadURL = @"https://airmap.travel-mk.com/api/travel/create/";
-static NSString * const listRequestURL = @"https://airmap.travel-mk.com/api/travel/list/";
-static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/travel/detail/";
+static NSString * const travelTitleURL = @"https://airmap.travel-mk.com/travel/create_title/";
+static NSString * const imageUploadURL = @"https://airmap.travel-mk.com/travel/create_image/";
+static NSString * const metadataUploadURL = @"https://airmap.travel-mk.com/travel/create_data/";
+static NSString * const listRequestURL = @"https://airmap.travel-mk.com/travel/list/";
+static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel/detail/";
 
 // 이미지 네트워킹 싱글톤 생성
 + (instancetype)sharedInstance {
@@ -82,7 +82,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
         // 이미지 파일
         UIImage *image = selectedImages[i];
         // 파일 이름을 uer_id_travel_title_unique_timestamp.jpeg로 저장
-        NSString *fileName = [NSString stringWithFormat:@"%@_%@.jpeg", self.userId, selectedData[i][@"timestamp"]];
+        NSString *fileName = [NSString stringWithFormat:@"%@_%@_%@.jpeg", self.userId, selectedData[i][@"timestamp"], [TravelActivation defaultInstance].travelList.id_number];
         
         //        dispatch_async(uploadQueue, ^{
         // 큐내에서 POST로 이미지 한장씩 비동기로 전달
@@ -243,10 +243,10 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/api/tr
 }
 
 // Travel Title 업로드 리퀘스트
-- (void)uploadTravelTitleDatas:(NSString *)newTitle withActivity:(BOOL)activiy inTravelList:(TravelList *)travelList{
+- (void)uploadTravelTitleDatas:(NSString *)newTitle inTravelList:(TravelList *)travelList {
     NSLog(@"Start TravelTitle Upload");
     
-    NSDictionary *newTravelTitle = @{@"travel_title":newTitle, @"activity":@(activiy)};
+    NSDictionary *newTravelTitle = @{@"travel_title":newTitle};
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
