@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) UIButton *menuSlideButton;
 @property (nonatomic, weak) UIButton *travelTitleButton;
+@property (nonatomic, weak) UILabel *travelTitleLabel;
 @property (nonatomic, weak) UIButton *travelListTopButton;
 @property (nonatomic, weak) UIButton *placeSearchButton;
 @property (nonatomic, weak) UIButton *travelImageListButton;
@@ -71,8 +72,9 @@
     [placeSearchButton addTarget:self
                           action:@selector(placeSearchTouchUpInside:)
                 forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:placeSearchButton];
-    self.placeSearchButton = placeSearchButton;
+    // ##SJ Test (지도 검색 기능이 UI/UX 바뀌고 난뒤 안된다.....ㅠㅠ 이유는 찾아봐야함..)
+//    [self addSubview:placeSearchButton];
+//    self.placeSearchButton = placeSearchButton;
     
     // travel Title Button
     UIButton *travelTitleButton = [UIButton buttonWithType:UIButtonTypeCustom];

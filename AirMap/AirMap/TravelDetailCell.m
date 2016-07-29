@@ -73,8 +73,8 @@
     [self.bottomView addSubview:self.countryLabel];
     
     // country Image View
-    UIImage *countryImage = [UIImage imageNamed:@"South Korea"];
-    self.countryImageView = [[UIImageView alloc] initWithImage:countryImage];
+    NSString *imageCountry = _travelDetailInfoDictionary[@"country"];
+    self.countryImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageCountry]];
     self.countryImageView.frame = CGRectMake(self.contentImageView.frame.size.width - 60.0f - 20.0f, self.contentImageView.frame.size.height - 30.0f, 60.0f, 60.0f);
     self.countryImageView.layer.cornerRadius = self.countryImageView.frame.size.width / 2;
     self.countryImageView.layer.borderWidth = 1.0f;
