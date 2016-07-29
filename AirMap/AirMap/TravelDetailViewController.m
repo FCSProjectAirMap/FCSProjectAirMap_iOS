@@ -207,6 +207,7 @@ const CGFloat ROW_HEIGHT = 350.0f;
     ImageData *imageMetaData = result[indexPath.row];
     UIImage *image = [[UIImage alloc] initWithData:imageMetaData.image];
     NSString *imageCountry = imageMetaData.country;
+    if (imageCountry == nil) imageCountry = @"";
     NSDictionary *travelDetailInfoDictionary = @{ @"image": image,
                                                   @"timezone_date": [NSString stringWithFormat:@"%@", imageMetaData.timezone_date],
                                                   @"country": imageCountry,
