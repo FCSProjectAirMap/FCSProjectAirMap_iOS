@@ -232,8 +232,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
 - (void)requestDetailImages {
     
     NSLog(@"Strat get images");
-    
-    
+
 }
 
 #pragma - mark <Delete Requst>
@@ -254,6 +253,7 @@ static NSString * const detailRequestURL = @"https://airmap.travel-mk.com/travel
     [manager DELETE:urlString parameters:nil
             success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSLog(@"Delete travel title success: %@", responseObject);
+                [self requestTravelList];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Delete travel title Error: %@", error);
     }];
